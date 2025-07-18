@@ -2,7 +2,7 @@
   "name": "abha-website",
   "version": "2.0.0",
   "type": "module",
-  "description": "Australia Bangladesh Heritage Association - Revolutionary Community Website",
+  "description": "Association of Bengalis in Harrisburg Area - Digital home for the Bengali community",
   "homepage": "https://fe4rless233.github.io/abha_website",
   "scripts": {
     "dev": "vite",
