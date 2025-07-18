@@ -6,9 +6,9 @@
 
 Transform the traditional community website experience into an immersive, culturally-rich digital platform that celebrates Bengali heritage while delivering industry-leading performance, accessibility, and user engagement.
 
-## 🚀 Quick Deploy to Custom Domain
+## 🚀 Quick Deploy to GitHub Pages
 
-Ready to deploy to your custom domain? See [DEPLOY.md](./DEPLOY.md) for detailed instructions.
+Ready to deploy? See [DEPLOY.md](./DEPLOY.md) for detailed instructions.
 
 **Quick commands:**
 ```bash
@@ -19,7 +19,7 @@ npm run deploy
 git push origin main
 ```
 
-Your site will be available at your custom domain once DNS propagates!
+Your site will be available at: **https://fe4rless233.github.io/abha_website**
 
 ## ✨ Key Features
 
