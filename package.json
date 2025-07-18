@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "type": "module",
   "description": "Australia Bangladesh Heritage Association - Revolutionary Community Website",
-  "homepage": "https://abhaweb.org",
+  "homepage": "https://fe4rless233.github.io/abha_website",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
