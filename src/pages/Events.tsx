@@ -235,7 +235,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent }) => {
             Join us for a variety of cultural, social, and educational events throughout the year.
           </p>
           <div className="hero-bengali-text">
-            "সম্প্রদায়িক অনুষ্ঠান"
+            সম্প্রদায়িক অনুষ্ঠান
           </div>
         </div>
         
