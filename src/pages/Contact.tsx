@@ -1,6 +1,10 @@
 import React from 'react';
 
-const ContactPage: React.FC = () => {
+interface ContactPageProps {
+  onPageChange?: (page: string) => void;
+}
+
+const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange }) => {
   return (
     <div className="page-container hbcu-style">
       {/* Hero Section - HBCU Style */}

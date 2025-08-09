@@ -1,6 +1,10 @@
 import React from 'react';
 
-const CommunityPage: React.FC = () => {
+interface CommunityPageProps {
+  onPageChange?: (page: string) => void;
+}
+
+const CommunityPage: React.FC<CommunityPageProps> = ({ onPageChange }) => {
   return (
     <div className="page-container hbcu-style">
       {/* Hero Section - HBCU Style */}
@@ -149,12 +153,12 @@ const CommunityPage: React.FC = () => {
             Your participation makes our community stronger and more vibrant.
           </p>
           <div className="hbcu-cta-buttons">
-            <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="btn-hbcu-primary">
+            <button onClick={() => onPageChange && onPageChange('contact')} className="btn-hbcu-primary">
               Join Community
-            </a>
-            <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="btn-hbcu-secondary">
+            </button>
+            <button onClick={() => onPageChange && onPageChange('contact')} className="btn-hbcu-secondary">
               Volunteer
-            </a>
+            </button>
           </div>
           <div className="hbcu-cta-quote">
             <p className="hbcu-quote-text">

@@ -27,15 +27,15 @@ function App() {
       case 'home':
         return <HomePage onPageChange={handlePageChange} />;
       case 'about':
-        return <AboutPage />;
+        return <AboutPage onPageChange={handlePageChange} />;
       case 'culture':
-        return <CulturePage />;
+        return <CulturePage onPageChange={handlePageChange} />;
       case 'events':
-        return <EventsPage initialExpandedEvent={eventToExpand} />;
+        return <EventsPage initialExpandedEvent={eventToExpand} onPageChange={handlePageChange} />;
       case 'community':
-        return <CommunityPage />;
+        return <CommunityPage onPageChange={handlePageChange} />;
       case 'contact':
-        return <ContactPage />;
+        return <ContactPage onPageChange={handlePageChange} />;
       default:
         return <HomePage onPageChange={handlePageChange} />;
     }

@@ -1,4 +1,8 @@
-const CulturePage: React.FC = () => {
+interface CulturePageProps {
+  onPageChange?: (page: string) => void;
+}
+
+const CulturePage: React.FC<CulturePageProps> = ({ onPageChange }) => {
   return (
     <div className="page-container hbcu-style">
       {/* Hero Section - HBCU Style */}
@@ -147,12 +151,12 @@ const CulturePage: React.FC = () => {
             Discover the traditions that make our community unique and vibrant.
           </p>
           <div className="hbcu-cta-buttons">
-            <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="btn-hbcu-primary">
+            <button onClick={() => onPageChange && onPageChange('contact')} className="btn-hbcu-primary">
               Join Cultural Events
-            </a>
-            <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="btn-hbcu-secondary">
+            </button>
+            <button onClick={() => onPageChange && onPageChange('contact')} className="btn-hbcu-secondary">
               Experience Natok
-            </a>
+            </button>
           </div>
           <div className="hbcu-cta-quote">
             <p className="hbcu-quote-text">
