@@ -19,7 +19,7 @@ const Footer: React.FC = () => {
           <h3>Programs</h3>
           <ul className="footer-links">
             <li><a href="#">Cultural Events</a></li>
-            <li><a href="#">Bengali Language Classes</a></li>
+            <li><a href="#">Natok & Drama</a></li>
             <li><a href="#">Community Support</a></li>
             <li><a href="#">New Family Welcome</a></li>
             <li><a href="#">Volunteer Opportunities</a></li>
@@ -35,7 +35,7 @@ const Footer: React.FC = () => {
             </li>
             <li className="footer-contact-item">
               <span>📧</span>
-              <a href="mailto:contact.abha.pa@gmail.com">contact.abha.pa@gmail.com</a>
+              <a href="mailto:associationbengalisharrisburg@hotmail.com">associationbengalisharrisburg@hotmail.com</a>
             </li>
             <li className="footer-contact-item">
               <span>�</span>

@@ -39,7 +39,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange }) => {
         {/* Logo/Brand */}
         <div className="navbar-brand" onClick={() => handleLinkClick('home')}>
           <img 
-            src="/assets/images/abha-logo.jpg" 
+            src="/assets/images/abha-logo.png" 
             alt="ABHA Logo" 
             className="navbar-logo"
             onError={(e) => {

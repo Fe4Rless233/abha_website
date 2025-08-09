@@ -1,35 +1,48 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 interface HomePageProps {
   onPageChange?: (page: string, eventToExpand?: string) => void;
 }
 
 const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
+  const [showBanner, setShowBanner] = useState(true);
+
   return (
     <div className="page-container hbcu-style">
       {/* Upcoming Events Banner */}
-      <section className="upcoming-events-banner">
-        <div className="container">
-          <div className="banner-content">
-            <div className="banner-icon">🎵</div>
-            <div className="banner-text">
-              <h3>New Upcoming Events!</h3>
-              <p>Musical Extravaganza with Rathijit & Shreya + Durga Puja 2025</p>
+      {showBanner && (
+        <section className="upcoming-events-banner">
+          <div className="container">
+            <div className="banner-content">
+              <div className="banner-icon">🎵</div>
+              <div className="banner-text">
+                <h3>New Upcoming Events!</h3>
+                <p>Musical Extravaganza with Rathijit & Shreya + Durga Puja 2025</p>
+              </div>
+              <div className="banner-actions">
+                <button 
+                  onClick={() => {
+                    const upcomingSection = document.querySelector('.upcoming-events-section');
+                    if (upcomingSection) {
+                      upcomingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                  }}
+                  className="banner-cta-btn"
+                >
+                  View Events
+                </button>
+                <button 
+                  onClick={() => setShowBanner(false)}
+                  className="banner-close-btn"
+                  aria-label="Close banner"
+                >
+                  ✕
+                </button>
+              </div>
             </div>
-            <button 
-              onClick={() => {
-                const upcomingSection = document.querySelector('.upcoming-events-section');
-                if (upcomingSection) {
-                  upcomingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-              }}
-              className="banner-cta-btn"
-            >
-              View Events
-            </button>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
 
       {/* Hero Section - HBCU Style with Video Background */}
       <section className="hbcu-hero-section">
@@ -51,7 +64,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
         <div className="container hero-content-hbcu">
           <div className="hero-logo-container-hbcu">
             <img 
-              src="/assets/images/abha-logo.jpg" 
+              src="/assets/images/abha-logo.png" 
               alt="ABHA Logo" 
               className="hero-logo-hbcu"
               onError={(e) => {
@@ -63,15 +76,15 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
             Association of Bengalis in Harrisburg Area
           </h1>
           <p className="hero-subtitle-hbcu">
-            Preserving Bengali culture and fostering community bonds in Central Pennsylvania since 2010.
+            Bringing the Spirit of Bengal to Central Pennsylvania. We believe that culture is the thread that binds us—not only to our roots but to each other.
           </p>
           <div className="hero-bengali-text">
-            হ্যারি‌সবর্গে বিগত দশক ধরে বাংলা সংস্কৃতি এবং ঐতিহ্য উদযাপন করার জন্য একটি সংগঠন
+            সংস্কৃতিতে ঐক্য। সম্প্রদায়ে শক্তি। উদযাপনে আনন্দ
           </div>
           <div className="hero-cta-container">
-            <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="btn-hbcu-primary">
-              Join Our Community
-            </a>
+            <button onClick={() => onPageChange?.('contact')} className="btn-hbcu-primary">
+              Contact Us
+            </button>
             <button onClick={() => onPageChange?.('events')} className="btn-hbcu-secondary">
               View Events
             </button>
@@ -102,9 +115,9 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
       {/* Mission Statement Section */}
       <section className="hbcu-mission-section">
         <div className="container">
-          <h2 className="hbcu-section-title">COMMUNITY FIRST</h2>
+          <h2 className="hbcu-section-title">UNITY IN CULTURE. STRENGTH IN COMMUNITY. JOY IN CELEBRATION.</h2>
           <p className="hbcu-mission-text">
-            Access authentic Bengali culture, traditions, and community connections adapted to modern life in Central Pennsylvania
+            Join us in honoring the rich tapestry of Bengali heritage—music, dance, literature, and culinary arts. Together, we embrace our roots and illuminate our future.
           </p>
         </div>
       </section>
@@ -120,6 +133,16 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
           <div className="upcoming-events-grid">
             {/* Musical Extravaganza Event */}
             <div className="hbcu-event-container">
+              <div className="hbcu-event-image">
+                <img 
+                  src="/assets/images/events/a-musical-extravaganza-with-rathijit-and-shreya.jpg" 
+                  alt="Musical Extravaganza with Rathijit & Shreya" 
+                  className="hbcu-event-poster"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              </div>
               <div className="hbcu-event-content">
                 <div className="hbcu-event-badge">SEPTEMBER 26</div>
                 <h3 className="hbcu-event-title">Musical Extravaganza</h3>
@@ -138,9 +161,12 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                   </div>
                 </div>
                 <div className="hbcu-event-actions">
-                  <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="btn-hbcu-primary">
+                  <button 
+                    onClick={() => onPageChange?.('contact')}
+                    className="btn-hbcu-primary"
+                  >
                     Get Tickets
-                  </a>
+                  </button>
                   <button 
                     type="button"
                     onClick={(e) => {
@@ -154,20 +180,20 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                   </button>
                 </div>
               </div>
+            </div>
+
+            {/* Durga Puja Event */}
+            <div className="hbcu-event-container">
               <div className="hbcu-event-image">
                 <img 
-                  src="/assets/images/events/musical-extravaganza-2025.jpg" 
-                  alt="Musical Extravaganza with Rathijit & Shreya" 
+                  src="/assets/images/events/durga-puja.jpg" 
+                  alt="Durga Puja 2025" 
                   className="hbcu-event-poster"
                   onError={(e) => {
                     e.currentTarget.style.display = 'none';
                   }}
                 />
               </div>
-            </div>
-
-            {/* Durga Puja Event */}
-            <div className="hbcu-event-container">
               <div className="hbcu-event-content">
                 <div className="hbcu-event-badge">SEPTEMBER 27-28</div>
                 <h3 className="hbcu-event-title">Durga Puja 2025</h3>
@@ -186,9 +212,12 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                   </div>
                 </div>
                 <div className="hbcu-event-actions">
-                  <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="btn-hbcu-primary">
+                  <button 
+                    onClick={() => onPageChange?.('contact')}
+                    className="btn-hbcu-primary"
+                  >
                     Get Tickets
-                  </a>
+                  </button>
                   <button 
                     type="button"
                     onClick={(e) => {
@@ -201,16 +230,6 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                     View Details
                   </button>
                 </div>
-              </div>
-              <div className="hbcu-event-image">
-                <img 
-                  src="/assets/images/events/durga-puja.jpg" 
-                  alt="Durga Puja 2025" 
-                  className="hbcu-event-poster"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
               </div>
             </div>
           </div>
@@ -241,27 +260,9 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
               <p className="hbcu-card-description">
                 Join a thriving community that celebrates Bengali culture and provides support for families settling in Central Pennsylvania.
               </p>
-              <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="hbcu-card-link">
-                Join Us
-              </a>
-            </div>
-            <div className="hbcu-investment-card">
-              <h3 className="hbcu-card-title">For Volunteers</h3>
-              <p className="hbcu-card-description">
-                Become part of a larger movement that preserves Bengali heritage and builds bridges between cultures.
-              </p>
-              <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="hbcu-card-link">
-                Get Involved
-              </a>
-            </div>
-            <div className="hbcu-investment-card">
-              <h3 className="hbcu-card-title">For Students</h3>
-              <p className="hbcu-card-description">
-                Access Bengali language classes, cultural education, and connections that help preserve our beautiful traditions.
-              </p>
-              <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="hbcu-card-link">
-                Learn More
-              </a>
+              <button onClick={() => onPageChange?.('contact')} className="hbcu-card-link">
+                Contact Us
+              </button>
             </div>
           </div>
         </div>
@@ -291,17 +292,10 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
               </p>
             </div>
             <div className="hbcu-heritage-card">
-              <div className="hbcu-heritage-icon">📚</div>
-              <h3 className="hbcu-heritage-title">Language & Heritage</h3>
+              <div className="hbcu-heritage-icon">🎭</div>
+              <h3 className="hbcu-heritage-title">Natok & Drama</h3>
               <p className="hbcu-heritage-text">
-                Bengali language classes and cultural education programs to preserve our traditions for future generations.
-              </p>
-            </div>
-            <div className="hbcu-heritage-card">
-              <div className="hbcu-heritage-icon">🍛</div>
-              <h3 className="hbcu-heritage-title">Food & Fellowship</h3>
-              <p className="hbcu-heritage-text">
-                Authentic Bengali cuisine at events where recipes and stories are shared across generations.
+                Engaging drama performances and drawing competitions that showcase creativity and preserve our storytelling traditions.
               </p>
             </div>
           </div>
@@ -327,7 +321,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
               <div className="hbcu-timeline-year">2015</div>
               <div className="hbcu-timeline-title">Growth</div>
               <div className="hbcu-timeline-description">
-                Expanded to 100+ members with regular cultural events and language classes
+                Expanded to 100+ members with regular cultural events
               </div>
             </div>
             <div className="hbcu-timeline-item">
@@ -350,16 +344,16 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
             Become a champion for Bengali heritage.
           </p>
           <div className="hbcu-cta-buttons">
-            <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="btn-hbcu-primary">
-              Join Our Community
-            </a>
+            <button onClick={() => onPageChange?.('contact')} className="btn-hbcu-primary">
+              Contact Us
+            </button>
             <button onClick={() => onPageChange?.('events')} className="btn-hbcu-secondary">
               View Events
             </button>
           </div>
           <div className="hbcu-cta-quote">
             <p className="hbcu-quote-text">
-              "We can't simply believe in preserving our heritage. We have to actively create spaces for it to flourish."
+              "We believe that culture is the thread that binds us—not only to our roots but to each other."
             </p>
           </div>
         </div>

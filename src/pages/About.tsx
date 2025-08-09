@@ -8,7 +8,7 @@ const AboutPage: React.FC = () => {
         <div className="container hero-content-hbcu">
           <div className="hero-logo-container-hbcu">
             <img 
-              src="/assets/images/abha-logo.jpg" 
+              src="/assets/images/abha-logo.png" 
               alt="ABHA Logo" 
               className="hero-logo-hbcu"
               onError={(e) => {
@@ -21,7 +21,7 @@ const AboutPage: React.FC = () => {
             Preserving Bengali Heritage and Fostering Community in Pennsylvania's Capital Region since 2010.
           </p>
           <div className="hero-bengali-text">
-            আমাদের সংস্কৃতি আমাদের পরিচয়
+            হ্যারিসবার্গ শহরে বিগত দশকের ধরে বাংলা সংস্কৃতি এবং ঐতিহ্য উদযাপন করার জন্য একটি সংগঠন
           </div>
         </div>
         
@@ -51,7 +51,7 @@ const AboutPage: React.FC = () => {
         <div className="container">
           <h2 className="hbcu-section-title">OUR MISSION</h2>
           <p className="hbcu-mission-text">
-            The Association of Bengalis in Harrisburg Area (ABHA) is dedicated to preserving, promoting, and celebrating Bengali culture while serving as a bridge between tradition and modernity in Pennsylvania's capital region.
+            At ABHA, we are devoted to preserving, celebrating, and sharing the vibrant legacy of Bengali culture. Through inclusive community engagement, we foster appreciation for our rich traditions in literature, music, art, and Natok (drama). We empower future generations to embrace their heritage while promoting cross-cultural dialogue, unity, and creative expression.
           </p>
         </div>
       </section>
@@ -80,9 +80,9 @@ const AboutPage: React.FC = () => {
               </a>
             </div>
             <div className="hbcu-investment-card">
-              <h3 className="hbcu-card-title">Educational Programs</h3>
+              <h3 className="hbcu-card-title">Cultural Programs</h3>
               <p className="hbcu-card-description">
-                We offer language classes and educational workshops to teach our youth about Bengali history, literature, and arts.
+                We organize Natok (drama) performances and drawing competitions to teach our youth about Bengali history, literature, and arts.
               </p>
               <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="hbcu-card-link">
                 Learn More
@@ -115,10 +115,10 @@ const AboutPage: React.FC = () => {
               </p>
             </div>
             <div className="hbcu-heritage-card">
-              <div className="hbcu-heritage-icon">🎓</div>
-              <h3 className="hbcu-heritage-title">Education Focus</h3>
+              <div className="hbcu-heritage-icon">�</div>
+              <h3 className="hbcu-heritage-title">Cultural Focus</h3>
               <p className="hbcu-heritage-text">
-                Our educational programs ensure that Bengali language and culture are passed down to future generations.
+                Our cultural programs including Natok (drama) and drawing competitions ensure that Bengali traditions are passed down to future generations.
               </p>
             </div>
             <div className="hbcu-heritage-card">
