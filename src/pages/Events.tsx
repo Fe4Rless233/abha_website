@@ -25,6 +25,18 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent }) => {
   const eventsByYear: { [year: number]: Event[] } = {
     2025: [
     {
+      title: "A Musical Extravaganza with Rathijit & Shreya",
+      description: "ABHA's 10th Year celebration featuring renowned artists Rathijit & Shreya with musical performances.",
+      category: "Cultural",
+      date: "September 26, 2025",
+      time: "7:00 PM - 11:00 PM",
+      venue: "Enola Fire Company, 118 Chester Rd, Enola, PA 17025",
+      details: "Join us for a spectacular musical evening celebrating ABHA's 10th anniversary! Experience soul-stirring performances by renowned Bengali artists Rathijit & Shreya, featuring classic Rabindra Sangeet, modern Bengali songs, and fusion music. This special celebration from the house of 'Sa Re Ga Ma Pa' promises an unforgettable night of melody and nostalgia. Featuring special performances by Soumyojyoti on Tabla and other talented musicians.",
+      highlights: ["Rathijit & Shreya Live Performance", "Rabindra Sangeet & Modern Songs", "Sa Re Ga Ma Pa House Production", "Soumyojyoti on Tabla", "ABHA 10th Anniversary Celebration", "Professional Sound & Lighting"],
+      image: "/assets/images/events/musical-extravaganza-2025.jpg",
+      fallbackImage: "🎵"
+    },
+    {
       title: "Durga Puja 2025",
       description: "Our grandest annual celebration with cultural programs and community feasts.",
       category: "Festival",
