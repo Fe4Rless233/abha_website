@@ -15,9 +15,10 @@ interface Event {
 
 interface EventsPageProps {
   initialExpandedEvent?: string;
+  onPageChange?: (page: string) => void;
 }
 
-const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent }) => {
+const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageChange: _onPageChange }) => {
   const [expandedEvent, setExpandedEvent] = useState<number | null>(null);
   const [selectedYear, setSelectedYear] = useState<number>(2025);
   const [hasProcessedInitialEvent, setHasProcessedInitialEvent] = useState(false);

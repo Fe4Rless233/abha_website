@@ -1,6 +1,10 @@
 import React from 'react';
 
-const AboutPage: React.FC = () => {
+interface AboutPageProps {
+  onPageChange?: (page: string) => void;
+}
+
+const AboutPage: React.FC<AboutPageProps> = ({ onPageChange }) => {
   return (
     <div className="page-container hbcu-style">
       {/* Hero Section - HBCU Style */}
@@ -75,9 +79,9 @@ const AboutPage: React.FC = () => {
               <p className="hbcu-card-description">
                 Our goal is to foster unity and create a strong support network for all Bengali families in the greater Harrisburg area.
               </p>
-              <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="hbcu-card-link">
+              <button onClick={() => onPageChange && onPageChange('contact')} className="hbcu-card-link">
                 Join Community
-              </a>
+              </button>
             </div>
             <div className="hbcu-investment-card">
               <h3 className="hbcu-card-title">Cultural Programs</h3>
@@ -141,12 +145,12 @@ const AboutPage: React.FC = () => {
             Together, we can preserve our culture for generations to come.
           </p>
           <div className="hbcu-cta-buttons">
-            <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="btn-hbcu-primary">
+            <button onClick={() => onPageChange && onPageChange('contact')} className="btn-hbcu-primary">
               Join Our Community
-            </a>
-            <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="btn-hbcu-secondary">
+            </button>
+            <button onClick={() => onPageChange && onPageChange('contact')} className="btn-hbcu-secondary">
               Learn More
-            </a>
+            </button>
           </div>
           <div className="hbcu-cta-quote">
             <p className="hbcu-quote-text">
