@@ -16,7 +16,7 @@ const CommunityPage: React.FC = () => {
         <div className="container hero-content-hbcu">
           <div className="hero-logo-container-hbcu">
             <img 
-              src="/assets/images/abha-logo.jpg" 
+              src="/assets/images/abha-logo.png" 
               alt="ABHA Logo" 
               className="hero-logo-hbcu"
               onError={(e) => {
@@ -29,7 +29,7 @@ const CommunityPage: React.FC = () => {
             ABHA is more than an association; it's a family. We provide a supportive and engaging environment for all members.
           </p>
           <div className="hero-bengali-text">
-            একসাথে আমরা শক্তিশালী
+            "একা আমরা খুব কমই করতে পারি; একসাথে আমরা অনেক কিছু করতে পারি।" - হেলেন কেলার
           </div>
         </div>
         
@@ -79,9 +79,9 @@ const CommunityPage: React.FC = () => {
               </a>
             </div>
             <div className="hbcu-investment-card">
-              <h3 className="hbcu-card-title">Educational Support</h3>
+              <h3 className="hbcu-card-title">Community Support</h3>
               <p className="hbcu-card-description">
-                Our programs include Bengali language classes and academic mentorship for youth in our community.
+                Our programs include Natok (drama) performances and drawing competitions that showcase creativity and cultural expression.
               </p>
               <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="hbcu-card-link">
                 Learn More
@@ -103,30 +103,30 @@ const CommunityPage: React.FC = () => {
       {/* Additional Programs - HBCU Style */}
       <section className="hbcu-heritage-section">
         <div className="container">
-          <h2 className="hbcu-section-title">Additional community services</h2>
+          <h2 className="hbcu-section-title">Community partnerships</h2>
           <p className="hbcu-heritage-description">
-            We provide specialized support and opportunities for all members of our community, from seniors to volunteers.
+            We work with local organizations to strengthen our community and support those in need throughout Central Pennsylvania.
           </p>
           <div className="hbcu-heritage-grid">
             <div className="hbcu-heritage-card">
-              <div className="hbcu-heritage-icon">👴</div>
-              <h3 className="hbcu-heritage-title">Senior Programs</h3>
+              <div className="hbcu-heritage-icon">🍲</div>
+              <h3 className="hbcu-heritage-title">PA Food Bank Support</h3>
               <p className="hbcu-heritage-text">
-                Social activities and support services tailored to the seniors in our community, fostering connection and well-being.
+                We partner with local food banks to support families in need and organize food drives for the broader Central PA community.
               </p>
             </div>
             <div className="hbcu-heritage-card">
-              <div className="hbcu-heritage-icon">🙋</div>
+              <div className="hbcu-heritage-icon">🏪</div>
+              <h3 className="hbcu-heritage-title">Local Business Network</h3>
+              <p className="hbcu-heritage-text">
+                Supporting local small businesses and connecting community members with entrepreneurial opportunities in the area.
+              </p>
+            </div>
+            <div className="hbcu-heritage-card">
+              <div className="hbcu-heritage-icon">�</div>
               <h3 className="hbcu-heritage-title">Volunteer Opportunities</h3>
               <p className="hbcu-heritage-text">
                 Get involved and make a difference by volunteering for our events and community initiatives.
-              </p>
-            </div>
-            <div className="hbcu-heritage-card">
-              <div className="hbcu-heritage-icon">🚨</div>
-              <h3 className="hbcu-heritage-title">Emergency Assistance</h3>
-              <p className="hbcu-heritage-text">
-                We provide a support system for members who may be facing urgent or unexpected challenges.
               </p>
             </div>
             <div className="hbcu-heritage-card">

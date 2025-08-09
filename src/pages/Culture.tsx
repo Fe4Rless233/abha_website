@@ -1,5 +1,3 @@
-import React from 'react';
-
 const CulturePage: React.FC = () => {
   return (
     <div className="page-container hbcu-style">
@@ -8,7 +6,7 @@ const CulturePage: React.FC = () => {
         <div className="container hero-content-hbcu">
           <div className="hero-logo-container-hbcu">
             <img 
-              src="/assets/images/abha-logo.jpg" 
+              src="/assets/images/abha-logo.png" 
               alt="ABHA Logo" 
               className="hero-logo-hbcu"
               onError={(e) => {
@@ -21,7 +19,7 @@ const CulturePage: React.FC = () => {
             Exploring the vibrant tapestry of Bengali arts, traditions, and festivals that we celebrate in Harrisburg.
           </p>
           <div className="hero-bengali-text">
-            সংস্কৃতিই আমাদের অহংকার
+            আমাদের সংস্কৃতি আমাদের অহংকার
           </div>
         </div>
         
@@ -49,9 +47,9 @@ const CulturePage: React.FC = () => {
       {/* Mission Statement Section */}
       <section className="hbcu-mission-section">
         <div className="container">
-          <h2 className="hbcu-section-title">PRESERVING HERITAGE</h2>
+          <h2 className="hbcu-section-title">CELEBRATING BENGALI HERITAGE & CULTURE</h2>
           <p className="hbcu-mission-text">
-            Our cultural identity is expressed through a diverse range of art forms, culinary traditions, and community celebrations that connect us to our Bengali roots while enriching our adopted home.
+            Rooted in love for Bengali heritage, our mission is to bring people together through celebration and understanding. We nurture a welcoming space for all to experience the richness of Bengali art, music, Natok (drama), and values—strengthening bonds and inspiring pride across our local community.
           </p>
         </div>
       </section>
@@ -115,18 +113,26 @@ const CulturePage: React.FC = () => {
               </p>
             </div>
             <div className="hbcu-heritage-card">
-              <div className="hbcu-heritage-icon">🖼️</div>
-              <h3 className="hbcu-heritage-title">Arts & Crafts</h3>
-              <p className="hbcu-heritage-text">
-                Traditional Bengali arts, handicrafts, and creative expressions showcase the artistic heritage of our community.
-              </p>
-            </div>
-            <div className="hbcu-heritage-card">
               <div className="hbcu-heritage-icon">📖</div>
-              <h3 className="hbcu-heritage-title">Language & Stories</h3>
+              <h3 className="hbcu-heritage-title">Arts & Magazines</h3>
               <p className="hbcu-heritage-text">
-                Bengali language classes and storytelling sessions help preserve our linguistic heritage for future generations.
+                Traditional Bengali arts, handicrafts, and our Sheuli magazine showcase the artistic heritage and literary creativity of our community.
               </p>
+              <div style={{ marginTop: '1rem' }}>
+                <a 
+                  href="/assets/images/documents/Sheuli-2023.pdf" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  style={{ 
+                    color: 'var(--primary-red)', 
+                    textDecoration: 'none', 
+                    fontWeight: '700',
+                    fontSize: '1.1rem'
+                  }}
+                >
+                  📖 Sheuli Magazine
+                </a>
+              </div>
             </div>
           </div>
         </div>
@@ -145,7 +151,7 @@ const CulturePage: React.FC = () => {
               Join Cultural Events
             </a>
             <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="btn-hbcu-secondary">
-              Learn Bengali
+              Experience Natok
             </a>
           </div>
           <div className="hbcu-cta-quote">

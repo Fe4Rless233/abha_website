@@ -31,9 +31,9 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent }) => {
       date: "September 26, 2025",
       time: "7:00 PM - 11:00 PM",
       venue: "Enola Fire Company, 118 Chester Rd, Enola, PA 17025",
-      details: "Join us for a spectacular musical evening celebrating ABHA's 10th anniversary! Experience soul-stirring performances by renowned Bengali artists Rathijit & Shreya, featuring classic Rabindra Sangeet, modern Bengali songs, and fusion music. This special celebration from the house of 'Sa Re Ga Ma Pa' promises an unforgettable night of melody and nostalgia. Featuring special performances by Soumyojyoti on Tabla and other talented musicians.",
+      details: "Join us for a spectacular musical evening celebrating ABHA's 10th anniversary! Experience soul-stirring performances by renowned Bengali artists Rathijit & Shreya, featuring classic Rabindra Sangeet, modern Bengali songs, and fusion music. These artists from the popular TV show 'Sa Re Ga Ma Pa' promise an unforgettable night of melody and nostalgia. Featuring special performances by Soumyojyoti on Tabla and other talented musicians.",
       highlights: ["Rathijit & Shreya Live Performance", "Rabindra Sangeet & Modern Songs", "Sa Re Ga Ma Pa House Production", "Soumyojyoti on Tabla", "ABHA 10th Anniversary Celebration", "Professional Sound & Lighting"],
-      image: "/assets/images/events/musical-extravaganza-2025.jpg",
+      image: "/assets/images/events/a-musical-extravaganza-with-rathijit-and-shreya.jpg",
       fallbackImage: "🎵"
     },
     {
@@ -79,7 +79,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent }) => {
       date: "February 2, 2025",
       time: "4:00 PM - 9:00 PM",
       venue: "Community Center, Harrisburg PA",
-      details: "Honor Goddess Saraswati, the deity of knowledge and arts. The celebration includes puja ceremonies, classical music performances, art exhibitions by community members, and educational activities for children.",
+      details: "Honor Goddess Saraswati, the deity of knowledge and arts. The celebration includes puja ceremonies, classical music performances, art exhibitions by community members, and Natok (drama) performances for children.",
       highlights: ["Saraswati Puja Ceremony", "Classical Music Concert", "Art Exhibition", "Children's Drawing Competition", "Traditional Prasad Distribution"],
       image: "/assets/images/events/saraswati-puja.jpg",
       fallbackImage: "📚"
@@ -129,7 +129,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent }) => {
       date: "February 14, 2024",
       time: "4:00 PM - 9:00 PM",
       venue: "Community Center, Harrisburg PA",
-      details: "A spiritually enriching celebration of Goddess Saraswati! The event featured beautiful puja ceremonies, inspiring classical music performances, stunning art exhibitions by community artists, educational activities for children, and distribution of blessed prasad.",
+      details: "A spiritually enriching celebration of Goddess Saraswati! The event featured beautiful puja ceremonies, inspiring classical music performances, stunning art exhibitions by community artists, Natok (drama) performances for children, and distribution of blessed prasad.",
       highlights: ["Sacred Puja Ceremony", "Classical Music Concert", "Community Art Exhibition", "Children's Art Competition", "Prasad Distribution"],
       image: "/assets/images/events/saraswati-puja-2024.jpg",
       fallbackImage: "📚"
@@ -220,7 +220,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent }) => {
         <div className="container hero-content-hbcu">
           <div className="hero-logo-container-hbcu">
             <img 
-              src="/assets/images/abha-logo.jpg" 
+              src="/assets/images/abha-logo.png" 
               alt="ABHA Logo" 
               className="hero-logo-hbcu"
             />
@@ -232,10 +232,10 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent }) => {
             Community Events
           </h1>
           <p className="hero-subtitle-hbcu">
-            Join us for a variety of cultural, social, and educational events throughout the year.
+            Join us for a variety of cultural, social, and artistic events throughout the year.
           </p>
           <div className="hero-bengali-text">
-            সম্প্রদায়িক অনুষ্ঠান
+            "আমাদের সাম্প্রদায়িক অনুষ্ঠানগুলি আমাদের ঐক্য এবং সংস্কৃতির পরিচয়"
           </div>
         </div>
         
@@ -424,12 +424,9 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent }) => {
             <br />
             <em>Above all, humanity is truth, nothing is above it</em>
           </p>
-          <div className="hero-cta-container">
+          <div className="hero-cta-container" style={{ justifyContent: 'center' }}>
             <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="btn-hbcu-primary">
               Follow Us on Facebook
-            </a>
-            <a href="/contact" className="btn-hbcu-secondary">
-              Contact Us
             </a>
           </div>
         </div>

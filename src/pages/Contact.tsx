@@ -8,7 +8,7 @@ const ContactPage: React.FC = () => {
         <div className="container hero-content-hbcu">
           <div className="hero-logo-container-hbcu">
             <img 
-              src="/assets/images/abha-logo.jpg" 
+              src="/assets/images/abha-logo.png" 
               alt="ABHA Logo" 
               className="hero-logo-hbcu"
               onError={(e) => {
@@ -21,7 +21,7 @@ const ContactPage: React.FC = () => {
             We'd love to hear from you. Whether you have questions about our events, membership, or anything else, our team is ready to help.
           </p>
           <div className="hero-bengali-text">
-            যোগাযোগ করুন আমাদের সাথে
+            আপনি কি হ্যারিসবার্গে নতুন? আপনি কি কিছু বাঙালি বন্ধু খুঁজছেন? অনুগ্রহ করে আমাদের সাথে যোগাযোগ করতে দ্বিধা করবেন না।
           </div>
         </div>
         
@@ -56,42 +56,6 @@ const ContactPage: React.FC = () => {
         </div>
       </section>
 
-      {/* Contact Options - HBCU Style */}
-      <section className="hbcu-investment-section">
-        <div className="container">
-          <h2 className="hbcu-section-title-dark">Ways to connect with ABHA</h2>
-          <div className="hbcu-investment-grid">
-            <div className="hbcu-investment-card">
-              <h3 className="hbcu-card-title">Facebook Community</h3>
-              <p className="hbcu-card-description">
-                Join our active Facebook community for real-time updates, discussions, and connections with fellow members.
-              </p>
-              <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="hbcu-card-link">
-                Visit Facebook
-              </a>
-            </div>
-            <div className="hbcu-investment-card">
-              <h3 className="hbcu-card-title">Event Inquiries</h3>
-              <p className="hbcu-card-description">
-                Have questions about upcoming events, volunteer opportunities, or want to suggest new program ideas?
-              </p>
-              <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="hbcu-card-link">
-                Ask Questions
-              </a>
-            </div>
-            <div className="hbcu-investment-card">
-              <h3 className="hbcu-card-title">Membership Support</h3>
-              <p className="hbcu-card-description">
-                Get help with membership questions, community resources, or support services available to our families.
-              </p>
-              <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="hbcu-card-link">
-                Get Support
-              </a>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* Contact Form - HBCU Style */}
       <section className="hbcu-heritage-section">
         <div className="container">
@@ -102,8 +66,13 @@ const ContactPage: React.FC = () => {
           
           <div style={{ maxWidth: '600px', margin: '0 auto' }}>
             <div className="hbcu-heritage-card" style={{ padding: '3rem' }}>
-              <form className="space-y-6">
-                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
+              <form 
+                className="space-y-6"
+                action="mailto:associationbengalisharrisburg@hotmail.com"
+                method="post"
+                encType="text/plain"
+              >
+                <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', alignItems: 'end' }} className="contact-form-grid">
                   <div>
                     <label htmlFor="name" style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--primary-red)', fontWeight: '600' }}>
                       Full Name
@@ -115,11 +84,19 @@ const ContactPage: React.FC = () => {
                       required 
                       style={{ 
                         width: '100%',
-                        padding: '0.75rem',
+                        padding: '12px',
                         border: '2px solid rgba(212, 175, 55, 0.3)',
                         borderRadius: '8px',
-                        fontSize: '1rem',
-                        transition: 'border-color 0.3s ease'
+                        fontSize: '16px',
+                        transition: 'border-color 0.3s ease',
+                        boxSizing: 'border-box',
+                        height: '52px',
+                        outline: 'none',
+                        appearance: 'none',
+                        WebkitAppearance: 'none',
+                        MozAppearance: 'textfield',
+                        lineHeight: '1.5',
+                        fontFamily: 'inherit'
                       }}
                       onFocus={(e) => e.target.style.borderColor = 'var(--primary-red)'}
                       onBlur={(e) => e.target.style.borderColor = 'rgba(212, 175, 55, 0.3)'}
@@ -136,11 +113,19 @@ const ContactPage: React.FC = () => {
                       required 
                       style={{ 
                         width: '100%',
-                        padding: '0.75rem',
+                        padding: '12px',
                         border: '2px solid rgba(212, 175, 55, 0.3)',
                         borderRadius: '8px',
-                        fontSize: '1rem',
-                        transition: 'border-color 0.3s ease'
+                        fontSize: '16px',
+                        transition: 'border-color 0.3s ease',
+                        boxSizing: 'border-box',
+                        height: '52px',
+                        outline: 'none',
+                        appearance: 'none',
+                        WebkitAppearance: 'none',
+                        MozAppearance: 'textfield',
+                        lineHeight: '1.5',
+                        fontFamily: 'inherit'
                       }}
                       onFocus={(e) => e.target.style.borderColor = 'var(--primary-red)'}
                       onBlur={(e) => e.target.style.borderColor = 'rgba(212, 175, 55, 0.3)'}
@@ -151,8 +136,7 @@ const ContactPage: React.FC = () => {
                   <label htmlFor="subject" style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--primary-red)', fontWeight: '600' }}>
                     Subject
                   </label>
-                  <input 
-                    type="text" 
+                  <select 
                     id="subject" 
                     name="subject" 
                     required 
@@ -162,11 +146,20 @@ const ContactPage: React.FC = () => {
                       border: '2px solid rgba(212, 175, 55, 0.3)',
                       borderRadius: '8px',
                       fontSize: '1rem',
-                      transition: 'border-color 0.3s ease'
+                      transition: 'border-color 0.3s ease',
+                      backgroundColor: 'white'
                     }}
                     onFocus={(e) => e.target.style.borderColor = 'var(--primary-red)'}
                     onBlur={(e) => e.target.style.borderColor = 'rgba(212, 175, 55, 0.3)'}
-                  />
+                  >
+                    <option value="">Select a topic...</option>
+                    <option value="Membership Support">Membership Support</option>
+                    <option value="Event Inquiries">Event Inquiries</option>
+                    <option value="Volunteer Opportunities">Volunteer Opportunities</option>
+                    <option value="Cultural Programs">Cultural Programs</option>
+                    <option value="General Questions">General Questions</option>
+                    <option value="Other">Other</option>
+                  </select>
                 </div>
                 <div>
                   <label htmlFor="message" style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--primary-red)', fontWeight: '600' }}>
