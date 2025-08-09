@@ -3,7 +3,7 @@
   "version": "2.0.0",
   "type": "module",
   "description": "Association of Bengalis in Harrisburg Area - Digital home for the Bengali community",
-  "homepage": "https://fe4rless233.github.io/abha_website",
+  "homepage": "https://www.abhaweb.org",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
