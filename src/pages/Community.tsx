@@ -29,7 +29,7 @@ const CommunityPage: React.FC = () => {
             ABHA is more than an association; it's a family. We provide a supportive and engaging environment for all members.
           </p>
           <div className="hero-bengali-text">
-            "একসাথে আমরা শক্তিশালী"
+            একসাথে আমরা শক্তিশালী
           </div>
         </div>
         

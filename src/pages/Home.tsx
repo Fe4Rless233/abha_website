@@ -7,6 +7,30 @@ interface HomePageProps {
 const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
   return (
     <div className="page-container hbcu-style">
+      {/* Upcoming Events Banner */}
+      <section className="upcoming-events-banner">
+        <div className="container">
+          <div className="banner-content">
+            <div className="banner-icon">🎵</div>
+            <div className="banner-text">
+              <h3>New Upcoming Events!</h3>
+              <p>Musical Extravaganza with Rathijit & Shreya + Durga Puja 2025</p>
+            </div>
+            <button 
+              onClick={() => {
+                const upcomingSection = document.querySelector('.upcoming-events-section');
+                if (upcomingSection) {
+                  upcomingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+              }}
+              className="banner-cta-btn"
+            >
+              View Events
+            </button>
+          </div>
+        </div>
+      </section>
+
       {/* Hero Section - HBCU Style with Video Background */}
       <section className="hbcu-hero-section">
         <div className="hero-video-container">
@@ -42,7 +66,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
             Preserving Bengali culture and fostering community bonds in Central Pennsylvania since 2010.
           </p>
           <div className="hero-bengali-text">
-            "হ্যারি‌সবর্গে বিগত দশক ধরে বাংলা সংস্কৃতি এবং ঐতিহ্য উদযাপন করার জন্য একটি সংগঠন"
+            হ্যারি‌সবর্গে বিগত দশক ধরে বাংলা সংস্কৃতি এবং ঐতিহ্য উদযাপন করার জন্য একটি সংগঠন
           </div>
           <div className="hero-cta-container">
             <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="btn-hbcu-primary">
@@ -85,65 +109,124 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
         </div>
       </section>
 
-      {/* Upcoming Event Section - HBCU Style */}
-      <section className="hbcu-event-section">
+      {/* Upcoming Events Section - HBCU Style */}
+      <section className="hbcu-event-section upcoming-events-section">
         <div className="container">
-          <div className="hbcu-event-container">
-            <div className="hbcu-event-content">
-              <div className="hbcu-event-badge">UPCOMING</div>
-              <h2 className="hbcu-event-title">Durga Puja 2025</h2>
-              <h3 className="hbcu-event-subtitle">শারদীয় দুর্গোৎসব ২০২৫</h3>
-              <p className="hbcu-event-description">
-                Join ABHA for our annual celebration of tradition, culture, and community. Experience authentic Bengali festivities in the heart of Pennsylvania.
-              </p>
-              <div className="hbcu-event-details">
-                <div className="hbcu-event-detail">
-                  <span className="hbcu-detail-label">Date:</span>
-                  <span className="hbcu-detail-value">September 27-28, 2025</span>
+          <h2 className="hbcu-section-title-dark">Upcoming Events 2025</h2>
+          <p className="hbcu-heritage-description">
+            Join us for these exciting upcoming celebrations and community gatherings!
+          </p>
+          
+          <div className="upcoming-events-grid">
+            {/* Musical Extravaganza Event */}
+            <div className="hbcu-event-container">
+              <div className="hbcu-event-content">
+                <div className="hbcu-event-badge">SEPTEMBER 26</div>
+                <h3 className="hbcu-event-title">Musical Extravaganza</h3>
+                <h4 className="hbcu-event-subtitle">with Rathijit & Shreya</h4>
+                <p className="hbcu-event-description">
+                  ABHA's 10th anniversary celebration featuring renowned Bengali artists in an unforgettable musical evening.
+                </p>
+                <div className="hbcu-event-details">
+                  <div className="hbcu-event-detail">
+                    <span className="hbcu-detail-label">Time:</span>
+                    <span className="hbcu-detail-value">7:00 PM - 11:00 PM</span>
+                  </div>
+                  <div className="hbcu-event-detail">
+                    <span className="hbcu-detail-label">Venue:</span>
+                    <span className="hbcu-detail-value">Enola Fire Company, Enola PA</span>
+                  </div>
                 </div>
-                <div className="hbcu-event-detail">
-                  <span className="hbcu-detail-label">Venue:</span>
-                  <span className="hbcu-detail-value">Community Center, Harrisburg PA</span>
+                <div className="hbcu-event-actions">
+                  <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="btn-hbcu-primary">
+                    Get Tickets
+                  </a>
+                  <button 
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      onPageChange?.('events', 'a-musical-extravaganza-with-rathijit-shreya');
+                    }} 
+                    className="btn-hbcu-secondary"
+                  >
+                    View Details
+                  </button>
                 </div>
               </div>
-              <div className="hbcu-event-actions">
-                <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="btn-hbcu-primary">
-                  Get Tickets
-                </a>
-                <button 
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    onPageChange?.('events', 'durga-puja-2025');
-                  }} 
-                  className="btn-hbcu-secondary"
-                >
-                  View Details
-                </button>
-                <button 
-                  type="button"
-                  onClick={(e) => {
-                    e.preventDefault();
-                    e.stopPropagation();
-                    onPageChange?.('events');
-                  }} 
-                  className="btn-hbcu-secondary"
-                >
-                  View All Events
-                </button>
+              <div className="hbcu-event-image">
+                <img 
+                  src="/assets/images/events/musical-extravaganza-2025.jpg" 
+                  alt="Musical Extravaganza with Rathijit & Shreya" 
+                  className="hbcu-event-poster"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
               </div>
             </div>
-            <div className="hbcu-event-image">
-              <img 
-                src="/assets/images/events/upcoming-event-poster.jpg" 
-                alt="Durga Puja 2025" 
-                className="hbcu-event-poster"
-                onError={(e) => {
-                  e.currentTarget.style.display = 'none';
-                }}
-              />
+
+            {/* Durga Puja Event */}
+            <div className="hbcu-event-container">
+              <div className="hbcu-event-content">
+                <div className="hbcu-event-badge">SEPTEMBER 27-28</div>
+                <h3 className="hbcu-event-title">Durga Puja 2025</h3>
+                <h4 className="hbcu-event-subtitle">শারদীয় দুর্গোৎসব ২০২৫</h4>
+                <p className="hbcu-event-description">
+                  Join ABHA for our annual celebration of tradition, culture, and community. Experience authentic Bengali festivities.
+                </p>
+                <div className="hbcu-event-details">
+                  <div className="hbcu-event-detail">
+                    <span className="hbcu-detail-label">Time:</span>
+                    <span className="hbcu-detail-value">10:00 AM - 10:00 PM</span>
+                  </div>
+                  <div className="hbcu-event-detail">
+                    <span className="hbcu-detail-label">Venue:</span>
+                    <span className="hbcu-detail-value">Community Center, Harrisburg PA</span>
+                  </div>
+                </div>
+                <div className="hbcu-event-actions">
+                  <a href="https://www.facebook.com/ABHAweb" target="_blank" rel="noopener noreferrer" className="btn-hbcu-primary">
+                    Get Tickets
+                  </a>
+                  <button 
+                    type="button"
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      onPageChange?.('events', 'durga-puja-2025');
+                    }} 
+                    className="btn-hbcu-secondary"
+                  >
+                    View Details
+                  </button>
+                </div>
+              </div>
+              <div className="hbcu-event-image">
+                <img 
+                  src="/assets/images/events/durga-puja.jpg" 
+                  alt="Durga Puja 2025" 
+                  className="hbcu-event-poster"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              </div>
             </div>
+          </div>
+          
+          <div className="section-cta-center">
+            <button 
+              type="button"
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onPageChange?.('events');
+              }} 
+              className="btn-hbcu-primary"
+            >
+              View All Events
+            </button>
           </div>
         </div>
       </section>

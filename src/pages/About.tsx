@@ -21,7 +21,7 @@ const AboutPage: React.FC = () => {
             Preserving Bengali Heritage and Fostering Community in Pennsylvania's Capital Region since 2010.
           </p>
           <div className="hero-bengali-text">
-            "আমাদের সংস্কৃতি আমাদের পরিচয়"
+            আমাদের সংস্কৃতি আমাদের পরিচয়
           </div>
         </div>
         

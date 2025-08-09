@@ -21,7 +21,7 @@ const ContactPage: React.FC = () => {
             We'd love to hear from you. Whether you have questions about our events, membership, or anything else, our team is ready to help.
           </p>
           <div className="hero-bengali-text">
-            "যোগাযোগ করুন আমাদের সাথে"
+            যোগাযোগ করুন আমাদের সাথে
           </div>
         </div>
         

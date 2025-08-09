@@ -21,7 +21,7 @@ const CulturePage: React.FC = () => {
             Exploring the vibrant tapestry of Bengali arts, traditions, and festivals that we celebrate in Harrisburg.
           </p>
           <div className="hero-bengali-text">
-            "সংস্কৃতিই আমাদের অহংকার"
+            সংস্কৃতিই আমাদের অহংকার
           </div>
         </div>
         
