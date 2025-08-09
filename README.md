@@ -19,7 +19,7 @@ npm run deploy
 git push origin main
 ```
 
-Your site will be available at: **https://fe4rless233.github.io/abha_website**
+Your site will be available at: **https://www.abhaweb.org**
 
 ## ✨ Key Features
 

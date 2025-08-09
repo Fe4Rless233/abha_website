@@ -37,14 +37,15 @@ npm run deploy
 
 ### Step 4: Access Your Site
 
-Your website will be available at: **https://fe4rless233.github.io/abha_website**
+Your website will be available at: **https://www.abhaweb.org**
 
 ## 📋 Deployment Checklist
 
 - [x] Repository created at https://github.com/Fe4Rless233/abha_website
 - [x] Code pushed to GitHub
-- [x] GitHub Pages enabled
-- [x] Site deployed and accessible at https://fe4rless233.github.io/abha_website
+- [x] GitHub Pages enabled with custom domain www.abhaweb.org
+- [x] CNAME file configured
+- [x] Site deployed and accessible at https://www.abhaweb.org
 
 ## 🔧 Local Development
 
