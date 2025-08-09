@@ -19,23 +19,34 @@ git push -u origin main
 ### Step 2: Enable GitHub Pages
 
 1. **Go to your repository settings:** https://github.com/Fe4Rless233/abha_website/settings/pages
-2. **Set source to "GitHub Actions"**
+2. **Set source to "GitHub Actions"** (this is important!)
+3. **Set custom domain to:** `www.abhaweb.org` (after DNS is configured)
+4. **Enable "Enforce HTTPS"** (after DNS propagation)
 
-### Step 3: Deploy
+### Step 3: Configure DNS (Required for Custom Domain)
 
-**Option A: Automatic Deployment (Recommended)**
+**Add these DNS records with your domain registrar:**
+```
+A Records (for abhaweb.org):
+@ → 185.199.108.153
+@ → 185.199.109.153  
+@ → 185.199.110.153
+@ → 185.199.111.153
+
+CNAME Record:
+www → fe4rless233.github.io
+```
+
+### Step 4: Deploy
+
+**Automatic Deployment (Recommended)**
 ```bash
 # Just push to main branch
 git push origin main
 ```
 The GitHub Action will automatically deploy your site.
 
-**Option B: Manual Deployment**
-```bash
-npm run deploy
-```
-
-### Step 4: Access Your Site
+### Step 5: Access Your Site
 
 Your website will be available at: **https://www.abhaweb.org**
 
@@ -43,7 +54,9 @@ Your website will be available at: **https://www.abhaweb.org**
 
 - [x] Repository created at https://github.com/Fe4Rless233/abha_website
 - [x] Code pushed to GitHub
-- [x] GitHub Pages enabled with custom domain www.abhaweb.org
+- [x] GitHub Pages enabled with source set to "GitHub Actions"
+- [x] DNS records configured for custom domain
+- [x] Custom domain set in GitHub Pages settings
 - [x] CNAME file configured
 - [x] Site deployed and accessible at https://www.abhaweb.org
 
