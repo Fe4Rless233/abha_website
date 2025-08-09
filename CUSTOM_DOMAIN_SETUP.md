@@ -45,10 +45,17 @@ Value: fe4rless233.github.io
 
 ### Step 2: GitHub Repository Settings
 1. Go to your repository settings: `https://github.com/Fe4Rless233/abha_website/settings/pages`
-2. Under "Custom domain", enter: `www.abhaweb.org`
-3. Check "Enforce HTTPS" (after DNS propagation)
+2. **IMPORTANT**: Set "Source" to "GitHub Actions" (not "Deploy from a branch")
+3. Under "Custom domain", enter: `www.abhaweb.org`
+4. Check "Enforce HTTPS" (after DNS propagation)
 
-### Step 3: Deploy
+### Step 3: Verify Workflow Permissions
+The updated GitHub Actions workflow now includes proper permissions:
+- `contents: read` - to read repository contents
+- `pages: write` - to deploy to GitHub Pages  
+- `id-token: write` - for authentication
+
+### Step 4: Deploy
 Push your changes to trigger the deployment:
 ```bash
 git add .
