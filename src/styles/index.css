@@ -357,6 +357,10 @@ body::before {
   transition: .25s ease-in-out;
 }
 
+.mobile-menu-toggle.menu-open .hamburger-icon span {
+  background: var(--primary-red);
+}
+
 .hamburger-icon span:nth-child(1) { top: 0px; }
 .hamburger-icon span:nth-child(2) { top: 7px; }
 .hamburger-icon span:nth-child(3) { top: 14px; }
@@ -381,14 +385,7 @@ body::before {
   inset: 0; /* top:0; left:0; width/height 100% */
   width: 100%;
   height: 100%;
-  background: rgba(10,10,10,0.92);
-  /* layered subtle gradient */
-  background-image:
-    radial-gradient(circle at 30% 20%, rgba(196,30,58,0.55) 0%, rgba(196,30,58,0) 60%),
-    radial-gradient(circle at 75% 65%, rgba(212,175,55,0.4) 0%, rgba(212,175,55,0) 55%),
-    linear-gradient(165deg, rgba(10,10,10,0.95) 0%, rgba(15,15,15,0.92) 55%, rgba(26,26,26,0.94) 100%);
-  -webkit-backdrop-filter: blur(6px);
-  backdrop-filter: blur(6px);
+  background: linear-gradient(135deg, var(--secondary-tan) 0%, var(--background-cream) 100%);
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -401,7 +398,7 @@ body::before {
   transform: translateY(8px) scale(.985);
   transition: opacity .35s ease, visibility .35s ease, transform .45s cubic-bezier(.4,.15,.1,1);
   z-index: 1600;
-  box-shadow: 0 10px 40px rgba(0,0,0,.45), inset 0 0 0 1px rgba(255,255,255,0.04);
+  box-shadow: 0 10px 40px var(--shadow-warm);
  }
 
 .mobile-menu.open {
@@ -414,9 +411,9 @@ body::before {
 .mobile-menu-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.55);
-  backdrop-filter: blur(2px);
-  -webkit-backdrop-filter: blur(2px);
+  background: rgba(250, 247, 240, 0.5); /* Use background-cream with opacity */
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
   z-index: 1500;
   animation: fadeIn .35s ease;
 }
@@ -424,7 +421,7 @@ body::before {
  .mobile-menu .navbar-link {
   font-size: 1.05rem;
   position: relative;
-  background: rgba(255,255,255,0.06);
+  background: rgba(255, 255, 255, 0.4);
   margin: 0 .25rem;
   border-radius: 14px;
   padding: .95rem 1.15rem .95rem 3.1rem; /* leave space for icon */
@@ -432,11 +429,12 @@ body::before {
   -webkit-backdrop-filter: blur(3px);
   width: auto;
   text-align: left;
-  color: #fff;
+  color: var(--text-dark);
   line-height: 1.2;
   letter-spacing: .3px;
-  box-shadow: 0 4px 14px -2px rgba(0,0,0,.35), 0 2px 4px rgba(0,0,0,.4);
+  box-shadow: 0 4px 14px -2px var(--shadow-warm), 0 2px 4px var(--shadow-warm);
   overflow: hidden;
+  border: 1px solid var(--border-light);
 }
  .mobile-menu .navbar-link::before {
   content: '';
@@ -451,9 +449,10 @@ body::before {
  .mobile-menu .navbar-link:active { transform: translateY(1px); }
  .mobile-menu .navbar-link:hover::before, .mobile-menu .navbar-link.active::before { opacity: 1; }
  .mobile-menu .navbar-link.active {
-  background: linear-gradient(95deg, var(--accent-gold) 0%, #ffdb70 85%);
+  background: var(--gradient-gold);
   color: var(--text-dark);
-  box-shadow: 0 6px 20px -4px rgba(212,175,55,0.55), 0 2px 4px rgba(0,0,0,0.5);
+  box-shadow: 0 6px 20px -4px rgba(212,175,55,0.55), 0 2px 4px var(--shadow-warm);
+  border-color: rgba(255,255,255,0.5);
 }
  @supports (padding:max(0px)) { .mobile-menu { padding-top: calc(max(env(safe-area-inset-top), 0px) + 90px); } }
 
