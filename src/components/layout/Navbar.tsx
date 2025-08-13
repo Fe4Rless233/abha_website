@@ -74,7 +74,7 @@ const Navbar: React.FC<NavbarProps> = ({ currentPage, onPageChange, onMobileMenu
 
           {/* Mobile Menu Toggle */}
           <button 
-            className="mobile-menu-toggle"
+            className={`mobile-menu-toggle ${isMobileMenuOpen ? 'menu-open' : ''}`}
             onClick={onMobileMenuToggle}
             aria-label="Toggle menu"
           >
