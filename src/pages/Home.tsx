@@ -1,59 +1,41 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import CountUp from '../components/ui/CountUp';
+import LoadingSpinner from '../components/ui/LoadingSpinner';
 
 interface HomePageProps {
   onPageChange?: (page: string, eventToExpand?: string) => void;
 }
 
 const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
-  const [showBanner, setShowBanner] = useState(true);
+  const [videoLoaded, setVideoLoaded] = useState(false);
+
+  // Fallback timeout in case video load stalls
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setVideoLoaded(true); // allow content even if video not fully loaded
+    }, 4000);
+    return () => clearTimeout(timeout);
+  }, []);
 
   return (
     <div className="page-container hbcu-style">
-      {/* Upcoming Events Banner */}
-      {showBanner && (
-        <section className="upcoming-events-banner">
-          <div className="container">
-            <div className="banner-content">
-              <div className="banner-icon">🎵</div>
-              <div className="banner-text">
-                <h3>New Upcoming Events!</h3>
-                <p>Musical Extravaganza with Rathijit & Shreya + Durga Puja 2025</p>
-              </div>
-              <div className="banner-actions">
-                <button 
-                  onClick={() => {
-                    const upcomingSection = document.querySelector('.upcoming-events-section');
-                    if (upcomingSection) {
-                      upcomingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    }
-                  }}
-                  className="banner-cta-btn"
-                >
-                  View Events
-                </button>
-                <button 
-                  onClick={() => setShowBanner(false)}
-                  className="banner-close-btn"
-                  aria-label="Close banner"
-                >
-                  ✕
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
-
       {/* Hero Section - HBCU Style with Video Background */}
       <section className="hbcu-hero-section">
-        <div className="hero-video-container">
+        <div className="hero-video-container fade-in">
+          {!videoLoaded && (
+            <div className="hero-video-loading">
+              <LoadingSpinner color="white" size="lg" />
+              <span className="loading-text">Loading cultural experience…</span>
+            </div>
+          )}
           <video 
-            className="hero-video"
+            className={`hero-video ${videoLoaded ? 'visible' : 'hidden'}`}
             autoPlay 
             muted 
             loop 
             playsInline
             poster="/assets/images/hero-poster.jpg"
+            onLoadedData={() => setVideoLoaded(true)}
           >
             <source src="/assets/videos/bengali-culture-hero.mp4" type="video/mp4" />
             <source src="/assets/videos/bengali-culture-hero.webm" type="video/webm" />
@@ -61,7 +43,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
           </video>
           <div className="hero-video-overlay"></div>
         </div>
-        <div className="container hero-content-hbcu">
+  <div className="container hero-content-hbcu slide-up">
           <div className="hero-logo-container-hbcu">
             <img 
               src="/assets/images/abha-logo.png" 
@@ -92,19 +74,19 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
         </div>
         
         {/* Hero Stats - HBCU Style */}
-        <div className="hero-stats-hbcu">
+  <div className="hero-stats-hbcu fade-in">
           <div className="container">
             <div className="stats-grid-hbcu">
               <div className="stat-item-hbcu">
-                <div className="stat-number-hbcu">200+</div>
+    <div className="stat-number-hbcu"><CountUp end={200} suffix="+" duration={900} /></div>
                 <div className="stat-label-hbcu">Active Members</div>
               </div>
               <div className="stat-item-hbcu">
-                <div className="stat-number-hbcu">10+</div>
+    <div className="stat-number-hbcu"><CountUp end={10} suffix="+" duration={900} /></div>
                 <div className="stat-label-hbcu">Years Strong</div>
               </div>
               <div className="stat-item-hbcu">
-                <div className="stat-number-hbcu">4</div>
+    <div className="stat-number-hbcu"><CountUp end={4} duration={700} /></div>
                 <div className="stat-label-hbcu">Annual Events</div>
               </div>
             </div>

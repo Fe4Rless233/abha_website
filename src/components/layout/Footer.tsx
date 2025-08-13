@@ -1,17 +1,26 @@
 // React import removed - using new JSX transform
 
-const Footer: React.FC = () => {
+interface FooterProps {
+  onPageChange: (page: string) => void;
+}
+
+const Footer: React.FC<FooterProps> = ({ onPageChange }) => {
+  const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement>, page: string) => {
+    e.preventDefault();
+    onPageChange(page);
+  };
+
   return (
     <footer className="footer">
       <div className="footer-container">
         <div className="footer-column">
           <h3>Quick Links</h3>
           <ul className="footer-links">
-            <li><a href="#home">Home</a></li>
-            <li><a href="#about">About Us</a></li>
-            <li><a href="#culture">Culture</a></li>
-            <li><a href="#events">Events</a></li>
-            <li><a href="#community">Community</a></li>
+            <li><a href="#home" onClick={(e) => handleLinkClick(e, 'home')}>Home</a></li>
+            <li><a href="#about" onClick={(e) => handleLinkClick(e, 'about')}>About Us</a></li>
+            <li><a href="#culture" onClick={(e) => handleLinkClick(e, 'culture')}>Culture</a></li>
+            <li><a href="#events" onClick={(e) => handleLinkClick(e, 'events')}>Events</a></li>
+            <li><a href="#community" onClick={(e) => handleLinkClick(e, 'community')}>Community</a></li>
           </ul>
         </div>
 
@@ -61,9 +70,9 @@ const Footer: React.FC = () => {
       <div className="footer-bottom">
         <p>&copy; {new Date().getFullYear()} Association of Bengalis in Harrisburg Area (ABHA). All rights reserved.</p>
         <div className="footer-bottom-links">
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms of Service</a>
-          <a href="#">Community Guidelines</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); /* Implement policy page or modal */ }}>Privacy Policy</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); /* Implement terms page or modal */ }}>Terms of Service</a>
+          <a href="#" onClick={(e) => { e.preventDefault(); /* Implement guidelines page or modal */ }}>Community Guidelines</a>
         </div>
       </div>
     </footer>

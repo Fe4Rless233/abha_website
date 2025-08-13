@@ -2,7 +2,7 @@ import { useState } from 'react';
 import './styles/index.css';
 
 // Import components
-import Navbar from './components/layout/Navbar';
+import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
 
 // Import pages
@@ -16,38 +16,51 @@ import ContactPage from './pages/Contact';
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
   const [eventToExpand, setEventToExpand] = useState<string | undefined>(undefined);
+  const [pageVisitToken, setPageVisitToken] = useState(0); // increments to force remount
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handlePageChange = (page: string, eventId?: string) => {
     setCurrentPage(page);
     setEventToExpand(eventId);
+    setPageVisitToken(v => v + 1);
+    setIsMobileMenuOpen(false); // Close menu on page change
+  };
+
+  const handleMobileMenuToggle = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   const renderPage = () => {
     switch (currentPage) {
       case 'home':
-        return <HomePage onPageChange={handlePageChange} />;
+        return <HomePage key={`home-${pageVisitToken}`} onPageChange={handlePageChange} />;
       case 'about':
-        return <AboutPage onPageChange={handlePageChange} />;
+        return <AboutPage key={`about-${pageVisitToken}`} onPageChange={handlePageChange} />;
       case 'culture':
-        return <CulturePage onPageChange={handlePageChange} />;
+        return <CulturePage key={`culture-${pageVisitToken}`} onPageChange={handlePageChange} />;
       case 'events':
-        return <EventsPage initialExpandedEvent={eventToExpand} onPageChange={handlePageChange} />;
+        return <EventsPage key={`events-${pageVisitToken}`} initialExpandedEvent={eventToExpand} onPageChange={handlePageChange} />;
       case 'community':
-        return <CommunityPage onPageChange={handlePageChange} />;
+        return <CommunityPage key={`community-${pageVisitToken}`} onPageChange={handlePageChange} />;
       case 'contact':
-        return <ContactPage onPageChange={handlePageChange} />;
+        return <ContactPage key={`contact-${pageVisitToken}`} onPageChange={handlePageChange} />;
       default:
         return <HomePage onPageChange={handlePageChange} />;
     }
   };
 
   return (
-    <div className="app">
-      <Navbar currentPage={currentPage} onPageChange={handlePageChange} />
-      <main className="main-content">
+    <div className={`app ${isMobileMenuOpen ? 'mobile-menu-is-open' : ''}`}>
+      <Header 
+        currentPage={currentPage} 
+        onPageChange={handlePageChange} 
+        onMobileMenuToggle={handleMobileMenuToggle}
+        isMobileMenuOpen={isMobileMenuOpen}
+      />
+      <main>
         {renderPage()}
       </main>
-      <Footer />
+      <Footer onPageChange={handlePageChange} />
     </div>
   );
 }

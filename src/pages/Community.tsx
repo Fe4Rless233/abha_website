@@ -1,4 +1,5 @@
 import React from 'react';
+import CountUp from '../components/ui/CountUp';
 
 interface CommunityPageProps {
   onPageChange?: (page: string) => void;
@@ -42,15 +43,15 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ onPageChange }) => {
           <div className="container">
             <div className="stats-grid-hbcu">
               <div className="stat-item-hbcu">
-                <div className="stat-number-hbcu">50+</div>
+                <div className="stat-number-hbcu"><CountUp end={50} suffix="+" duration={750} /></div>
                 <div className="stat-label-hbcu">Active Volunteers</div>
               </div>
               <div className="stat-item-hbcu">
-                <div className="stat-number-hbcu">10+</div>
+                <div className="stat-number-hbcu"><CountUp end={10} suffix="+" duration={750} /></div>
                 <div className="stat-label-hbcu">Support Programs</div>
               </div>
               <div className="stat-item-hbcu">
-                <div className="stat-number-hbcu">100+</div>
+                <div className="stat-number-hbcu"><CountUp end={100} suffix="+" duration={750} /></div>
                 <div className="stat-label-hbcu">Families Helped</div>
               </div>
             </div>
