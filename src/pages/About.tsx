@@ -1,4 +1,5 @@
 import React from 'react';
+import CountUp from '../components/ui/CountUp';
 
 interface AboutPageProps {
   onPageChange?: (page: string) => void;
@@ -34,15 +35,15 @@ const AboutPage: React.FC<AboutPageProps> = ({ onPageChange }) => {
           <div className="container">
             <div className="stats-grid-hbcu">
               <div className="stat-item-hbcu">
-                <div className="stat-number-hbcu">10+</div>
+                <div className="stat-number-hbcu"><CountUp end={10} suffix="+" duration={800} /></div>
                 <div className="stat-label-hbcu">Years of Service</div>
               </div>
               <div className="stat-item-hbcu">
-                <div className="stat-number-hbcu">200+</div>
+                <div className="stat-number-hbcu"><CountUp end={200} suffix="+" duration={800} /></div>
                 <div className="stat-label-hbcu">Family Members</div>
               </div>
               <div className="stat-item-hbcu">
-                <div className="stat-number-hbcu">50+</div>
+                <div className="stat-number-hbcu"><CountUp end={50} suffix="+" duration={800} /></div>
                 <div className="stat-label-hbcu">Events Hosted</div>
               </div>
             </div>

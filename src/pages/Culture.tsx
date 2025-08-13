@@ -1,3 +1,5 @@
+import CountUp from '../components/ui/CountUp';
+
 interface CulturePageProps {
   onPageChange?: (page: string) => void;
 }
@@ -7,7 +9,7 @@ const CulturePage: React.FC<CulturePageProps> = ({ onPageChange }) => {
     <div className="page-container hbcu-style">
       {/* Hero Section - HBCU Style */}
       <section className="hbcu-hero-section">
-        <div className="container hero-content-hbcu">
+  <div className="container hero-content-hbcu slide-up">
           <div className="hero-logo-container-hbcu">
             <img 
               src="/assets/images/abha-logo.png" 
@@ -28,19 +30,19 @@ const CulturePage: React.FC<CulturePageProps> = ({ onPageChange }) => {
         </div>
         
         {/* Hero Stats */}
-        <div className="hero-stats-hbcu">
+  <div className="hero-stats-hbcu fade-in">
           <div className="container">
             <div className="stats-grid-hbcu">
               <div className="stat-item-hbcu">
-                <div className="stat-number-hbcu">4</div>
+    <div className="stat-number-hbcu"><CountUp end={4} duration={700} /></div>
                 <div className="stat-label-hbcu">Cultural Events</div>
               </div>
               <div className="stat-item-hbcu">
-                <div className="stat-number-hbcu">4</div>
+    <div className="stat-number-hbcu"><CountUp end={4} duration={700} /></div>
                 <div className="stat-label-hbcu">Major Festivals</div>
               </div>
               <div className="stat-item-hbcu">
-                <div className="stat-number-hbcu">100+</div>
+    <div className="stat-number-hbcu"><CountUp end={100} suffix="+" duration={900} /></div>
                 <div className="stat-label-hbcu">Artists & Performers</div>
               </div>
             </div>
@@ -123,19 +125,21 @@ const CulturePage: React.FC<CulturePageProps> = ({ onPageChange }) => {
                 Traditional Bengali arts, handicrafts, and our Sheuli magazine showcase the artistic heritage and literary creativity of our community.
               </p>
               <div style={{ marginTop: '1rem' }}>
-                <a 
-                  href="/assets/images/documents/Sheuli-2023.pdf" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  style={{ 
-                    color: 'var(--primary-red)', 
-                    textDecoration: 'none', 
-                    fontWeight: '700',
-                    fontSize: '1.1rem'
-                  }}
-                >
-                  📖 Sheuli Magazine
-                </a>
+                <div className="sheuli-links fade-in" style={{display:'flex',flexDirection:'column',gap:'0.4rem'}}>
+                  <a 
+                    href="/assets/images/documents/Sheuli-2023.pdf" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    style={{ 
+                      color: 'var(--primary-red)', 
+                      textDecoration: 'none', 
+                      fontWeight: '700',
+                      fontSize: '1.05rem'
+                    }}
+                  >
+                    📖 Sheuli 2023
+                  </a>
+                </div>
               </div>
             </div>
           </div>

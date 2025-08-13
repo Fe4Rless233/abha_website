@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import CountUp from '../components/ui/CountUp';
 
 interface Event {
   title: string;
@@ -136,7 +137,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
       fallbackImage: "📚"
     }
   ]
-};
+  };
 
   // Handle initial event expansion
   useEffect(() => {
@@ -245,15 +246,15 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
           <div className="container">
             <div className="stats-grid-hbcu">
               <div className="stat-item-hbcu">
-                <div className="stat-number-hbcu">4</div>
+                <div className="stat-number-hbcu"><CountUp end={4} duration={700} /></div>
                 <div className="stat-label-hbcu">Annual Events</div>
               </div>
               <div className="stat-item-hbcu">
-                <div className="stat-number-hbcu">300+</div>
+                <div className="stat-number-hbcu"><CountUp end={300} suffix="+" duration={700} /></div>
                 <div className="stat-label-hbcu">Event Attendees</div>
               </div>
               <div className="stat-item-hbcu">
-                <div className="stat-number-hbcu">10+</div>
+                <div className="stat-number-hbcu"><CountUp end={10} suffix="+" duration={700} /></div>
                 <div className="stat-label-hbcu">Years of Celebrations</div>
               </div>
             </div>
@@ -281,23 +282,24 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
             Explore our year-round celebrations and community gatherings
           </p>
           
-          {/* Year Navigation */}
-          <div className="events-year-navigation">
-            <div className="year-selector-container">
-              {availableYears.map((year) => (
-                <button
-                  key={year}
-                  onClick={() => {
-                    setSelectedYear(year);
-                    setExpandedEvent(null);
-                  }}
-                  className={`year-selector-btn ${selectedYear === year ? 'active' : ''}`}
-                >
-                  {year}
-                </button>
-              ))}
+          {availableYears.length > 1 && (
+            <div className="events-year-navigation">
+              <div className="year-selector-container">
+                {availableYears.map((year) => (
+                  <button
+                    key={year}
+                    onClick={() => {
+                      setSelectedYear(year);
+                      setExpandedEvent(null);
+                    }}
+                    className={`year-selector-btn ${selectedYear === year ? 'active' : ''}`}
+                  >
+                    {year}
+                  </button>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Year Indicator */}
           <div className="year-indicator-card">

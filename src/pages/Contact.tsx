@@ -1,4 +1,5 @@
 import React from 'react';
+import CountUp from '../components/ui/CountUp';
 
 interface ContactPageProps {
   onPageChange?: (page: string) => void;
@@ -34,15 +35,15 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange }
           <div className="container">
             <div className="stats-grid-hbcu">
               <div className="stat-item-hbcu">
-                <div className="stat-number-hbcu">24/7</div>
+                <div className="stat-number-hbcu"><CountUp end={24} suffix="/7" duration={700} /></div>
                 <div className="stat-label-hbcu">Community Support</div>
               </div>
               <div className="stat-item-hbcu">
-                <div className="stat-number-hbcu">15+</div>
+                <div className="stat-number-hbcu"><CountUp end={15} suffix="+" duration={700} /></div>
                 <div className="stat-label-hbcu">Board Members</div>
               </div>
               <div className="stat-item-hbcu">
-                <div className="stat-number-hbcu">100%</div>
+                <div className="stat-number-hbcu"><CountUp end={100} suffix="%" duration={700} /></div>
                 <div className="stat-label-hbcu">Response Rate</div>
               </div>
             </div>
