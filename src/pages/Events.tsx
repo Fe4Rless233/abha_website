@@ -29,7 +29,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
     {
       title: "A Musical Extravaganza with Rathijit & Shreya",
       description: "ABHA's 10th Year celebration featuring renowned artists Rathijit & Shreya with musical performances.",
-      category: "Cultural",
+      category: "Upcoming",
       date: "September 26, 2025",
       time: "7:00 PM - 11:00 PM",
       venue: "Enola Fire Company, 118 Chester Rd, Enola, PA 17025",
@@ -41,7 +41,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
     {
       title: "Durga Puja 2025",
       description: "Our grandest annual celebration with cultural programs and community feasts.",
-      category: "Festival",
+      category: "Upcoming",
       date: "September 27-28, 2025",
       time: "10:00 AM - 10:00 PM",
       venue: "Community Center, Harrisburg PA",
@@ -139,28 +139,45 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
   ]
   };
 
-  // Handle initial event expansion
+  // Handle initial event expansion and scrolling
   useEffect(() => {
     if (initialExpandedEvent && !hasProcessedInitialEvent) {
-      // Find the event index by matching the event identifier
-      const eventIndex = eventsByYear[selectedYear]?.findIndex(event => 
-        event.title.toLowerCase().replace(/\s+/g, '-') === initialExpandedEvent.toLowerCase()
-      );
-      
-      if (eventIndex !== undefined && eventIndex !== -1) {
-        setExpandedEvent(eventIndex);
-        setHasProcessedInitialEvent(true);
-      }
-    }
-    
-    // Scroll to events grid when navigating from another page
-    if (initialExpandedEvent && !hasProcessedInitialEvent) {
-      setTimeout(() => {
-        const eventsGrid = document.querySelector('.all-events-section');
-        if (eventsGrid) {
-          eventsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      let targetElement: Element | null = null;
+
+      if (initialExpandedEvent === 'upcoming') {
+        // Find the first event with the "Upcoming" category
+        const upcomingEventIndex = eventsByYear[2025]?.findIndex(event => event.category === 'Upcoming');
+        if (upcomingEventIndex !== undefined && upcomingEventIndex !== -1) {
+          setExpandedEvent(upcomingEventIndex);
+          // We need to find the element in the DOM to scroll to it
+          setTimeout(() => {
+            const eventCards = document.querySelectorAll('.event-card');
+            const upcomingCard = Array.from(eventCards).find(card => {
+              const titleElement = card.querySelector('.event-title');
+              return titleElement && titleElement.textContent === eventsByYear[2025][upcomingEventIndex].title;
+            });
+            if (upcomingCard) {
+              upcomingCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            }
+          }, 150); // A slight delay to ensure the component has rendered
         }
-      }, 100);
+      } else {
+        // Handle specific event expansion by title identifier
+        const eventIndex = eventsByYear[selectedYear]?.findIndex(event => 
+          event.title.toLowerCase().replace(/\s+/g, '-') === initialExpandedEvent.toLowerCase()
+        );
+        
+        if (eventIndex !== undefined && eventIndex !== -1) {
+          setExpandedEvent(eventIndex);
+          setTimeout(() => {
+            const eventsGrid = document.querySelector('.all-events-section');
+            if (eventsGrid) {
+              eventsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+          }, 150);
+        }
+      }
+      setHasProcessedInitialEvent(true);
     }
   }, [initialExpandedEvent, selectedYear, eventsByYear, hasProcessedInitialEvent]);
 

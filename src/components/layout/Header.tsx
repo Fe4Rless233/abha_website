@@ -12,13 +12,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange, onMobileMenu
   const [showBanner, setShowBanner] = useState(true);
 
   const handleViewEventsClick = () => {
-    onPageChange('events');
-    setTimeout(() => {
-      const upcomingSection = document.querySelector('.upcoming-events-section');
-      if (upcomingSection) {
-        upcomingSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      }
-    }, 100);
+    onPageChange('events', 'upcoming');
   };
 
   return (

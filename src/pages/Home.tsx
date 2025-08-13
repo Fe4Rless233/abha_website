@@ -190,7 +190,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                   </div>
                   <div className="hbcu-event-detail">
                     <span className="hbcu-detail-label">Venue:</span>
-                    <span className="hbcu-detail-value">Community Center, Harrisburg PA</span>
+                    <span className="hbcu-detail-value">Enola Fire Company, Enola PA</span>
                   </div>
                 </div>
                 <div className="hbcu-event-actions">
