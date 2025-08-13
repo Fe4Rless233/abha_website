@@ -142,8 +142,6 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
   // Handle initial event expansion and scrolling
   useEffect(() => {
     if (initialExpandedEvent && !hasProcessedInitialEvent) {
-      let targetElement: Element | null = null;
-
       if (initialExpandedEvent === 'upcoming') {
         // Find the first event with the "Upcoming" category
         const upcomingEventIndex = eventsByYear[2025]?.findIndex(event => event.category === 'Upcoming');
