@@ -19,7 +19,7 @@ interface EventsPageProps {
   onPageChange?: (page: string) => void;
 }
 
-const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageChange: _onPageChange }) => {
+const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageChange }) => {
   const [expandedEvent, setExpandedEvent] = useState<number | null>(null);
   const [selectedYear, setSelectedYear] = useState<number>(2025);
   const [hasProcessedInitialEvent, setHasProcessedInitialEvent] = useState(false);
@@ -139,6 +139,8 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
   ]
   };
 
+  const slugify = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+
   // Handle initial event expansion and scrolling
   useEffect(() => {
     if (initialExpandedEvent && !hasProcessedInitialEvent) {
@@ -149,30 +151,30 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
           setExpandedEvent(upcomingEventIndex);
           // We need to find the element in the DOM to scroll to it
           setTimeout(() => {
-            const eventCards = document.querySelectorAll('.event-card');
-            const upcomingCard = Array.from(eventCards).find(card => {
-              const titleElement = card.querySelector('.event-title');
-              return titleElement && titleElement.textContent === eventsByYear[2025][upcomingEventIndex].title;
-            });
-            if (upcomingCard) {
-              upcomingCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            const cards = document.querySelectorAll('.events-grid .event-card');
+            const target = cards[upcomingEventIndex] as HTMLElement | undefined;
+            if (target) {
+              const rect = target.getBoundingClientRect();
+              const top = window.pageYOffset + rect.top - 120; // offset for header
+              window.scrollTo({ top, behavior: 'smooth' });
             }
-          }, 150); // A slight delay to ensure the component has rendered
+          }, 260); // Slight delay to allow expanded content height
         }
       } else {
         // Handle specific event expansion by title identifier
-        const eventIndex = eventsByYear[selectedYear]?.findIndex(event => 
-          event.title.toLowerCase().replace(/\s+/g, '-') === initialExpandedEvent.toLowerCase()
-        );
+        const eventIndex = eventsByYear[selectedYear]?.findIndex(event => slugify(event.title) === initialExpandedEvent.toLowerCase());
         
         if (eventIndex !== undefined && eventIndex !== -1) {
           setExpandedEvent(eventIndex);
           setTimeout(() => {
-            const eventsGrid = document.querySelector('.all-events-section');
-            if (eventsGrid) {
-              eventsGrid.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            const cards = document.querySelectorAll('.events-grid .event-card');
+            const target = cards[eventIndex] as HTMLElement | undefined;
+            if (target) {
+              const rect = target.getBoundingClientRect();
+              const top = window.pageYOffset + rect.top - 120;
+              window.scrollTo({ top, behavior: 'smooth' });
             }
-          }, 150);
+          }, 260);
         }
       }
       setHasProcessedInitialEvent(true);
@@ -189,33 +191,21 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
   const currentEvents = eventsByYear[selectedYear] || [];
   const availableYears = Object.keys(eventsByYear).map(Number).sort((a, b) => b - a);
 
-  // Reorder events to put expanded event at top
-  const getOrderedEvents = () => {
-    if (expandedEvent === null) {
-      return currentEvents;
-    }
-    
-    const expandedEventData = currentEvents[expandedEvent];
-    const otherEvents = currentEvents.filter((_, index) => index !== expandedEvent);
-    return [expandedEventData, ...otherEvents];
-  };
-
-  const orderedEvents = getOrderedEvents();
-
   const toggleExpand = (clickedIndex: number) => {
-    // If there's an expanded event and we click on it (always at index 0), collapse it
-    if (expandedEvent !== null && clickedIndex === 0) {
-      setExpandedEvent(null);
-      return;
-    }
-    
-    // Find the original index of the clicked event
-    const originalIndex = currentEvents.findIndex(event => event === orderedEvents[clickedIndex]);
-    
-    // If we're clicking on a different event, expand it
-    if (originalIndex !== expandedEvent) {
-      setExpandedEvent(originalIndex);
-    }
+    setExpandedEvent(prev => prev === clickedIndex ? null : clickedIndex);
+    // After expansion, ensure card is comfortably in view (center)
+    requestAnimationFrame(() => {
+      const cards = document.querySelectorAll('.events-grid .event-card');
+      const el = cards[clickedIndex] as HTMLElement | undefined;
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+        if (rect.top < 80 || rect.bottom > viewportHeight) {
+          const scrollY = window.pageYOffset + rect.top - (viewportHeight/2 - rect.height/2) - 40;
+            window.scrollTo({ top: scrollY, behavior: 'smooth' });
+        }
+      }
+    });
   };
 
   return (
@@ -331,10 +321,10 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
 
           {/* Events Grid */}
           <div className="events-grid">
-            {orderedEvents.map((event, index) => (
+            {currentEvents.map((event, index) => (
               <div 
-                key={`${event.title}-${selectedYear}-${index}`} 
-                className={`event-card ${(expandedEvent !== null && index === 0) ? 'expanded' : ''}`}
+                key={`${event.title}-${selectedYear}-${index}`}
+                className={`event-card ${expandedEvent === index ? 'expanded' : ''}`}
                 onClick={() => toggleExpand(index)}
               >
                 {/* Event Image Header */}
@@ -368,14 +358,14 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
                       {event.category}
                     </span>
                     <span className="event-expand-icon">
-                      {(expandedEvent !== null && index === 0) ? '−' : '+'}
+                      {expandedEvent === index ? '−' : '+'}
                     </span>
                   </div>
                   
                   <h3 className="event-title">{event.title}</h3>
                   <p className="event-description">{event.description}</p>
 
-                  {(expandedEvent !== null && index === 0) && (
+                  {expandedEvent === index && (
                     <div className="event-expanded-content">
                       <div className="event-meta">
                         <div className="meta-item">
@@ -409,16 +399,32 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
                         </ul>
                       </div>
 
-                      <div className="event-cta">
+                      <div className="event-cta" style={{ display: 'flex', gap: '.75rem', flexWrap: 'wrap' }}>
                         <a 
                           href="https://www.facebook.com/ABHAweb" 
                           target="_blank" 
                           rel="noopener noreferrer"
-                          className="btn-hbcu-primary"
+                          className="btn-hbcu-secondary"
                           onClick={(e) => e.stopPropagation()}
                         >
-                          Get More Info & Register
+                          More Info
                         </a>
+                        {event.category === 'Upcoming' && (
+                          <button
+                            type="button"
+                            className="btn-hbcu-primary"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              try {
+                                const slug = event.title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
+                                localStorage.setItem('abha_ticketing_prefill', JSON.stringify({ subject: 'Ticketing', source: slug, people: 1, eventName: event.title }));
+                              } catch {}
+                              onPageChange?.('contact');
+                            }}
+                          >
+                            Get Tickets
+                          </button>
+                        )}
                       </div>
                     </div>
                   )}

@@ -10,6 +10,7 @@ interface TicketPrefill {
   subject?: string;
   source?: string;
   people?: number;
+  eventName?: string;
 }
 
 const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange }) => {
@@ -22,6 +23,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange }
   const [isTicketing, setIsTicketing] = useState(false);
   const [attendeeCount, setAttendeeCount] = useState(1);
   const [attendees, setAttendees] = useState<string[]>(['']);
+  const [eventName, setEventName] = useState('');
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -36,12 +38,21 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange }
         if (data.subject === 'Ticketing') {
           setIsTicketing(true);
           setSubject('Ticketing');
+          if (data.eventName) setEventName(data.eventName);
+          else if (data.source) {
+            const readable = data.source.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+            setEventName(readable);
+          }
           setAttendeeCount(data.people && data.people > 0 ? data.people : 1);
           setAttendees(Array.from({ length: data.people && data.people > 0 ? data.people : 1 }, () => ''));
           // Scroll after slight delay
           setTimeout(() => {
-            formRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }, 300);
+            if (formRef.current) {
+              const rect = formRef.current.getBoundingClientRect();
+              const scrollTop = window.pageYOffset + rect.top - 180; // increased offset for higher placement
+              window.scrollTo({ top: scrollTop, behavior: 'smooth' });
+            }
+          }, 250);
         }
         // Clear so subsequent visits are fresh
         localStorage.removeItem('abha_ticketing_prefill');
@@ -68,7 +79,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange }
   // Persist partial form state (excluding attendees list for simplicity) to sessionStorage
   useEffect(() => {
     const key = 'abha_contact_draft_v1';
-    const data = { fullName, email, phone, subject, message, attendeeCount, attendees };
+  const data = { fullName, email, phone, subject, message, attendeeCount, attendees, eventName };
     try { sessionStorage.setItem(key, JSON.stringify(data)); } catch {}
   }, [fullName, email, phone, subject, message, attendeeCount, attendees]);
 
@@ -111,7 +122,8 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange }
         isTicketing,
         attendees: isTicketing ? attendees.map(n => ({ name: n.trim() })) : undefined,
         submittedAt: new Date().toISOString(),
-        source: isTicketing ? 'ticketing-form' : 'contact-form',
+  source: isTicketing ? 'ticketing-form' : 'contact-form',
+  eventName: eventName || undefined,
         honeypot: honeypot.trim()
       });
       setSubmitted(true);
@@ -120,6 +132,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange }
       setPhone('');
       setMessage('');
       setAttendees(attendees.map(() => ''));
+  setEventName('');
       setHoneypot('');
       try { sessionStorage.removeItem('abha_contact_draft_v1'); } catch {}
     } catch (err: any) {
@@ -323,6 +336,29 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange }
                 </div>
                 {isTicketing ? (
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
+                    <div>
+                      <label htmlFor="eventName" style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--primary-red)', fontWeight: '600' }}>
+                        Event Name
+                      </label>
+                      <input
+                        type="text"
+                        id="eventName"
+                        name="eventName"
+                        placeholder="e.g. Durga Puja 2025"
+                        value={eventName}
+                        onChange={(e) => setEventName(e.target.value)}
+                        style={{
+                          width: '100%',
+                          padding: '10px 12px',
+                          border: '2px solid rgba(212, 175, 55, 0.3)',
+                          borderRadius: '8px',
+                          fontSize: '16px'
+                        }}
+                        onFocus={(e) => e.target.style.borderColor = 'var(--primary-red)'}
+                        onBlur={(e) => e.target.style.borderColor = 'rgba(212, 175, 55, 0.3)'}
+                        required
+                      />
+                    </div>
                     <div>
                       <label htmlFor="attendees" style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--primary-red)', fontWeight: '600' }}>
                         Number of People
