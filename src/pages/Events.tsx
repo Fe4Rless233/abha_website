@@ -221,7 +221,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
   return (
     <div className="page-container hbcu-style">
       {/* Hero Section - HBCU Style */}
-      <section className="hbcu-hero-section">
+      <section className="hbcu-hero-section" id="events">
         <div className="hero-video-container">
           <video 
             className="hero-video" 
