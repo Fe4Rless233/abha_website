@@ -16,6 +16,7 @@ export interface ContactSubmission {
   submittedAt: string; // ISO timestamp
   source?: string;
   honeypot?: string; // spam trap (_gotcha)
+  eventName?: string;
 }
 
 const STORAGE_KEY = 'abha_contact_submissions';
@@ -39,6 +40,7 @@ export async function submitContact(submission: ContactSubmission): Promise<{ ok
       attendees: submission.attendees?.map(a => a.name).join(', ') || '',
       submittedAt: submission.submittedAt,
       source: submission.source || 'web-form',
+  eventName: submission.eventName || '',
       _gotcha: submission.honeypot || ''
     } : submission;
     try {

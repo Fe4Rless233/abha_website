@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import CountUp from '../components/ui/CountUp';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import Countdown from '../components/ui/Countdown';
+import VideoTestimonials from '../components/VideoTestimonials';
 
 interface HomePageProps {
   onPageChange?: (page: string, eventToExpand?: string) => void;
@@ -283,7 +284,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                   <button 
                     onClick={() => {
                       try {
-                        localStorage.setItem('abha_ticketing_prefill', JSON.stringify({ subject: 'Ticketing', source: 'musical-extravaganza', people: 1 }));
+                        localStorage.setItem('abha_ticketing_prefill', JSON.stringify({ subject: 'Ticketing', source: 'musical-extravaganza', people: 1, eventName: 'Musical Extravaganza 2025' }));
                       } catch {}
                       onPageChange?.('contact');
                     }}
@@ -339,7 +340,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                   <button 
                     onClick={() => {
                       try {
-                        localStorage.setItem('abha_ticketing_prefill', JSON.stringify({ subject: 'Ticketing', source: 'durga-puja-2025', people: 1 }));
+                        localStorage.setItem('abha_ticketing_prefill', JSON.stringify({ subject: 'Ticketing', source: 'durga-puja-2025', people: 1, eventName: 'Durga Puja 2025' }));
                       } catch {}
                       onPageChange?.('contact');
                     }}
@@ -451,6 +452,8 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
       </section>
 
       {/* About ABHA Overview Section */}
+  <VideoTestimonials />
+
       <section className="hbcu-mission-section" style={{ paddingTop: '3.25rem', paddingBottom: '3.25rem' }}>
         <div className="container" style={{ maxWidth: 1000 }}>
           <h2 className="hbcu-section-title">ABOUT ABHA</h2>
