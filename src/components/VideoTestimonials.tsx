@@ -55,7 +55,7 @@ const VideoTestimonials: React.FC<VideoTestimonialsProps> = ({ videos = defaultV
             const isExpanded = active === v.id;
             return (
               <div key={v.id} className="event-card" style={{ padding: '1.1rem 1.1rem 1.4rem', display: 'flex', flexDirection: 'column', gap: '.75rem' }}>
-                <h3 style={{ margin: 0, fontSize: '1rem', letterSpacing: '.03em', color: 'var(--primary-red,#7a1b1b)' }}>{v.title}</h3>
+                <h3 style={{ margin: 0, fontSize: '1rem', letterSpacing: '.03em', color: 'var(--primary-red,#7a1b1b)' }}>{v.person}</h3>
                 <div style={{ position: 'relative', width: '100%', aspectRatio: '16 / 9', background: '#111', borderRadius: 12, overflow: 'hidden', boxShadow: '0 4px 12px -4px rgba(0,0,0,.4)' }}>
                   {v.youtube ? (
                     <iframe
