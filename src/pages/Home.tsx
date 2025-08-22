@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import CountUp from '../components/ui/CountUp';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import Countdown from '../components/ui/Countdown';
@@ -10,13 +10,47 @@ interface HomePageProps {
 
 const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
   const [videoLoaded, setVideoLoaded] = useState(false);
+  const [videoError, setVideoError] = useState(false);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   // Fallback timeout in case video load stalls
   useEffect(() => {
     const timeout = setTimeout(() => {
       setVideoLoaded(true); // allow content even if video not fully loaded
     }, 4000);
-    return () => clearTimeout(timeout);
+
+    // Respect reduced motion and detect autoplay support
+    const setupPlayback = () => {
+      try {
+        const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (prefersReducedMotion) {
+          setVideoLoaded(true);
+          return; // let poster show instead of forcing playback
+        }
+        const el = videoRef.current;
+        if (el) {
+          // Ensure muted for autoplay policies
+          el.muted = true;
+          const playPromise = el.play();
+          if (playPromise && typeof playPromise.then === 'function') {
+            playPromise.then(() => setVideoLoaded(true)).catch(() => {
+              // Autoplay blocked or codec issue – use logo fallback
+              setVideoError(true);
+              setVideoLoaded(true);
+            });
+          }
+        }
+      } catch {
+        // Non-critical
+      }
+    };
+
+    // Defer a tick so ref is attached
+    const r = requestAnimationFrame(setupPlayback);
+    return () => {
+      clearTimeout(timeout);
+      cancelAnimationFrame(r);
+    };
   }, []);
 
   // Featured Durga Puja details (sync with Events page if updated)
@@ -157,99 +191,13 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
 
   {/* (Testimonials moved further down to middle area) */}
 
-      {/* Hero Section - HBCU Style with Video Background */}
-      <section className="hbcu-hero-section">
-        <div className="hero-video-container fade-in">
-          {!videoLoaded && (
-            <div className="hero-video-loading">
-              <LoadingSpinner color="white" size="lg" />
-              <span className="loading-text">Loading cultural experience…</span>
-            </div>
-          )}
-          <video 
-            className={`hero-video ${videoLoaded ? 'visible' : 'hidden'}`}
-            autoPlay 
-            muted 
-            loop 
-            playsInline
-            poster="/assets/images/hero-poster.jpg"
-            onLoadedData={() => setVideoLoaded(true)}
-          >
-            <source src="/assets/videos/bengali-culture-hero.mp4" type="video/mp4" />
-            <source src="/assets/videos/bengali-culture-hero.webm" type="video/webm" />
-            Your browser does not support the video tag.
-          </video>
-          <div className="hero-video-overlay"></div>
-        </div>
-  <div className="container hero-content-hbcu slide-up">
-          <div className="hero-logo-container-hbcu">
-            <img 
-              src="/assets/images/abha-logo.png" 
-              alt="ABHA Logo" 
-              className="hero-logo-hbcu"
-              onError={(e) => {
-                e.currentTarget.style.display = 'none';
-              }}
-            />
-          </div>
-          <h1 className="hero-title-hbcu">
-            Association of Bengalis in Harrisburg Area
-          </h1>
-          <p className="hero-subtitle-hbcu">
-            Bringing the Spirit of Bengal to Central Pennsylvania. We believe that culture is the thread that binds us—not only to our roots but to each other.
-          </p>
-          <div className="hero-bengali-text">
-            সংস্কৃতিতে ঐক্য। সম্প্রদায়ে শক্তি। উদযাপনে আনন্দ
-          </div>
-          <div className="hero-cta-container">
-            <button onClick={() => onPageChange?.('contact')} className="btn-hbcu-primary">
-              Contact Us
-            </button>
-            <button onClick={() => onPageChange?.('events')} className="btn-hbcu-secondary">
-              View Events
-            </button>
-          </div>
-        </div>
-        
-        {/* Hero Stats - HBCU Style */}
-  <div className="hero-stats-hbcu fade-in">
-          <div className="container">
-            <div className="stats-grid-hbcu">
-              <div className="stat-item-hbcu">
-    <div className="stat-number-hbcu"><CountUp end={200} suffix="+" duration={900} /></div>
-                <div className="stat-label-hbcu">Active Members</div>
-              </div>
-              <div className="stat-item-hbcu">
-    <div className="stat-number-hbcu"><CountUp end={10} suffix="+" duration={900} /></div>
-                <div className="stat-label-hbcu">Years Strong</div>
-              </div>
-              <div className="stat-item-hbcu">
-    <div className="stat-number-hbcu"><CountUp end={4} duration={700} /></div>
-                <div className="stat-label-hbcu">Annual Events</div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Mission Statement Section */}
-      <section className="hbcu-mission-section">
-        <div className="container">
-          <h2 className="hbcu-section-title">UNITY IN CULTURE. STRENGTH IN COMMUNITY. JOY IN CELEBRATION.</h2>
-          <p className="hbcu-mission-text">
-            Join us in honoring the rich tapestry of Bengali heritage—music, dance, literature, and culinary arts. Together, we embrace our roots and illuminate our future.
-          </p>
-        </div>
-      </section>
-
-      {/* Upcoming Events Section - HBCU Style */}
+      {/* Upcoming Events Section - moved above Hero */}
       <section className="hbcu-event-section upcoming-events-section">
         <div className="container">
           <h2 className="hbcu-section-title-dark">Upcoming Events 2025</h2>
           <p className="hbcu-heritage-description">
             Join us for these exciting upcoming celebrations and community gatherings!
           </p>
-          
           <div className="upcoming-events-grid">
             {/* Musical Extravaganza Event */}
             <div className="hbcu-event-container">
@@ -363,7 +311,6 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
               </div>
             </div>
           </div>
-          
           <div className="section-cta-center">
             <button 
               type="button"
@@ -379,6 +326,113 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
           </div>
         </div>
       </section>
+
+      {/* Hero Section - HBCU Style with Video Background */}
+      <section className="hbcu-hero-section">
+        {videoError ? (
+          <div className="container hero-content-hbcu slide-up">
+            <div className="hero-logo-container-hbcu" style={{ padding: '3rem 0' }}>
+              <img
+                src="/assets/images/abha-logo.png"
+                alt="ABHA Logo"
+                className="hero-logo-hbcu"
+              />
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="hero-video-container fade-in">
+              {!videoLoaded && (
+                <div className="hero-video-loading">
+                  <LoadingSpinner color="white" size="lg" />
+                  <span className="loading-text">Loading cultural experience…</span>
+                </div>
+              )}
+              <video
+                ref={videoRef}
+                className={`hero-video ${videoLoaded ? 'visible' : 'hidden'}`}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                poster="/assets/images/hero-poster.jpg"
+                onLoadedData={() => setVideoLoaded(true)}
+                onError={() => {
+                  setVideoError(true);
+                  setVideoLoaded(true);
+                }}
+              >
+                <source src="/assets/videos/bengali-culture-hero.mp4" type="video/mp4" />
+                {/* Optional WebM fallback when available */}
+                <source src="/assets/videos/bengali-culture-hero.webm" type="video/webm" />
+                Your browser does not support the video tag.
+              </video>
+              <div className="hero-video-overlay"></div>
+            </div>
+            <div className="container hero-content-hbcu slide-up">
+              <div className="hero-logo-container-hbcu">
+                <img 
+                  src="/assets/images/abha-logo.png" 
+                  alt="ABHA Logo" 
+                  className="hero-logo-hbcu"
+                  onError={(e) => {
+                    e.currentTarget.style.display = 'none';
+                  }}
+                />
+              </div>
+              <h1 className="hero-title-hbcu">
+                Association of Bengalis in Harrisburg Area
+              </h1>
+              <p className="hero-subtitle-hbcu">
+                Bringing the Spirit of Bengal to Central Pennsylvania. We believe that culture is the thread that binds us—not only to our roots but to each other.
+              </p>
+              <div className="hero-bengali-text">
+                সংস্কৃতিতে ঐক্য। সম্প্রদায়ে শক্তি। উদযাপনে আনন্দ
+              </div>
+              <div className="hero-cta-container">
+                <button onClick={() => onPageChange?.('contact')} className="btn-hbcu-primary">
+                  Contact Us
+                </button>
+                <button onClick={() => onPageChange?.('events')} className="btn-hbcu-secondary">
+                  View Events
+                </button>
+              </div>
+            </div>
+            {/* Hero Stats - HBCU Style */}
+            <div className="hero-stats-hbcu fade-in">
+              <div className="container">
+                <div className="stats-grid-hbcu">
+                  <div className="stat-item-hbcu">
+                    <div className="stat-number-hbcu"><CountUp end={200} suffix="+" duration={900} /></div>
+                    <div className="stat-label-hbcu">Active Members</div>
+                  </div>
+                  <div className="stat-item-hbcu">
+                    <div className="stat-number-hbcu"><CountUp end={10} suffix="+" duration={900} /></div>
+                    <div className="stat-label-hbcu">Years Strong</div>
+                  </div>
+                  <div className="stat-item-hbcu">
+                    <div className="stat-number-hbcu"><CountUp end={4} duration={700} /></div>
+                    <div className="stat-label-hbcu">Annual Events</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </>
+        )}
+      </section>
+
+      {/* Mission Statement Section */}
+      <section className="hbcu-mission-section">
+        <div className="container">
+          <h2 className="hbcu-section-title">UNITY IN CULTURE. STRENGTH IN COMMUNITY. JOY IN CELEBRATION.</h2>
+          <p className="hbcu-mission-text">
+            Join us in honoring the rich tapestry of Bengali heritage—music, dance, literature, and culinary arts. Together, we embrace our roots and illuminate our future.
+          </p>
+        </div>
+      </section>
+
+  {/* Upcoming Events Section removed here after moving above Hero */}
 
       {/* Community Investment Section - HBCU Style */}
       <section className="hbcu-investment-section">
