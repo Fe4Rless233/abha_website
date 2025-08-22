@@ -31,7 +31,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
       description: "ABHA's 10th Year celebration featuring renowned artists Rathijit & Shreya with musical performances.",
       category: "Upcoming",
       date: "September 26, 2025",
-      time: "7:00 PM - 11:00 PM",
+  time: "5:30 PM - 11:00 PM",
       venue: "Enola Fire Company, 118 Chester Rd, Enola, PA 17025",
       details: "Join us for a spectacular musical evening celebrating ABHA's 10th anniversary! Experience soul-stirring performances by renowned Bengali artists Rathijit & Shreya, featuring classic Rabindra Sangeet, modern Bengali songs, and fusion music. These artists from the popular TV show 'Sa Re Ga Ma Pa' promise an unforgettable night of melody and nostalgia. Featuring special performances by Soumyojyoti on Tabla and other talented musicians.",
       highlights: ["Rathijit & Shreya Live Performance", "Rabindra Sangeet & Modern Songs", "Sa Re Ga Ma Pa House Production", "Soumyojyoti on Tabla", "ABHA 10th Anniversary Celebration", "Professional Sound & Lighting"],

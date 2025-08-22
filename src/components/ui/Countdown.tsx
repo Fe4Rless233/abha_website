@@ -6,11 +6,12 @@ interface CountdownProps {
   compact?: boolean;
   className?: string;
   style?: React.CSSProperties;
+  footerText?: string; // optional override for the "Starts ..." line
 }
 
 const pad = (n: number) => n.toString().padStart(2, '0');
 
-const Countdown: React.FC<CountdownProps> = ({ target, label = 'Countdown', compact = false, className, style }) => {
+const Countdown: React.FC<CountdownProps> = ({ target, label = 'Countdown', compact = false, className, style, footerText }) => {
   const targetTime = new Date(target).getTime();
   const [now, setNow] = useState(Date.now());
 
@@ -75,7 +76,22 @@ const Countdown: React.FC<CountdownProps> = ({ target, label = 'Countdown', comp
       </div>
       {!compact && (
         <div style={{ fontSize: '.6rem', color: '#f8f3e0', opacity: 0.9 }}>
-          Starts Sep 27, 10:00 AM ET
+          {footerText ?? (() => {
+            try {
+              const dt = new Date(target);
+              const formatted = dt.toLocaleString('en-US', {
+                timeZone: 'America/New_York',
+                month: 'short',
+                day: 'numeric',
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true
+              });
+              return `Starts ${formatted} ET`;
+            } catch {
+              return 'Upcoming';
+            }
+          })()}
         </div>
       )}
     </div>
