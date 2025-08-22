@@ -78,6 +78,26 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
     ]
   };
 
+  const musicalExtravaganza = {
+    title: 'Musical Extravaganza',
+    subtitle: 'with Rathijit & Shreya',
+    date: 'September 26, 2025',
+    time: '7:00 PM - 11:00 PM',
+    venue: 'Enola Fire Company, Enola PA',
+    description: "ABHA's 10th anniversary celebration featuring renowned Bengali artists in an unforgettable musical evening.",
+    flyerImage: '/assets/images/events/a-musical-extravaganza-with-rathijit-and-shreya.jpg',
+    artistSegments: [
+      'Live Performances',
+      'Anniversary Special',
+      'Community Get-Together'
+    ],
+    highlights: [
+      'Renowned Artists',
+      'Immersive Music',
+      'Community Celebration'
+    ]
+  };
+
   const testimonials = [
     {
       title: '10 years have passed so quickly!',
@@ -126,14 +146,21 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
               style={{ width: '2m00px', height: '200px', objectFit: 'contain', filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.55))' }}
               onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
             />
-            <h1 className="hbcu-section-title" style={{ color: '#FFD700', margin: 0 }}>{durgaPuja.title}</h1>
-            <Countdown target="2025-09-27T10:00:00-04:00" label="Countdown" />
+            <h1 className="hbcu-section-title" style={{ color: '#FFD700', margin: 0 }}>Featured Celebrations 2025</h1>
           </div>
           <p className="hbcu-mission-text" style={{ maxWidth: 920, color: '#ffffff' }}>{durgaPuja.description}</p>
-          <div style={{ marginTop: '1.75rem', display: 'flex', flexWrap: 'wrap', gap: '2.25rem' }}>
-            {/* Flyer & Actions */}
-            <div style={{ flex: '1 1 300px', minWidth: '260px', display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-              <div style={{ position: 'relative', borderRadius: '14px', overflow: 'hidden', border: '1px solid rgba(255,215,0,0.3)', boxShadow: '0 4px 18px -4px rgba(0,0,0,0.55)', maxWidth: 360 }}>
+          <div style={{ marginTop: '1.75rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(360px,1fr))', gap: '2.25rem', justifyItems: 'center', alignItems: 'start', justifyContent: 'center' }}>
+            {/* Durga Puja Card */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.15rem', width: '100%', maxWidth: 460, justifySelf: 'center' }}>
+              <div>
+                <h2 style={{ margin: 0, color: '#FFD700', letterSpacing: '.03em', fontSize: '1.25rem' }}>{durgaPuja.title}</h2>
+                {/* Hidden subtitle to match height of the Musical card subtitle and align countdowns */}
+                <div aria-hidden="true" style={{ color: '#ffe38f', fontSize: '.95rem', marginTop: '.15rem', visibility: 'hidden' }}>placeholder</div>
+                <div style={{ marginTop: '.3rem' }}>
+                  <Countdown target="2025-09-27T10:00:00-04:00" label="Countdown" style={{ width: 'max-content', margin: '0 auto' }} />
+                </div>
+              </div>
+              <div style={{ position: 'relative', borderRadius: '14px', overflow: 'hidden', border: '1px solid rgba(255,215,0,0.3)', boxShadow: '0 4px 18px -4px rgba(0,0,0,0.55)', maxWidth: 420, margin: '0 auto' }}>
                 <img src={durgaPuja.flyerImage} alt="Durga Puja Flyer" style={{ width: '100%', display: 'block' }} />
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.75rem' }}>
@@ -152,9 +179,6 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                 </button>
                 <button onClick={() => onPageChange?.('events', 'durga-puja-2025')} className="btn-hbcu-secondary">Full Details</button>
               </div>
-            </div>
-            {/* Info Blocks */}
-            <div style={{ flex: '2 1 420px', minWidth: '300px', display: 'flex', flexDirection: 'column', gap: '1.35rem' }}>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: '0.85rem' }}>
                 <div style={{ background: 'rgba(255,255,255,0.08)', padding: '.85rem .9rem', borderRadius: '10px' }}>
                   <strong style={{ color: '#FFD700', display: 'block', fontSize: '.75rem', letterSpacing: '.1em' }}>DATE</strong>
@@ -188,147 +212,77 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                 </div>
               </div>
             </div>
+
+            {/* Musical Extravaganza Card */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.15rem', width: '100%', maxWidth: 460, justifySelf: 'center' }}>
+              <div>
+                <h2 style={{ margin: 0, color: '#FFD700', letterSpacing: '.03em', fontSize: '1.25rem' }}>{musicalExtravaganza.title}</h2>
+                {musicalExtravaganza.subtitle && (
+                  <div style={{ color: '#ffe38f', fontSize: '.95rem', marginTop: '.15rem' }}>{musicalExtravaganza.subtitle}</div>
+                )}
+                <div style={{ marginTop: '.3rem' }}>
+                  <Countdown target="2025-09-26T19:00:00-04:00" label="Countdown" style={{ width: 'max-content', margin: '0 auto' }} />
+                </div>
+              </div>
+              <div style={{ position: 'relative', borderRadius: '14px', overflow: 'hidden', border: '1px solid rgba(255,215,0,0.3)', boxShadow: '0 4px 18px -4px rgba(0,0,0,0.55)', maxWidth: 420, margin: '0 auto' }}>
+                <img src={musicalExtravaganza.flyerImage} alt="Musical Extravaganza Flyer" style={{ width: '100%', display: 'block' }} />
+              </div>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.75rem' }}>
+                <a href={musicalExtravaganza.flyerImage} target="_blank" rel="noopener noreferrer" className="btn-hbcu-primary" style={{ background: '#FFD700', color: '#5b0a0a' }}>Download Flyer</a>
+                <button
+                  className="btn-hbcu-primary"
+                  onClick={() => {
+                    try {
+                      localStorage.setItem('abha_ticketing_prefill', JSON.stringify({ subject: 'Ticketing', source: 'musical-extravaganza', people: 1, eventName: 'Musical Extravaganza 2025' }));
+                    } catch {}
+                    onPageChange?.('contact');
+                  }}
+                  type="button"
+                >
+                  Tickets / Registration
+                </button>
+                <button onClick={() => onPageChange?.('events', 'a-musical-extravaganza-with-rathijit-shreya')} className="btn-hbcu-secondary">Full Details</button>
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: '0.85rem' }}>
+                <div style={{ background: 'rgba(255,255,255,0.08)', padding: '.85rem .9rem', borderRadius: '10px' }}>
+                  <strong style={{ color: '#FFD700', display: 'block', fontSize: '.75rem', letterSpacing: '.1em' }}>DATE</strong>
+                  <span>{musicalExtravaganza.date}</span>
+                </div>
+                <div style={{ background: 'rgba(255,255,255,0.08)', padding: '.85rem .9rem', borderRadius: '10px' }}>
+                  <strong style={{ color: '#FFD700', display: 'block', fontSize: '.75rem', letterSpacing: '.1em' }}>TIME</strong>
+                  <span>{musicalExtravaganza.time}</span>
+                </div>
+                <div style={{ background: 'rgba(255,255,255,0.08)', padding: '.85rem .9rem', borderRadius: '10px' }}>
+                  <strong style={{ color: '#FFD700', display: 'block', fontSize: '.75rem', letterSpacing: '.1em' }}>VENUE</strong>
+                  <span>{musicalExtravaganza.venue}</span>
+                </div>
+              </div>
+              <div>
+                <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Featured Segments</h3>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.4rem', gridTemplateColumns: 'repeat(auto-fit,minmax(190px,1fr))' }}>
+                  {musicalExtravaganza.artistSegments.map((s, i) => (
+                    <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '.5rem', fontSize: '.9rem' }}>
+                      <span style={{ color: '#FFD700' }}>✦</span>{s}
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Highlights</h3>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.55rem' }}>
+                  {musicalExtravaganza.highlights.map((h, i) => (
+                    <span key={i} style={{ background: 'rgba(255,255,255,0.08)', padding: '.45rem .7rem', borderRadius: '24px', fontSize: '.7rem', letterSpacing: '.08em' }}>{h}</span>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
 
   {/* (Testimonials moved further down to middle area) */}
 
-      {/* Upcoming Events Section - moved above Hero */}
-      <section className="hbcu-event-section upcoming-events-section">
-        <div className="container">
-          <h2 className="hbcu-section-title-dark">Upcoming Events 2025</h2>
-          <p className="hbcu-heritage-description">
-            Join us for these exciting upcoming celebrations and community gatherings!
-          </p>
-          <div className="upcoming-events-grid">
-            {/* Musical Extravaganza Event */}
-            <div className="hbcu-event-container">
-              <div className="hbcu-event-image">
-                <img 
-                  src="/assets/images/events/a-musical-extravaganza-with-rathijit-and-shreya.jpg" 
-                  alt="Musical Extravaganza with Rathijit & Shreya" 
-                  className="hbcu-event-poster"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-              </div>
-              <div className="hbcu-event-content">
-                <div className="hbcu-event-badge">SEPTEMBER 26</div>
-                <h3 className="hbcu-event-title">Musical Extravaganza</h3>
-                <h4 className="hbcu-event-subtitle">with Rathijit & Shreya</h4>
-                <p className="hbcu-event-description">
-                  ABHA's 10th anniversary celebration featuring renowned Bengali artists in an unforgettable musical evening.
-                </p>
-                <div className="hbcu-event-details">
-                  <div className="hbcu-event-detail">
-                    <span className="hbcu-detail-label">Time:</span>
-                    <span className="hbcu-detail-value">7:00 PM - 11:00 PM</span>
-                  </div>
-                  <div className="hbcu-event-detail">
-                    <span className="hbcu-detail-label">Venue:</span>
-                    <span className="hbcu-detail-value">Enola Fire Company, Enola PA</span>
-                  </div>
-                </div>
-                <div className="hbcu-event-actions">
-                  <button 
-                    onClick={() => {
-                      try {
-                        localStorage.setItem('abha_ticketing_prefill', JSON.stringify({ subject: 'Ticketing', source: 'musical-extravaganza', people: 1, eventName: 'Musical Extravaganza 2025' }));
-                      } catch {}
-                      onPageChange?.('contact');
-                    }}
-                    className="btn-hbcu-primary"
-                  >
-                    Get Tickets
-                  </button>
-                  <button 
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      onPageChange?.('events', 'a-musical-extravaganza-with-rathijit-shreya');
-                    }} 
-                    className="btn-hbcu-secondary"
-                  >
-                    View Details
-                  </button>
-                </div>
-              </div>
-            </div>
-
-            {/* Durga Puja Event */}
-            <div className="hbcu-event-container">
-              <div className="hbcu-event-image">
-                <img 
-                  src="/assets/images/events/durga-puja.jpg" 
-                  alt="Durga Puja 2025" 
-                  className="hbcu-event-poster"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-              </div>
-              <div className="hbcu-event-content">
-                <div className="hbcu-event-badge">SEPTEMBER 27-28</div>
-                <h3 className="hbcu-event-title">Durga Puja 2025</h3>
-                <h4 className="hbcu-event-subtitle">শারদীয় দুর্গোৎসব ২০২৫</h4>
-                <p className="hbcu-event-description">
-                  Join ABHA for our annual celebration of tradition, culture, and community. Experience authentic Bengali festivities.
-                </p>
-                <div className="hbcu-event-details">
-                  <div className="hbcu-event-detail">
-                    <span className="hbcu-detail-label">Time:</span>
-                    <span className="hbcu-detail-value">10:00 AM - 10:00 PM</span>
-                  </div>
-                  <div className="hbcu-event-detail">
-                    <span className="hbcu-detail-label">Venue:</span>
-                    <span className="hbcu-detail-value">Enola Fire Company, Enola PA</span>
-                  </div>
-                </div>
-                <div className="hbcu-event-actions">
-                  <button 
-                    onClick={() => {
-                      try {
-                        localStorage.setItem('abha_ticketing_prefill', JSON.stringify({ subject: 'Ticketing', source: 'durga-puja-2025', people: 1, eventName: 'Durga Puja 2025' }));
-                      } catch {}
-                      onPageChange?.('contact');
-                    }}
-                    className="btn-hbcu-primary"
-                  >
-                    Get Tickets
-                  </button>
-                  <button 
-                    type="button"
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
-                      onPageChange?.('events', 'durga-puja-2025');
-                    }} 
-                    className="btn-hbcu-secondary"
-                  >
-                    View Details
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="section-cta-center">
-            <button 
-              type="button"
-              onClick={(e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                onPageChange?.('events');
-              }} 
-              className="btn-hbcu-primary"
-            >
-              View All Events
-            </button>
-          </div>
-        </div>
-      </section>
+      
 
       {/* Hero Section - HBCU Style with Video Background */}
       <section className="hbcu-hero-section">

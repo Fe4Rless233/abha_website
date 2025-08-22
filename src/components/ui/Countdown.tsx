@@ -47,15 +47,17 @@ const Countdown: React.FC<CountdownProps> = ({ target, label = 'Countdown', comp
     <div
       className={className}
       style={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        gap: compact ? '.45rem' : '.6rem',
-        background: 'rgba(255,255,255,0.07)',
-        padding: compact ? '.65rem .85rem .75rem' : '.9rem 1.1rem 1rem',
-        borderRadius: '14px',
-        border: '1px solid rgba(255,215,0,0.28)',
-        backdropFilter: 'blur(4px)',
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'center',
+  gap: compact ? '.45rem' : '.6rem',
+  background: 'rgba(255,255,255,0.07)',
+  padding: compact ? '.65rem .85rem .75rem' : '.9rem 1.1rem 1rem',
+  borderRadius: '14px',
+  border: '1px solid rgba(255,215,0,0.28)',
+  backdropFilter: 'blur(4px)',
+  width: 'auto',
+  maxWidth: '100%',
         ...style
       }}
       aria-label={`Time remaining until event starts: ${days} days ${hours} hours ${mins} minutes ${secs} seconds`}
