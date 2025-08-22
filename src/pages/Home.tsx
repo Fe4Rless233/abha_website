@@ -88,7 +88,8 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
         'Through the years it has also given us the ability to invite our non Bengali friends & introduce them to our festival!',
         'ABHA has been a lifeline to us in more ways than one. With the enthusiasm that I see in the organization, I expect to see it keep growing!'
       ],
-      author: 'Dr. Supriyo Ghosh'
+  author: 'Dr. Supriyo Ghosh',
+  credit: 'Dr. Supriyo Ghosh, MD, Internal Medicine'
     },
     {
       title: 'A Second Home Since 2019',
@@ -98,7 +99,8 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
         'Many amongst our extended family at ABHA may not count Bengali as their mother tongue, but still call Bengal home – through birth, marriage or work. And then there are those who are not ethnic Indians but have made Bengal and Bengali culture the center of their lives.',
         'Anyone with a love for our rich culture and a willingness to learn about our heritage will always find a home at ABHA. That is what ABHA stands for and that is why it is my home.'
       ],
-      author: 'Dhiman Chattopadhyay'
+  author: 'Dhiman Chattopadhyay',
+  credit: 'Dr. Dhiman Chattopadhyay, Associate Professor, Shippensburg University'
     },
     {
       title: 'Inclusive & Creative Community',
@@ -107,7 +109,8 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
         'It has been a great place to choose and nurture friendship without being judged and always gives artistic freedom for all the members, nominating each one’s area of interest.',
         'Looking forward to taking the community based organization to next level celebrating the 10 years of Durga Puja completion in Greater Harrisburg.'
       ],
-      author: 'Bhaskar Ganguli'
+  author: 'Bhaskar Ganguli',
+  credit: 'Bhaskar Ganguly, Chartered Accoutant and Vocalist'
     }
   ];
 
@@ -499,6 +502,9 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                   <p key={idx} style={{ margin: 0, fontSize: '.9rem', lineHeight: 1.5, color: '#222' }}>{p}</p>
                 ))}
                 <div style={{ marginTop: '.5rem', fontSize: '.7rem', letterSpacing: '.15em', fontWeight: 600, opacity: 0.85, color: '#444' }}>— {t.author}</div>
+                {t.credit && (
+                  <div style={{ fontSize: '.8rem', color: '#555', marginTop: '.25rem' }}>{t.credit}</div>
+                )}
               </div>
             ))}
           </div>
