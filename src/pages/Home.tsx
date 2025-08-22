@@ -82,7 +82,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
     title: 'Musical Extravaganza',
     subtitle: 'with Rathijit & Shreya',
     date: 'September 26, 2025',
-    time: '7:00 PM - 11:00 PM',
+  time: '5:30 PM - 11:00 PM',
     venue: 'Enola Fire Company, Enola PA',
     description: "ABHA's 10th anniversary celebration featuring renowned Bengali artists in an unforgettable musical evening.",
     flyerImage: '/assets/images/events/a-musical-extravaganza-with-rathijit-and-shreya.jpg',
@@ -221,7 +221,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                   <div style={{ color: '#ffe38f', fontSize: '.95rem', marginTop: '.15rem' }}>{musicalExtravaganza.subtitle}</div>
                 )}
                 <div style={{ marginTop: '.3rem' }}>
-                  <Countdown target="2025-09-26T19:00:00-04:00" label="Countdown" style={{ width: 'max-content', margin: '0 auto' }} />
+                  <Countdown target="2025-09-26T17:30:00-04:00" label="Countdown" style={{ width: 'max-content', margin: '0 auto' }} />
                 </div>
               </div>
               <div style={{ position: 'relative', borderRadius: '14px', overflow: 'hidden', border: '1px solid rgba(255,215,0,0.3)', boxShadow: '0 4px 18px -4px rgba(0,0,0,0.55)', maxWidth: 420, margin: '0 auto' }}>
