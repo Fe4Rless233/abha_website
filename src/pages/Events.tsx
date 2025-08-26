@@ -35,7 +35,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
       venue: "Enola Fire Company, 118 Chester Rd, Enola, PA 17025",
       details: "Join us for a spectacular musical evening celebrating ABHA's 10th anniversary! Experience soul-stirring performances by renowned Bengali artists Rathijit & Shreya, featuring classic Rabindra Sangeet, modern Bengali songs, and fusion music. These artists from the popular TV show 'Sa Re Ga Ma Pa' promise an unforgettable night of melody and nostalgia. Featuring special performances by Soumyojyoti on Tabla and other talented musicians.",
       highlights: ["Rathijit & Shreya Live Performance", "Rabindra Sangeet & Modern Songs", "Sa Re Ga Ma Pa House Production", "Soumyojyoti on Tabla", "ABHA 10th Anniversary Celebration", "Professional Sound & Lighting"],
-      image: "/assets/images/events/a-musical-extravaganza-with-rathijit-and-shreya.jpg",
+  image: "/assets/images/events/a-musical-extravaganza-with-rathijit-and-shreya.jpg",
       fallbackImage: "🎵"
     },
     {
@@ -47,7 +47,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
       venue: "Community Center, Harrisburg PA",
       details: "Join us for the most significant Bengali festival! Experience traditional puja rituals, mesmerizing cultural performances including classical dance and music, authentic Bengali delicacies, kids' activities, and community bonding. Free for all families.",
       highlights: ["Traditional Puja Rituals", "Cultural Dance & Music", "Authentic Bengali Food", "Kids Activities", "Community Fellowship"],
-      image: "/assets/images/events/durga-puja.jpg",
+  image: "/assets/images/events/durga-puja.jpg",
       fallbackImage: "🏛️"
     },
     {
@@ -398,6 +398,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
                           ))}
                         </ul>
                       </div>
+
 
                       <div className="event-cta" style={{ display: 'flex', gap: '.75rem', flexWrap: 'wrap' }}>
                         <a 

@@ -70,12 +70,17 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
       'Community Bhog & Food Experience'
     ],
     highlights: [
-      'Authentic Rituals',
-      'Cultural Performances',
-      'Kids Activities',
-      'Community Feast',
-      'Art & Tradition'
-    ]
+      '27 Sep 2025',
+      'Bodhon, Sashti, Saptami, Ashtami',
+      'Cultural & Musical Extravaganza & Dinner',
+      '28 Sep 2025',
+      'Sandhi Pujo, Nabomi & Dashami',
+      'Pushpanjali & Aarati',
+      'Sindoor Khela & Lunch'
+    ],
+    extraPosters: [
+      '/assets/images/events/durgaPuja_alt.jpg'
+    ] as string[]
   };
 
   const musicalExtravaganza = {
@@ -95,7 +100,10 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
       'Renowned Artists',
       'Immersive Music',
       'Community Celebration'
-    ]
+    ],
+    extraPosters: [
+      '/assets/images/events/muscialExtravaganza_alt.jpg'
+    ] as string[]
   };
 
   const testimonials = [
@@ -130,7 +138,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
         'Looking forward to taking the community based organization to next level celebrating the 10 years of Durga Puja completion in Greater Harrisburg.'
       ],
   author: 'Bhaskar Ganguli',
-  credit: 'Bhaskar Ganguly, Chartered Accoutant and Vocalist'
+  credit: 'Bhaskar Ganguly, Chartered Accountant and Vocalist'
     }
   ];
 
@@ -138,7 +146,8 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
     <div className="page-container hbcu-style">
       {/* Featured Durga Puja Section (Top of Home) */}
       <section id="durga-puja" className="hbcu-mission-section" style={{ paddingTop: '3.75rem', paddingBottom: '2.75rem', background: 'linear-gradient(135deg,#330000 0%,#5b0a0a 55%,#7a1b1b 100%)', color: '#fff' }}>
-        <div className="container">
+  <div className="container">
+
           <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '.75rem', marginBottom: '.75rem' }}>
             <img
               src="/assets/images/abha-logo.png"
@@ -149,22 +158,26 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
             <h1 className="hbcu-section-title" style={{ color: '#FFD700', margin: 0 }}>Featured Celebrations 2025</h1>
           </div>
           <p className="hbcu-mission-text" style={{ maxWidth: 920, color: '#ffffff' }}>{durgaPuja.description}</p>
-          <div style={{ marginTop: '1.75rem', display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(360px,1fr))', gap: '2.25rem', justifyItems: 'center', alignItems: 'start', justifyContent: 'center' }}>
+
+          <div className="featured-grid">
             {/* Durga Puja Card */}
             <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.15rem', width: '100%', maxWidth: 460, justifySelf: 'center' }}>
               <div>
                 <h2 style={{ margin: 0, color: '#FFD700', letterSpacing: '.03em', fontSize: '1.25rem' }}>{durgaPuja.title}</h2>
-                {/* Hidden subtitle to match height of the Musical card subtitle and align countdowns */}
+                {/* Hidden subtitle to match height of the Musical card subtitle and align content */}
                 <div aria-hidden="true" style={{ color: '#ffe38f', fontSize: '.95rem', marginTop: '.15rem', visibility: 'hidden' }}>placeholder</div>
-                <div style={{ marginTop: '.3rem' }}>
-                  <Countdown target="2025-09-27T10:00:00-04:00" label="Countdown" style={{ width: 'max-content', margin: '0 auto' }} />
+              </div>
+              {/* Main (non-alt) poster removed per request; extra posters (alt) shown below */}
+              {durgaPuja.extraPosters && durgaPuja.extraPosters.length > 0 && (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: '.6rem' }}>
+                  {durgaPuja.extraPosters.map((p, i) => (
+                    <div key={i} style={{ borderRadius: 10, overflow: 'hidden', border: '1px solid rgba(255,215,0,0.25)' }}>
+                      <img src={p} alt={`Durga Puja Poster ${i + 2}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
+                  ))}
                 </div>
-              </div>
-              <div style={{ position: 'relative', borderRadius: '14px', overflow: 'hidden', border: '1px solid rgba(255,215,0,0.3)', boxShadow: '0 4px 18px -4px rgba(0,0,0,0.55)', maxWidth: 420, margin: '0 auto' }}>
-                <img src={durgaPuja.flyerImage} alt="Durga Puja Flyer" style={{ width: '100%', display: 'block' }} />
-              </div>
+              )}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.75rem' }}>
-                <a href={durgaPuja.flyerImage} target="_blank" rel="noopener noreferrer" className="btn-hbcu-primary" style={{ background: '#FFD700', color: '#5b0a0a' }}>Download Flyer</a>
                 <button
                   className="btn-hbcu-primary"
                   onClick={() => {
@@ -179,7 +192,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                 </button>
                 <button onClick={() => onPageChange?.('events', 'durga-puja-2025')} className="btn-hbcu-secondary">Full Details</button>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: '0.85rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: '0.85rem' }}>
                 <div style={{ background: 'rgba(255,255,255,0.08)', padding: '.85rem .9rem', borderRadius: '10px' }}>
                   <strong style={{ color: '#FFD700', display: 'block', fontSize: '.75rem', letterSpacing: '.1em' }}>DATE</strong>
                   <span>{durgaPuja.date}</span>
@@ -192,25 +205,21 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                   <strong style={{ color: '#FFD700', display: 'block', fontSize: '.75rem', letterSpacing: '.1em' }}>VENUE</strong>
                   <span>{durgaPuja.venue}</span>
                 </div>
-              </div>
-              <div>
-                <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Featured Segments</h3>
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.4rem', gridTemplateColumns: 'repeat(auto-fit,minmax(190px,1fr))' }}>
-                  {durgaPuja.artistSegments.map((s, i) => (
-                    <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '.5rem', fontSize: '.9rem' }}>
-                      <span style={{ color: '#FFD700' }}>✦</span>{s}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Highlights</h3>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.55rem' }}>
-                  {durgaPuja.highlights.map((h, i) => (
-                    <span key={i} style={{ background: 'rgba(255,255,255,0.08)', padding: '.45rem .7rem', borderRadius: '24px', fontSize: '.7rem', letterSpacing: '.08em' }}>{h}</span>
-                  ))}
+                <div style={{ background: 'rgba(255,255,255,0.08)', padding: '.85rem .9rem', borderRadius: '10px' }}>
+                  <strong style={{ color: '#FFD700', display: 'block', fontSize: '.75rem', letterSpacing: '.1em' }}>COUNTDOWN</strong>
+                  <div style={{ marginTop: '.35rem', display: 'flex', justifyContent: 'center' }}>
+                    <Countdown
+                      target="2025-09-27T10:00:00-04:00"
+                      label=""
+                      compact
+                      style={{ background: 'transparent', border: 'none', padding: 0, width: 'max-content', borderRadius: 0 }}
+                    />
+                  </div>
                 </div>
               </div>
+              
+
+              {/* Segments/Highlights moved below Ticket Prices */}
             </div>
 
             {/* Musical Extravaganza Card */}
@@ -220,15 +229,18 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                 {musicalExtravaganza.subtitle && (
                   <div style={{ color: '#ffe38f', fontSize: '.95rem', marginTop: '.15rem' }}>{musicalExtravaganza.subtitle}</div>
                 )}
-                <div style={{ marginTop: '.3rem' }}>
-                  <Countdown target="2025-09-26T17:30:00-04:00" label="Countdown" style={{ width: 'max-content', margin: '0 auto' }} />
+              </div>
+              {/* Main (non-alt) poster removed per request; extra posters (alt) shown below */}
+              {musicalExtravaganza.extraPosters && musicalExtravaganza.extraPosters.length > 0 && (
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: '.6rem' }}>
+                  {musicalExtravaganza.extraPosters.map((p, i) => (
+                    <div key={i} style={{ borderRadius: 10, overflow: 'hidden', border: '1px solid rgba(255,215,0,0.25)' }}>
+                      <img src={p} alt={`Musical Extravaganza Poster ${i + 2}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    </div>
+                  ))}
                 </div>
-              </div>
-              <div style={{ position: 'relative', borderRadius: '14px', overflow: 'hidden', border: '1px solid rgba(255,215,0,0.3)', boxShadow: '0 4px 18px -4px rgba(0,0,0,0.55)', maxWidth: 420, margin: '0 auto' }}>
-                <img src={musicalExtravaganza.flyerImage} alt="Musical Extravaganza Flyer" style={{ width: '100%', display: 'block' }} />
-              </div>
+              )}
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.75rem' }}>
-                <a href={musicalExtravaganza.flyerImage} target="_blank" rel="noopener noreferrer" className="btn-hbcu-primary" style={{ background: '#FFD700', color: '#5b0a0a' }}>Download Flyer</a>
                 <button
                   className="btn-hbcu-primary"
                   onClick={() => {
@@ -243,7 +255,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                 </button>
                 <button onClick={() => onPageChange?.('events', 'a-musical-extravaganza-with-rathijit-shreya')} className="btn-hbcu-secondary">Full Details</button>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(160px,1fr))', gap: '0.85rem' }}>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: '0.85rem' }}>
                 <div style={{ background: 'rgba(255,255,255,0.08)', padding: '.85rem .9rem', borderRadius: '10px' }}>
                   <strong style={{ color: '#FFD700', display: 'block', fontSize: '.75rem', letterSpacing: '.1em' }}>DATE</strong>
                   <span>{musicalExtravaganza.date}</span>
@@ -256,13 +268,138 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                   <strong style={{ color: '#FFD700', display: 'block', fontSize: '.75rem', letterSpacing: '.1em' }}>VENUE</strong>
                   <span>{musicalExtravaganza.venue}</span>
                 </div>
+                <div style={{ background: 'rgba(255,255,255,0.08)', padding: '.85rem .9rem', borderRadius: '10px' }}>
+                  <strong style={{ color: '#FFD700', display: 'block', fontSize: '.75rem', letterSpacing: '.1em' }}>COUNTDOWN</strong>
+                  <div style={{ marginTop: '.35rem', display: 'flex', justifyContent: 'center' }}>
+                    <Countdown
+                      target="2025-09-26T17:30:00-04:00"
+                      label=""
+                      compact
+                      style={{ background: 'transparent', border: 'none', padding: 0, width: 'max-content', borderRadius: 0 }}
+                    />
+                  </div>
+                </div>
               </div>
+              {/* Segments/Highlights moved below Ticket Prices */}
+            </div>
+
+            {/* Ticket Prices spanning across both columns, placed below both cards */}
+            <section aria-labelledby="ticket-prices-heading" style={{ gridColumn: '1 / -1', width: '100%', display: 'flex', justifyContent: 'center' }}>
+              <div style={{ width: '100%', maxWidth: 1000 }}>
+                <div style={{
+                  background: 'rgba(255,255,255,0.06)',
+                  border: '1px solid rgba(255,215,0,0.35)',
+                  borderRadius: 16,
+                  padding: '1.1rem 1.1rem 1.2rem',
+                  boxShadow: '0 6px 18px rgba(0,0,0,0.25)'
+                }}>
+                  <h2 id="ticket-prices-heading" style={{ margin: 0, color: '#FFD700', fontSize: '1.2rem', letterSpacing: '.03em', textAlign: 'center' }}>Ticket Prices</h2>
+                  <div style={{ display: 'grid', gap: '.9rem', marginTop: '.9rem', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))' }}>
+                    {/* Adults */}
+                    <div>
+                      <div style={{ fontWeight: 700, color: '#fff', marginBottom: '.35rem' }}>Adults (18+)</div>
+                      <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.35rem' }}>
+                        <li style={{ color: '#f8f3e0' }}>✦ $160 (Fri–Sat–Sun)</li>
+                        <li style={{ color: '#f8f3e0' }}>✦ $100 (Sat–Sun)</li>
+                        <li style={{ color: '#f8f3e0' }}>✦ $65 (Friday), $65 (Saturday), $40 (Sunday)</li>
+                      </ul>
+                    </div>
+
+                    {/* Students */}
+                    <div>
+                      <div style={{ fontWeight: 700, color: '#fff', marginBottom: '.35rem' }}>Students (18+)</div>
+                      <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.35rem' }}>
+                        <li style={{ color: '#f8f3e0' }}>✦ $140 (Fri–Sat–Sun)</li>
+                        <li style={{ color: '#f8f3e0' }}>✦ $75 (Sat–Sun)</li>
+                        <li style={{ color: '#f8f3e0' }}>✦ $65 (Friday), $50 (Saturday), $30 (Sunday)</li>
+                      </ul>
+                    </div>
+
+                    {/* Minors */}
+                    <div>
+                      <div style={{ fontWeight: 700, color: '#fff', marginBottom: '.35rem' }}>Minor (7–17)</div>
+                      <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.35rem' }}>
+                        <li style={{ color: '#f8f3e0' }}>✦ $70 (Fri–Sat–Sun)</li>
+                        <li style={{ color: '#f8f3e0' }}>✦ $40 (Sat–Sun)</li>
+                        <li style={{ color: '#f8f3e0' }}>✦ $30 (Friday), $30 (Saturday), $20 (Sunday)</li>
+                      </ul>
+                    </div>
+
+                    {/* Children */}
+                    <div>
+                      <div style={{ fontWeight: 700, color: '#fff', marginBottom: '.35rem' }}>Children below 7</div>
+                      <div style={{ color: '#f8f3e0' }}>✦ Free</div>
+                    </div>
+
+                    {/* Membership Discount */}
+                    <div style={{
+                      marginTop: '.25rem',
+                      background: 'rgba(212,175,55,0.08)',
+                      border: '1px dashed rgba(255,215,0,0.45)',
+                      borderRadius: 12,
+                      padding: '.6rem .8rem',
+                      color: '#ffe38f'
+                    }}>
+                      <strong style={{ color: '#FFD700' }}>Membership Discount:</strong> Adults $10, Minor (7–17) $5
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            {/* Durga Puja - Segments and Highlights (now below Ticket Prices) */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.15rem', width: '100%', maxWidth: 460, justifySelf: 'center' }}>
               <div>
                 <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Featured Segments</h3>
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.4rem', gridTemplateColumns: 'repeat(auto-fit,minmax(190px,1fr))' }}>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.4rem 1rem', gridTemplateColumns: 'repeat(2,minmax(220px,1fr))', alignItems: 'start', textAlign: 'left' }}>
+                  {durgaPuja.artistSegments.map((s, i) => (
+                    <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '.5rem', fontSize: '.9rem' }}>
+                      <span style={{ color: '#FFD700', flex: '0 0 auto', lineHeight: 1.2, marginTop: '2px' }}>✦</span>
+                      <span style={{ flex: '1 1 auto', minWidth: 0 }}>{s}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+              <div>
+                <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Highlights</h3>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.55rem' }}>
+                  {durgaPuja.highlights.map((h, i) => {
+                    const isDate = /^\d{1,2} \w{3} \d{4}$/.test(h);
+                    const startsNewLine = h === '28 Sep 2025';
+                    return (
+                      <React.Fragment key={i}>
+                        {startsNewLine && (
+                          <span style={{ flexBasis: '100%', width: '100%', height: 0 }} aria-hidden="true" />
+                        )}
+                        <span
+                          style={{
+                            background: isDate ? 'rgba(255,215,0,0.2)' : 'rgba(255,255,255,0.08)',
+                            color: isDate ? '#fff' : undefined,
+                            padding: '.45rem .7rem',
+                            borderRadius: '24px',
+                            fontSize: '.7rem',
+                            letterSpacing: '.08em',
+                            border: isDate ? '1px solid rgba(255,215,0,0.45)' : undefined
+                          }}
+                        >
+                          {h}
+                        </span>
+                      </React.Fragment>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
+
+            {/* Musical Extravaganza - Segments and Highlights (now below Ticket Prices) */}
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.15rem', width: '100%', maxWidth: 460, justifySelf: 'center' }}>
+              <div>
+                <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Featured Segments</h3>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.4rem 1rem', gridTemplateColumns: 'repeat(2,minmax(220px,1fr))', alignItems: 'start', textAlign: 'left' }}>
                   {musicalExtravaganza.artistSegments.map((s, i) => (
-                    <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '.5rem', fontSize: '.9rem' }}>
-                      <span style={{ color: '#FFD700' }}>✦</span>{s}
+                    <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '.5rem', fontSize: '.9rem' }}>
+                      <span style={{ color: '#FFD700', flex: '0 0 auto', lineHeight: 1.2, marginTop: '2px' }}>✦</span>
+                      <span style={{ flex: '1 1 auto', minWidth: 0 }}>{s}</span>
                     </li>
                   ))}
                 </ul>
@@ -401,7 +538,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
               <p className="hbcu-card-description">
                 Join a thriving community that celebrates Bengali culture and provides support for families settling in Central Pennsylvania.
               </p>
-              <button onClick={() => onPageChange?.('contact')} className="hbcu-card-link">
+                <button onClick={() => onPageChange?.('contact')} className="btn-hbcu-primary">
                 Contact Us
               </button>
             </div>
@@ -447,7 +584,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
       <section className="hbcu-investment-section" style={{ paddingTop: '3.25rem', paddingBottom: '3.25rem' }}>
         <div className="container">
           <h2 className="hbcu-section-title-dark" style={{ marginBottom: '.6rem' }}>Community Voices</h2>
-          <p className="hbcu-heritage-description" style={{ maxWidth: 840 }}>Reflections from members about ABHA's growth, inclusiveness, and cultural impact.</p>
+          <p className="hbcu-heritage-description" style={{ maxWidth: 840, color: '#ffffff' }}>Reflections from members about ABHA's growth, inclusiveness, and cultural impact.</p>
           <div style={{ display: 'grid', gap: '1.9rem', marginTop: '2.4rem', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))' }}>
             {testimonials.map((t, i) => (
               <div key={i} className="event-card" style={{ padding: '1.65rem 1.5rem 1.8rem', display: 'flex', flexDirection: 'column', gap: '.85rem' }}>
