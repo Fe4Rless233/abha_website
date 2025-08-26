@@ -24,6 +24,12 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange }
   const [attendeeCount, setAttendeeCount] = useState(1);
   const [attendees, setAttendees] = useState<string[]>(['']);
   const [eventName, setEventName] = useState('');
+  // Ticketing details
+  type AttendeeCategory = 'adult' | 'student' | 'youngAdult' | 'child';
+  type DayPackage = 'fri' | 'sat' | 'sun' | 'satSun' | 'friSatSun';
+  interface AttendeeDetail { name: string; category: AttendeeCategory; member: boolean; wantsMembership: boolean; pkg: DayPackage; }
+  const [attendeeDetails, setAttendeeDetails] = useState<AttendeeDetail[]>([{ name: '', category: 'adult', member: false, wantsMembership: false, pkg: 'friSatSun' }]);
+  const [showPrices, setShowPrices] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -70,11 +76,40 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange }
       }
       return prev;
     });
+    setAttendeeDetails(prev => {
+      if (attendeeCount > prev.length) {
+        return [...prev, ...Array.from({ length: attendeeCount - prev.length }, () => ({ name: '', category: 'adult' as AttendeeCategory, member: false, wantsMembership: false, pkg: 'friSatSun' as DayPackage }))];
+      } else if (attendeeCount < prev.length) {
+        return prev.slice(0, attendeeCount);
+      }
+      return prev;
+    });
   }, [attendeeCount]);
 
   const handleAttendeeChange = (index: number, value: string) => {
     setAttendees(prev => prev.map((v, i) => (i === index ? value : v)));
+    setAttendeeDetails(prev => prev.map((v, i) => (i === index ? { ...v, name: value } : v)));
   };
+
+  // Pricing model from Home (Adults, Students, Young Adult, Children)
+  const priceFor = (cat: AttendeeCategory, pkg: DayPackage, isMember: boolean) => {
+    // Base prices
+    const base: Record<AttendeeCategory, Record<DayPackage, number>> = {
+      adult: { friSatSun: 160, satSun: 100, fri: 65, sat: 65, sun: 40 },
+      student: { friSatSun: 140, satSun: 75, fri: 65, sat: 50, sun: 30 },
+      youngAdult: { friSatSun: 70, satSun: 40, fri: 30, sat: 30, sun: 20 },
+      child: { friSatSun: 0, satSun: 0, fri: 0, sat: 0, sun: 0 }
+    };
+    let p = base[cat][pkg];
+    // Membership discounts
+    if (isMember) {
+      if (cat === 'adult' || cat === 'student') p = Math.max(0, p - 10);
+      if (cat === 'youngAdult') p = Math.max(0, p - 5);
+    }
+    return p;
+  };
+
+  const totalPrice = attendeeDetails.reduce((sum, a) => sum + priceFor(a.category, a.pkg, a.member), 0);
 
   // Persist partial form state (excluding attendees list for simplicity) to sessionStorage
   useEffect(() => {
@@ -113,12 +148,45 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange }
         if (attendees.some(a => !a.trim())) throw new Error('All attendee names required');
       } else if (!message.trim()) throw new Error('Message required');
 
+      // Build pricing summary for ticketing
+      const pricingSummary = isTicketing ? (() => {
+        const lines: string[] = [];
+        lines.push(`Event: ${eventName || 'N/A'}`);
+        lines.push('Attendees:');
+        attendeeDetails.forEach((a, idx) => {
+          const price = priceFor(a.category, a.pkg, a.member);
+          lines.push(`  ${idx + 1}. ${attendees[idx] || a.name || 'Name'} — ${a.category} — ${a.pkg} — ${a.member ? 'Member' : 'Non-member'}${a.wantsMembership ? ' (wants membership)' : ''} — $${price}`);
+        });
+        lines.push(`Total: $${totalPrice}`);
+        if (message.trim()) {
+          lines.push('Notes:');
+          lines.push(message.trim());
+        }
+        return lines.join('\n');
+      })() : undefined;
+      // Build pricing summary string (for ticketing and for mailto fallback)
+      const pricingSummary = isTicketing ? (() => {
+        const lines: string[] = [];
+        lines.push(`Event: ${eventName || 'N/A'}`);
+        lines.push('Attendees:');
+        attendeeDetails.forEach((a, idx) => {
+          const price = priceFor(a.category, a.pkg, a.member);
+          lines.push(`  ${idx + 1}. ${attendees[idx] || a.name || 'Name'} — ${a.category} — ${a.pkg} — ${a.member ? 'Member' : 'Non-member'}${a.wantsMembership ? ' (wants membership)' : ''} — $${price}`);
+        });
+        lines.push(`Total: $${totalPrice}`);
+        if (message.trim()) {
+          lines.push('Notes:');
+          lines.push(message.trim());
+        }
+        return lines.join('\n');
+      })() : undefined;
+
       await submitContact({
         fullName: isTicketing ? (attendees[0]?.trim() || '') : fullName.trim(),
         email: email.trim(),
         phone: phone.trim() || undefined,
         subject: subject || (isTicketing ? 'Ticketing' : 'General'),
-        message: isTicketing ? undefined : message.trim(),
+        message: isTicketing ? pricingSummary : message.trim(),
         isTicketing,
         attendees: isTicketing ? attendees.map(n => ({ name: n.trim() })) : undefined,
         submittedAt: new Date().toISOString(),
@@ -136,7 +204,27 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange }
       setHoneypot('');
       try { sessionStorage.removeItem('abha_contact_draft_v1'); } catch {}
     } catch (err: any) {
-      setError(err?.message || 'Submission failed. Please try again.');
+      // Fallback: open user's email client once remote quota is reached or any remote failure occurs
+      const to = 'associationbengalisharrisburg@hotmail.com';
+      const subj = `ABHA ${isTicketing ? 'Ticketing' : 'Contact'}: ${subject || (isTicketing ? 'Ticketing' : 'General')}`;
+      const bodyLines: string[] = [];
+      bodyLines.push(`Name: ${isTicketing ? (attendees[0]?.trim() || '') : fullName.trim()}`);
+      bodyLines.push(`Email: ${email.trim()}`);
+      if (phone.trim()) bodyLines.push(`Phone: ${phone.trim()}`);
+      if (isTicketing) {
+        bodyLines.push('');
+        bodyLines.push('Ticket Request');
+        if (eventName) bodyLines.push(`Event: ${eventName}`);
+        bodyLines.push('');
+        if (pricingSummary) bodyLines.push(pricingSummary);
+      } else {
+        bodyLines.push('');
+        bodyLines.push(message.trim() || '(no message)');
+      }
+      const body = encodeURIComponent(bodyLines.join('\n'));
+      const mailtoUrl = `mailto:${to}?subject=${encodeURIComponent(subj)}&body=${body}`;
+      setError('We reached the monthly form limit. Opening your email client to contact us directly.');
+      try { window.location.href = mailtoUrl; } catch {}
     } finally {
       setSubmitting(false);
     }
@@ -383,27 +471,60 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange }
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '.85rem' }}>
                       {attendees.map((val, i) => (
-                        <div key={i} style={{ display: 'flex', flexDirection: 'column' }}>
-                          <label style={{ fontSize: '.7rem', letterSpacing: '.15em', marginBottom: '.3rem', color: 'var(--primary-red)', fontWeight: 600 }}>Person {i + 1} Name</label>
-                          <input
-                            type="text"
-                            required
-                            value={val}
-                            onChange={(e) => handleAttendeeChange(i, e.target.value)}
-                            placeholder="Enter full name"
-                            style={{
-                              width: '100%',
-                              padding: '10px 12px',
-                              border: '2px solid rgba(212, 175, 55, 0.3)',
-                              borderRadius: '8px',
-                              fontSize: '15px'
-                            }}
-                            onFocus={(e) => e.target.style.borderColor = 'var(--primary-red)'}
-                            onBlur={(e) => e.target.style.borderColor = 'rgba(212, 175, 55, 0.3)'}
-                          />
+                        <div key={i} style={{ display: 'grid', gridTemplateColumns: '1.5fr 1fr 1fr 1fr', gap: '.6rem', alignItems: 'end' }}>
+                          <div style={{ display: 'flex', flexDirection: 'column' }}>
+                            <label style={{ fontSize: '.7rem', letterSpacing: '.15em', marginBottom: '.3rem', color: 'var(--primary-red)', fontWeight: 600 }}>Person {i + 1} Name</label>
+                            <input
+                              type="text"
+                              required
+                              value={val}
+                              onChange={(e) => handleAttendeeChange(i, e.target.value)}
+                              placeholder="Full name"
+                              style={{ width: '100%', padding: '10px 12px', border: '2px solid rgba(212, 175, 55, 0.3)', borderRadius: '8px', fontSize: '15px' }}
+                              onFocus={(e) => e.target.style.borderColor = 'var(--primary-red)'}
+                              onBlur={(e) => e.target.style.borderColor = 'rgba(212, 175, 55, 0.3)'}
+                            />
+                          </div>
+                          <div>
+                            <label style={{ display: 'block', marginBottom: '.3rem', color: 'var(--primary-red)', fontWeight: 600, fontSize: '.75rem' }}>Category</label>
+                            <select value={attendeeDetails[i]?.category || 'adult'} onChange={(e) => setAttendeeDetails(prev => prev.map((v, idx) => idx === i ? { ...v, category: e.target.value as AttendeeCategory } : v))} style={{ width: '100%', padding: '.6rem', border: '2px solid rgba(212,175,55,.3)', borderRadius: 8 }}>
+                              <option value="adult">Adult (18+)</option>
+                              <option value="student">Student (18+)</option>
+                              <option value="youngAdult">Young Adult (7–17)</option>
+                              <option value="child">Child (&lt;7)</option>
+                            </select>
+                          </div>
+                          <div>
+                            <label style={{ display: 'block', marginBottom: '.3rem', color: 'var(--primary-red)', fontWeight: 600, fontSize: '.75rem' }}>Package</label>
+                            <select value={attendeeDetails[i]?.pkg || 'friSatSun'} onChange={(e) => setAttendeeDetails(prev => prev.map((v, idx) => idx === i ? { ...v, pkg: e.target.value as DayPackage } : v))} style={{ width: '100%', padding: '.6rem', border: '2px solid rgba(212,175,55,.3)', borderRadius: 8 }}>
+                              <option value="friSatSun">Fri–Sat–Sun</option>
+                              <option value="satSun">Sat–Sun</option>
+                              <option value="fri">Friday</option>
+                              <option value="sat">Saturday</option>
+                              <option value="sun">Sunday</option>
+                            </select>
+                          </div>
+                          <div style={{ display: 'grid', gap: '.35rem' }}>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '.4rem', fontSize: '.8rem' }}>
+                              <input type="checkbox" checked={attendeeDetails[i]?.member || false} onChange={(e) => setAttendeeDetails(prev => prev.map((v, idx) => idx === i ? { ...v, member: e.target.checked } : v))} />
+                              Member</label>
+                            <label style={{ display: 'flex', alignItems: 'center', gap: '.4rem', fontSize: '.8rem' }}>
+                              <input type="checkbox" checked={attendeeDetails[i]?.wantsMembership || false} onChange={(e) => setAttendeeDetails(prev => prev.map((v, idx) => idx === i ? { ...v, wantsMembership: e.target.checked } : v))} />
+                              Interested in Membership</label>
+                          </div>
+                          <div style={{ gridColumn: '1 / -1', fontSize: '.85rem', color: '#333' }}>
+                            Estimated Price: <strong>${priceFor(attendeeDetails[i]?.category || 'adult', attendeeDetails[i]?.pkg || 'friSatSun', attendeeDetails[i]?.member || false)}</strong>
+                          </div>
                         </div>
                       ))}
                     </div>
+                    {showPrices && (
+                      <div style={{ marginTop: '.5rem', padding: '.9rem', border: '1px dashed rgba(212,175,55,.5)', borderRadius: 8, background: 'rgba(212,175,55,.06)' }}>
+                        <div style={{ fontWeight: 700, marginBottom: '.4rem', color: 'var(--primary-red)' }}>Estimated Total</div>
+                        <div style={{ fontSize: '1.25rem', fontWeight: 800 }}>${totalPrice}</div>
+                        <div style={{ marginTop: '.35rem', fontSize: '.8rem', color: '#333' }}>Final pricing will be confirmed by the organizers.</div>
+                      </div>
+                    )}
                     <div>
                       <label htmlFor="message" style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--primary-red)', fontWeight: '600' }}>
                         Additional Notes (Optional)
