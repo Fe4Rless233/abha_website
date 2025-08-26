@@ -29,6 +29,15 @@ body {
   -moz-osx-font-smoothing: grayscale;
   min-height: 100vh;
   position: relative;
+  overflow-x: hidden;
+}
+
+html { overflow-x: hidden; }
+
+/* Ensure media never exceeds viewport width on mobile */
+img, video, iframe, canvas, svg {
+  max-width: 100%;
+  height: auto;
 }
 
 /* Utility Animations */
@@ -87,6 +96,11 @@ body::before {
   margin-left: auto;
   margin-right: auto;
   padding: 0 2rem;
+}
+
+@media (max-width: 480px) {
+  .container { padding-left: max(1rem, env(safe-area-inset-left)); padding-right: max(1rem, env(safe-area-inset-right)); }
+  .floating-navbar { width: 96%; margin: 10px auto; }
 }
 
 .section {
