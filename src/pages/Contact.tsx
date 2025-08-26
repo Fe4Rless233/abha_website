@@ -29,7 +29,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange }
   type DayPackage = 'fri' | 'sat' | 'sun' | 'satSun' | 'friSatSun';
   interface AttendeeDetail { name: string; category: AttendeeCategory; member: boolean; wantsMembership: boolean; pkg: DayPackage; }
   const [attendeeDetails, setAttendeeDetails] = useState<AttendeeDetail[]>([{ name: '', category: 'adult', member: false, wantsMembership: false, pkg: 'friSatSun' }]);
-  const [showPrices, setShowPrices] = useState(true);
+  const [showPrices] = useState(true);
   const [submitting, setSubmitting] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -140,6 +140,23 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange }
     e.preventDefault();
     setSubmitting(true);
     setError(null);
+    // Helper to build pricing summary text (used by both normal submit and mailto fallback)
+    const buildPricingSummary = (): string | undefined => {
+      if (!isTicketing) return undefined;
+      const lines: string[] = [];
+      lines.push(`Event: ${eventName || 'N/A'}`);
+      lines.push('Attendees:');
+      attendeeDetails.forEach((a, idx) => {
+        const price = priceFor(a.category, a.pkg, a.member);
+        lines.push(`  ${idx + 1}. ${attendees[idx] || a.name || 'Name'} — ${a.category} — ${a.pkg} — ${a.member ? 'Member' : 'Non-member'}${a.wantsMembership ? ' (wants membership)' : ''} — $${price}`);
+      });
+      lines.push(`Total: $${totalPrice}`);
+      if (message.trim()) {
+        lines.push('Notes:');
+        lines.push(message.trim());
+      }
+      return lines.join('\n');
+    };
     try {
       // Basic validation
       if (!isTicketing && !fullName.trim()) throw new Error('Name required');
@@ -148,38 +165,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange }
         if (attendees.some(a => !a.trim())) throw new Error('All attendee names required');
       } else if (!message.trim()) throw new Error('Message required');
 
-      // Build pricing summary for ticketing
-      const pricingSummary = isTicketing ? (() => {
-        const lines: string[] = [];
-        lines.push(`Event: ${eventName || 'N/A'}`);
-        lines.push('Attendees:');
-        attendeeDetails.forEach((a, idx) => {
-          const price = priceFor(a.category, a.pkg, a.member);
-          lines.push(`  ${idx + 1}. ${attendees[idx] || a.name || 'Name'} — ${a.category} — ${a.pkg} — ${a.member ? 'Member' : 'Non-member'}${a.wantsMembership ? ' (wants membership)' : ''} — $${price}`);
-        });
-        lines.push(`Total: $${totalPrice}`);
-        if (message.trim()) {
-          lines.push('Notes:');
-          lines.push(message.trim());
-        }
-        return lines.join('\n');
-      })() : undefined;
-      // Build pricing summary string (for ticketing and for mailto fallback)
-      const pricingSummary = isTicketing ? (() => {
-        const lines: string[] = [];
-        lines.push(`Event: ${eventName || 'N/A'}`);
-        lines.push('Attendees:');
-        attendeeDetails.forEach((a, idx) => {
-          const price = priceFor(a.category, a.pkg, a.member);
-          lines.push(`  ${idx + 1}. ${attendees[idx] || a.name || 'Name'} — ${a.category} — ${a.pkg} — ${a.member ? 'Member' : 'Non-member'}${a.wantsMembership ? ' (wants membership)' : ''} — $${price}`);
-        });
-        lines.push(`Total: $${totalPrice}`);
-        if (message.trim()) {
-          lines.push('Notes:');
-          lines.push(message.trim());
-        }
-        return lines.join('\n');
-      })() : undefined;
+  const pricingSummary = buildPricingSummary();
 
       await submitContact({
         fullName: isTicketing ? (attendees[0]?.trim() || '') : fullName.trim(),
@@ -216,7 +202,8 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange }
         bodyLines.push('Ticket Request');
         if (eventName) bodyLines.push(`Event: ${eventName}`);
         bodyLines.push('');
-        if (pricingSummary) bodyLines.push(pricingSummary);
+        const mailSummary = buildPricingSummary();
+        if (mailSummary) bodyLines.push(mailSummary);
       } else {
         bodyLines.push('');
         bodyLines.push(message.trim() || '(no message)');
