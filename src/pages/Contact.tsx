@@ -456,40 +456,73 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange, 
                       <label htmlFor="attendees" style={{ display: 'block', marginBottom: '0.5rem', color: 'var(--primary-red)', fontWeight: '600' }}>
                         Number of People
                       </label>
-                      <input
-                        type="text"
-                        inputMode="numeric"
-                        pattern="[0-9]*"
-                        id="attendees"
-                        value={attendeeCountField}
-                        onChange={(e) => {
-                          const digits = (e.target.value || '').replace(/\D/g, '').slice(0, 2);
-                          setAttendeeCountField(digits);
-                        }}
-                        onKeyDown={(e) => {
-                          if (e.key === 'Enter') {
-                            e.preventDefault();
+                      <div style={{ display: 'inline-flex', alignItems: 'center', gap: '.5rem' }}>
+                        <button
+                          type="button"
+                          aria-label="Decrease"
+                          onClick={() => {
+                            const n = Math.max(1, (Number(attendeeCountField) || attendeeCount) - 1);
+                            setAttendeeCount(n);
+                            setAttendeeCountField(String(n));
+                          }}
+                          className="btn-hbcu-secondary"
+                          style={{ padding: '.4rem .6rem' }}
+                          disabled={(Number(attendeeCountField || attendeeCount) <= 1)}
+                        >
+                          −
+                        </button>
+                        <input
+                          type="text"
+                          inputMode="numeric"
+                          enterKeyHint="done"
+                          autoComplete="off"
+                          pattern="[0-9]*"
+                          id="attendees"
+                          value={attendeeCountField}
+                          onChange={(e) => {
+                            const digits = (e.target.value || '').replace(/\D/g, '').slice(0, 2);
+                            setAttendeeCountField(digits);
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Enter') {
+                              e.preventDefault();
+                              const n = Math.max(1, Math.min(12, Number(attendeeCountField) || 1));
+                              setAttendeeCount(n);
+                              setAttendeeCountField(String(n));
+                              (e.currentTarget as HTMLInputElement).blur();
+                            }
+                          }}
+                          onBlur={() => {
                             const n = Math.max(1, Math.min(12, Number(attendeeCountField) || 1));
                             setAttendeeCount(n);
                             setAttendeeCountField(String(n));
-                            (e.currentTarget as HTMLInputElement).blur();
-                          }
-                        }}
-                        onBlur={() => {
-                          const n = Math.max(1, Math.min(12, Number(attendeeCountField) || 1));
-                          setAttendeeCount(n);
-                          setAttendeeCountField(String(n));
-                        }}
-                        style={{
-                          width: '140px',
-                          padding: '10px 12px',
-                          border: '2px solid rgba(212, 175, 55, 0.3)',
-                          borderRadius: '8px',
-                          fontSize: '16px'
-                        }}
-                        onFocus={(e) => e.target.style.borderColor = 'var(--primary-red)'}
-                        onBlurCapture={(e) => (e.currentTarget as HTMLInputElement).style.borderColor = 'rgba(212, 175, 55, 0.3)'}
-                      />
+                          }}
+                          style={{
+                            width: '140px',
+                            padding: '10px 12px',
+                            border: '2px solid rgba(212, 175, 55, 0.3)',
+                            borderRadius: '8px',
+                            fontSize: '16px',
+                            textAlign: 'center'
+                          }}
+                          onFocus={(e) => e.target.style.borderColor = 'var(--primary-red)'}
+                          onBlurCapture={(e) => (e.currentTarget as HTMLInputElement).style.borderColor = 'rgba(212, 175, 55, 0.3)'}
+                        />
+                        <button
+                          type="button"
+                          aria-label="Increase"
+                          onClick={() => {
+                            const n = Math.min(12, (Number(attendeeCountField) || attendeeCount) + 1);
+                            setAttendeeCount(n);
+                            setAttendeeCountField(String(n));
+                          }}
+                          className="btn-hbcu-secondary"
+                          style={{ padding: '.4rem .6rem' }}
+                          disabled={(Number(attendeeCountField || attendeeCount) >= 12)}
+                        >
+                          +
+                        </button>
+                      </div>
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '.85rem' }}>
                       {attendees.map((val, i) => (
