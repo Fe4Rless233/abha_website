@@ -1260,6 +1260,16 @@ body::before {
   padding: 2.5rem;
 }
 
+@media (max-width: 420px) {
+  .event-content { padding: 1.25rem; }
+  .event-card { border-radius: 16px; }
+}
+
+.event-card, .event-card * {
+  word-wrap: break-word;
+  overflow-wrap: anywhere;
+}
+
 .event-date {
   background: var(--gradient-primary);
   color: white;
