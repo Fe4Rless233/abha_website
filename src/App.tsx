@@ -92,7 +92,7 @@ function App() {
       case 'community':
         return <CommunityPage key={`community-${pageVisitToken}`} onPageChange={handlePageChange} />;
       case 'contact':
-        return <ContactPage key={`contact-${pageVisitToken}`} onPageChange={handlePageChange} />;
+        return <ContactPage key={`contact-${pageVisitToken}`} onPageChange={handlePageChange} scrollToId={eventToExpand} />;
       default:
         return <HomePage onPageChange={handlePageChange} />;
     }
