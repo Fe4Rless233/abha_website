@@ -315,9 +315,9 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                       </ul>
                     </div>
 
-                    {/* Minors */}
+                    {/* Young Adults */}
                     <div>
-                      <div style={{ fontWeight: 700, color: '#fff', marginBottom: '.35rem' }}>Minor (7–17)</div>
+                      <div style={{ fontWeight: 700, color: '#fff', marginBottom: '.35rem' }}>Young Adult (7–17)</div>
                       <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.35rem' }}>
                         <li style={{ color: '#f8f3e0' }}>✦ $70 (Fri–Sat–Sun)</li>
                         <li style={{ color: '#f8f3e0' }}>✦ $40 (Sat–Sun)</li>
@@ -340,7 +340,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                       padding: '.6rem .8rem',
                       color: '#ffe38f'
                     }}>
-                      <strong style={{ color: '#FFD700' }}>Membership Discount:</strong> Adults $10, Minor (7–17) $5
+                      <strong style={{ color: '#FFD700' }}>Membership Discount:</strong> Adults $10, Young Adult (7–17) $5
                     </div>
                   </div>
                 </div>
