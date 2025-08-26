@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import './styles/index.css';
 
 // Import components
@@ -20,11 +20,60 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   const handlePageChange = (page: string, eventId?: string) => {
+    // Update internal state
     setCurrentPage(page);
     setEventToExpand(eventId);
     setPageVisitToken(v => v + 1);
     setIsMobileMenuOpen(false); // Close menu on page change
+
+    // Push browser history/hash for proper back/forward behavior
+    try {
+      const hash = `#${page}${eventId ? `/${eventId}` : ''}`;
+      if (typeof window !== 'undefined') {
+        if (window.location.hash !== hash) {
+          window.history.pushState({ page, eventId }, '', hash);
+        } else {
+          // still record a state change without altering the URL
+          window.history.pushState({ page, eventId }, '');
+        }
+      }
+    } catch {
+      // ignore history errors
+    }
   };
+
+  // Initialize from hash and support back/forward via popstate/hashchange
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const parseHash = () => {
+      const raw = (window.location.hash || '').replace(/^#/, '');
+      if (!raw) return; // keep defaults
+      const [pageFromHash, eventIdFromHash] = raw.split('/');
+      const page = pageFromHash || 'home';
+      setCurrentPage(page);
+      setEventToExpand(eventIdFromHash);
+      setPageVisitToken(v => v + 1);
+    };
+
+    // On first load, set a hash for the current page if none exists
+    if (!window.location.hash) {
+      try {
+        window.history.replaceState({ page: currentPage }, '', `#${currentPage}`);
+      } catch {}
+    } else {
+      parseHash();
+    }
+
+    const onNav = () => parseHash();
+    window.addEventListener('popstate', onNav);
+    window.addEventListener('hashchange', onNav);
+    return () => {
+      window.removeEventListener('popstate', onNav);
+      window.removeEventListener('hashchange', onNav);
+    };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleMobileMenuToggle = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);

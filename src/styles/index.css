@@ -167,6 +167,23 @@ body::before {
   font-weight: 400;
 }
 
+/* Featured cards grid: exactly 2 columns on desktop, 1 on small screens */
+.featured-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2.25rem;
+  justify-items: center;
+  align-items: start;
+  justify-content: center;
+  margin-top: 1.75rem;
+}
+
+@media (max-width: 900px) {
+  .featured-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 .text-gradient-primary {
   color: var(--primary-red);
   background: unset;
@@ -1804,6 +1821,18 @@ body::before {
   text-decoration: none;
   font-weight: 600;
   transition: color 0.3s ease;
+  /* Ensure button elements styled with this class look like links */
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  /* Normalize typography so <button> and <a> look identical */
+  font: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  display: inline;
+  margin: 0;
+  text-transform: none;
 }
 
 .hbcu-card-link:hover {
