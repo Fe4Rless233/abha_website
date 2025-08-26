@@ -23,6 +23,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange, 
   const [message, setMessage] = useState('');
   const [isTicketing, setIsTicketing] = useState(false);
   const [attendeeCount, setAttendeeCount] = useState(1);
+  const [attendeeCountField, setAttendeeCountField] = useState('1');
   const [attendees, setAttendees] = useState<string[]>(['']);
   const [eventName, setEventName] = useState('');
   // Ticketing details
@@ -50,7 +51,9 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange, 
             const readable = data.source.replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
             setEventName(readable);
           }
-          setAttendeeCount(data.people && data.people > 0 ? data.people : 1);
+          const n = data.people && data.people > 0 ? data.people : 1;
+          setAttendeeCount(n);
+          setAttendeeCountField(String(n));
           setAttendees(Array.from({ length: data.people && data.people > 0 ? data.people : 1 }, () => ''));
           // Scroll after slight delay
           setTimeout(() => {
@@ -95,6 +98,11 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange, 
       }
       return prev;
     });
+  }, [attendeeCount]);
+
+  // Keep text field in sync when attendeeCount changes externally
+  useEffect(() => {
+    setAttendeeCountField(String(attendeeCount));
   }, [attendeeCount]);
 
   const handleAttendeeChange = (index: number, value: string) => {
@@ -219,10 +227,9 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange, 
         bodyLines.push('');
         bodyLines.push(message.trim() || '(no message)');
       }
-      const body = encodeURIComponent(bodyLines.join('\n'));
-      const mailtoUrl = `mailto:${to}?subject=${encodeURIComponent(subj)}&body=${body}`;
-      setError('We reached the monthly form limit. Opening your email client to contact us directly.');
-      try { window.location.href = mailtoUrl; } catch {}
+  const body = encodeURIComponent(bodyLines.join('\n'));
+  const mailtoUrl = `mailto:${to}?subject=${encodeURIComponent(subj)}&body=${body}`;
+  try { window.location.href = mailtoUrl; } catch {}
     } finally {
       setSubmitting(false);
     }
@@ -450,12 +457,29 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange, 
                         Number of People
                       </label>
                       <input
-                        type="number"
+                        type="text"
+                        inputMode="numeric"
+                        pattern="[0-9]*"
                         id="attendees"
-                        min={1}
-                        max={12}
-                        value={attendeeCount}
-                        onChange={(e) => setAttendeeCount(Math.max(1, Math.min(12, parseInt(e.target.value) || 1)))}
+                        value={attendeeCountField}
+                        onChange={(e) => {
+                          const digits = (e.target.value || '').replace(/\D/g, '').slice(0, 2);
+                          setAttendeeCountField(digits);
+                        }}
+                        onKeyDown={(e) => {
+                          if (e.key === 'Enter') {
+                            e.preventDefault();
+                            const n = Math.max(1, Math.min(12, Number(attendeeCountField) || 1));
+                            setAttendeeCount(n);
+                            setAttendeeCountField(String(n));
+                            (e.currentTarget as HTMLInputElement).blur();
+                          }
+                        }}
+                        onBlur={() => {
+                          const n = Math.max(1, Math.min(12, Number(attendeeCountField) || 1));
+                          setAttendeeCount(n);
+                          setAttendeeCountField(String(n));
+                        }}
                         style={{
                           width: '140px',
                           padding: '10px 12px',
@@ -464,7 +488,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange, 
                           fontSize: '16px'
                         }}
                         onFocus={(e) => e.target.style.borderColor = 'var(--primary-red)'}
-                        onBlur={(e) => e.target.style.borderColor = 'rgba(212, 175, 55, 0.3)'}
+                        onBlurCapture={(e) => (e.currentTarget as HTMLInputElement).style.borderColor = 'rgba(212, 175, 55, 0.3)'}
                       />
                     </div>
                     <div style={{ display: 'flex', flexDirection: 'column', gap: '.85rem' }}>
