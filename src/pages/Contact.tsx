@@ -4,6 +4,7 @@ import CountUp from '../components/ui/CountUp';
 
 interface ContactPageProps {
   onPageChange?: (page: string) => void;
+  scrollToId?: string; // optional anchor to scroll to on mount
 }
 
 interface TicketPrefill {
@@ -13,7 +14,7 @@ interface TicketPrefill {
   eventName?: string;
 }
 
-const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange }) => {
+const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange, scrollToId }) => {
   const formRef = useRef<HTMLFormElement | null>(null);
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -65,6 +66,16 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange }
       }
     } catch {}
   }, []);
+
+  // Scroll into contact form if requested via prop or hash (for QR deep links)
+  useEffect(() => {
+    const wantsScroll = scrollToId === 'contact-form' || (typeof window !== 'undefined' && /contact\/contact-form$/.test((window.location.hash || '').replace(/^#/, '')));
+    if (wantsScroll && formRef.current) {
+      const rect = formRef.current.getBoundingClientRect();
+      const scrollTop = window.pageYOffset + rect.top - 180;
+      window.scrollTo({ top: scrollTop, behavior: 'smooth' });
+    }
+  }, [scrollToId]);
 
   // Adjust attendees array when attendeeCount changes
   useEffect(() => {
