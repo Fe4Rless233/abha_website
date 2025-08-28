@@ -23,6 +23,17 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
   const [expandedEvent, setExpandedEvent] = useState<number | null>(null);
   const [selectedYear, setSelectedYear] = useState<number>(2025);
   const [hasProcessedInitialEvent, setHasProcessedInitialEvent] = useState(false);
+  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (lightboxSrc) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setLightboxSrc(null); };
+      window.addEventListener('keydown', onKey);
+      return () => { document.body.style.overflow = prev; window.removeEventListener('keydown', onKey); };
+    }
+  }, [lightboxSrc]);
 
   const eventsByYear: { [year: number]: Event[] } = {
     2025: [
@@ -333,6 +344,8 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
                     src={event.image}
                     alt={event.title}
                     className="event-image"
+                    style={{ cursor: 'zoom-in' }}
+                    onClick={(e) => { e.stopPropagation(); setLightboxSrc(event.image); }}
                     onError={(e) => {
                       e.currentTarget.style.display = 'none';
                     }}
@@ -410,6 +423,14 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
                         >
                           More Info
                         </a>
+                        <button
+                          type="button"
+                          className="btn-hbcu-secondary"
+                          aria-label="View full event flyer"
+                          onClick={(e) => { e.stopPropagation(); setLightboxSrc(event.image); }}
+                        >
+                          View Full Flyer
+                        </button>
                         {event.category === 'Upcoming' && (
                           <button
                             type="button"
@@ -439,6 +460,24 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
           </div>
         </div>
       </section>
+
+      {/* Simple Lightbox for Event Images */}
+      {lightboxSrc && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Expanded image"
+          onClick={() => setLightboxSrc(null)}
+          style={{ position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 2000, display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem' }}
+        >
+          <button
+            onClick={(e) => { e.stopPropagation(); setLightboxSrc(null); }}
+            aria-label="Close"
+            style={{ position: 'absolute', top: 16, right: 16, width: 40, height: 40, borderRadius: '50%', border: '1px solid rgba(255,255,255,0.5)', background: 'rgba(0,0,0,0.4)', color: '#fff', fontSize: 20, cursor: 'pointer' }}
+          >×</button>
+          <img src={lightboxSrc} alt="Event" onClick={(e) => e.stopPropagation()} style={{ maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain', borderRadius: 8, boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }} />
+        </div>
+      )}
 
       {/* Call to Action Section - HBCU Style */}
       <section className="hbcu-mission-section">
