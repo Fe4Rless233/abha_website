@@ -3187,6 +3187,7 @@ body {
   border-radius: 20px;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
   overflow: hidden;
+  box-sizing: border-box;
 }
 .testimonials-grid .testimonial-card h3,
 .testimonials-grid .testimonial-card p {
@@ -3194,3 +3195,14 @@ body {
 }
 
 .testimonials-grid .testimonial-card:hover { transform: none; }
+
+@media (max-width: 420px) {
+  .testimonials-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+  }
+  .testimonials-grid .testimonial-card {
+    width: 100%;
+    margin: 0;
+  }
+}

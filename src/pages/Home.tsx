@@ -655,7 +655,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
         <div className="container">
           <h2 className="hbcu-section-title-dark" style={{ marginBottom: '.6rem' }}>Community Voices</h2>
           <p className="hbcu-heritage-description" style={{ maxWidth: 840, color: '#ffffff' }}>Reflections from members about ABHA's growth, inclusiveness, and cultural impact.</p>
-      <div className="testimonials-grid" style={{ display: 'grid', gap: '1.9rem', marginTop: '2.4rem', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))' }}>
+          <div className="testimonials-grid" style={{ display: 'grid', gap: '1.9rem', marginTop: '2.4rem', gridTemplateColumns: 'repeat(auto-fit,minmax(240px,1fr))' }}>
             {testimonials.map((t, i) => (
               <div key={i} className="testimonial-card" style={{ padding: '1.65rem 1.5rem 1.8rem', display: 'flex', flexDirection: 'column', gap: '.85rem' }}>
                 <h3 style={{ margin: 0, fontSize: '1.05rem', letterSpacing: '.03em', color: 'var(--primary-red, #7a1b1b)' }}>{t.title}</h3>
