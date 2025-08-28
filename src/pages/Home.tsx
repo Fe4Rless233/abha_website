@@ -12,6 +12,18 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
   const [videoLoaded, setVideoLoaded] = useState(false);
   const [videoError, setVideoError] = useState(false);
   const videoRef = useRef<HTMLVideoElement | null>(null);
+  const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+
+  // Lock body scroll when lightbox is open
+  useEffect(() => {
+    if (lightboxSrc) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = 'hidden';
+      const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setLightboxSrc(null); };
+      window.addEventListener('keydown', onKey);
+      return () => { document.body.style.overflow = prev; window.removeEventListener('keydown', onKey); };
+    }
+  }, [lightboxSrc]);
 
   // Fallback timeout in case video load stalls
   useEffect(() => {
@@ -139,6 +151,14 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
       ],
   author: 'Bhaskar Ganguli',
   credit: 'Bhaskar Ganguly, Chartered Accountant and Vocalist'
+    },
+    {
+      title: 'ABHA Testimonial',
+      body: [
+        'ABHA is just not a Bengali community celebrating several festivals of bengal, but a community where I find the very essence of bengal itself. In ABHA I got an opportunity to enjoy and sing to the tunes of classic Tagore’s songs and modern / contemporary songs as well. Just like a Bengali, ABHA loves to be involved in the bigger picture of things, and I see various volunteering efforts conducted here.Every meeting we have is an opportunity to connect at a personal level with the members and also to contest and argue on big picture ideas. In ABHA I get an opportunity to create, and also be part of a loving and thriving community. I am lucky to be a part of ABHA. In here I give my kids a chance to see and feel being in a part of bengal and an opportunity to build lifelong friendship and connections.'
+      ],
+      author: 'Pratiti Dutta',
+      credit: 'Financial professional and entrepreneur'
     }
   ];
 
@@ -152,7 +172,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
             <img
               src="/assets/images/abha-logo.png"
               alt="ABHA Logo"
-              style={{ width: '2m00px', height: '200px', objectFit: 'contain', filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.55))' }}
+              style={{ width: '200px', height: '200px', objectFit: 'contain', filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.55))' }}
               onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
             />
             <h1 className="hbcu-section-title" style={{ color: '#FFD700', margin: 0 }}>Featured Celebrations 2025</h1>
@@ -171,8 +191,18 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
               {durgaPuja.extraPosters && durgaPuja.extraPosters.length > 0 && (
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: '.6rem' }}>
                   {durgaPuja.extraPosters.map((p, i) => (
-                    <div key={i} style={{ borderRadius: 10, overflow: 'hidden', border: '1px solid rgba(255,215,0,0.25)' }}>
-                      <img src={p} alt={`Durga Puja Poster ${i + 2}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <div
+                      key={i}
+                      role="button"
+                      aria-label="View full Durga Puja flyer"
+                      style={{ position: 'relative', borderRadius: 10, overflow: 'hidden', border: '1px solid rgba(255,215,0,0.25)', cursor: 'zoom-in' }}
+                      onClick={() => setLightboxSrc(p)}
+                    >
+                      <img src={p} alt={`Durga Puja Poster ${i + 2}`} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                      <div style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,0.55)', color: '#fff', borderRadius: 16, padding: '2px 8px', fontSize: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <span aria-hidden>🔎</span>
+                        <span>Zoom</span>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -212,7 +242,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                       target="2025-09-27T10:00:00-04:00"
                       label=""
                       compact
-                      style={{ background: 'transparent', border: 'none', padding: 0, width: 'max-content', borderRadius: 0 }}
+                      style={{ background: 'transparent', border: 'none', padding: 0, borderRadius: 0 }}
                     />
                   </div>
                 </div>
@@ -234,8 +264,18 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
               {musicalExtravaganza.extraPosters && musicalExtravaganza.extraPosters.length > 0 && (
                 <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: '.6rem' }}>
                   {musicalExtravaganza.extraPosters.map((p, i) => (
-                    <div key={i} style={{ borderRadius: 10, overflow: 'hidden', border: '1px solid rgba(255,215,0,0.25)' }}>
-                      <img src={p} alt={`Musical Extravaganza Poster ${i + 2}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                    <div
+                      key={i}
+                      role="button"
+                      aria-label="View full Musical Extravaganza flyer"
+                      style={{ position: 'relative', borderRadius: 10, overflow: 'hidden', border: '1px solid rgba(255,215,0,0.25)', cursor: 'zoom-in' }}
+                      onClick={() => setLightboxSrc(p)}
+                    >
+                      <img src={p} alt={`Musical Extravaganza Poster ${i + 2}`} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+                      <div style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,0.55)', color: '#fff', borderRadius: 16, padding: '2px 8px', fontSize: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
+                        <span aria-hidden>🔎</span>
+                        <span>Zoom</span>
+                      </div>
                     </div>
                   ))}
                 </div>
@@ -275,7 +315,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                       target="2025-09-26T17:30:00-04:00"
                       label=""
                       compact
-                      style={{ background: 'transparent', border: 'none', padding: 0, width: 'max-content', borderRadius: 0 }}
+                      style={{ background: 'transparent', border: 'none', padding: 0, borderRadius: 0 }}
                     />
                   </div>
                 </div>
@@ -351,7 +391,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.15rem', width: '100%', maxWidth: 460, justifySelf: 'center' }}>
               <div>
                 <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Featured Segments</h3>
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.4rem 1rem', gridTemplateColumns: 'repeat(2,minmax(220px,1fr))', alignItems: 'start', textAlign: 'left' }}>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.4rem 1rem', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', alignItems: 'start', textAlign: 'left' }}>
                   {durgaPuja.artistSegments.map((s, i) => (
                     <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '.5rem', fontSize: '.9rem' }}>
                       <span style={{ color: '#FFD700', flex: '0 0 auto', lineHeight: 1.2, marginTop: '2px' }}>✦</span>
@@ -395,7 +435,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
             <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.15rem', width: '100%', maxWidth: 460, justifySelf: 'center' }}>
               <div>
                 <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Featured Segments</h3>
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.4rem 1rem', gridTemplateColumns: 'repeat(2,minmax(220px,1fr))', alignItems: 'start', textAlign: 'left' }}>
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.4rem 1rem', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', alignItems: 'start', textAlign: 'left' }}>
                   {musicalExtravaganza.artistSegments.map((s, i) => (
                     <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '.5rem', fontSize: '.9rem' }}>
                       <span style={{ color: '#FFD700', flex: '0 0 auto', lineHeight: 1.2, marginTop: '2px' }}>✦</span>
@@ -416,6 +456,36 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
           </div>
         </div>
       </section>
+
+      {/* Simple Lightbox for Posters */}
+      {lightboxSrc && (
+        <div
+          role="dialog"
+          aria-modal="true"
+          aria-label="Expanded poster"
+          onClick={() => setLightboxSrc(null)}
+          style={{
+            position: 'fixed', inset: 0, background: 'rgba(0,0,0,0.8)', zIndex: 2000,
+            display: 'flex', alignItems: 'center', justifyContent: 'center', padding: '2rem'
+          }}
+        >
+          <button
+            onClick={(e) => { e.stopPropagation(); setLightboxSrc(null); }}
+            aria-label="Close"
+            style={{
+              position: 'absolute', top: 16, right: 16, width: 40, height: 40, borderRadius: '50%',
+              border: '1px solid rgba(255,255,255,0.5)', background: 'rgba(0,0,0,0.4)', color: '#fff',
+              fontSize: 20, cursor: 'pointer'
+            }}
+          >×</button>
+          <img
+            src={lightboxSrc}
+            alt="Poster"
+            onClick={(e) => e.stopPropagation()}
+            style={{ maxWidth: '90vw', maxHeight: '90vh', objectFit: 'contain', borderRadius: 8, boxShadow: '0 8px 32px rgba(0,0,0,0.5)' }}
+          />
+        </div>
+      )}
 
   {/* (Testimonials moved further down to middle area) */}
 
@@ -585,9 +655,9 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
         <div className="container">
           <h2 className="hbcu-section-title-dark" style={{ marginBottom: '.6rem' }}>Community Voices</h2>
           <p className="hbcu-heritage-description" style={{ maxWidth: 840, color: '#ffffff' }}>Reflections from members about ABHA's growth, inclusiveness, and cultural impact.</p>
-          <div style={{ display: 'grid', gap: '1.9rem', marginTop: '2.4rem', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))' }}>
+      <div className="testimonials-grid" style={{ display: 'grid', gap: '1.9rem', marginTop: '2.4rem', gridTemplateColumns: 'repeat(auto-fit,minmax(260px,1fr))' }}>
             {testimonials.map((t, i) => (
-              <div key={i} className="event-card" style={{ padding: '1.65rem 1.5rem 1.8rem', display: 'flex', flexDirection: 'column', gap: '.85rem' }}>
+              <div key={i} className="testimonial-card" style={{ padding: '1.65rem 1.5rem 1.8rem', display: 'flex', flexDirection: 'column', gap: '.85rem' }}>
                 <h3 style={{ margin: 0, fontSize: '1.05rem', letterSpacing: '.03em', color: 'var(--primary-red, #7a1b1b)' }}>{t.title}</h3>
                 {t.body.map((p, idx) => (
                   <p key={idx} style={{ margin: 0, fontSize: '.9rem', lineHeight: 1.5, color: '#222' }}>{p}</p>

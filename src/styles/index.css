@@ -192,6 +192,9 @@ body::before {
   margin-top: 1.75rem;
 }
 
+/* Ensure children within featured grid don't force overflow */
+.featured-grid > * { min-width: 0; }
+
 @media (max-width: 900px) {
   .featured-grid {
     grid-template-columns: 1fr;
@@ -2785,6 +2788,7 @@ body {
   gap: 20px;
   position: relative;
   z-index: 1;
+  flex-wrap: wrap; /* prevent inner overflow on narrow screens */
 }
 
 .banner-icon {
@@ -2798,7 +2802,8 @@ body {
 }
 
 .banner-text {
-  flex: 1;
+  flex: 1 1 280px; /* allow text to shrink/wrap */
+  min-width: 0; /* enable text wrapping inside flex */
 }
 
 .banner-text h3 {
@@ -2819,6 +2824,7 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
+  flex-wrap: wrap;
 }
 
 .banner-cta-btn {
@@ -3167,3 +3173,24 @@ body {
     gap: 1rem !important;
   }
 }
+
+/* Testimonials grid/card isolation to prevent overlap from event-card defaults */
+.testimonials-grid {
+  grid-auto-rows: auto;
+}
+.testimonials-grid .testimonial-card {
+  flex: initial;
+  min-width: 0;
+  max-width: 100%;
+  background: rgba(255, 255, 255, 0.98);
+  border: 2px solid rgba(212, 175, 55, 0.3);
+  border-radius: 20px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+.testimonials-grid .testimonial-card h3,
+.testimonials-grid .testimonial-card p {
+  word-break: break-word;
+}
+
+.testimonials-grid .testimonial-card:hover { transform: none; }
