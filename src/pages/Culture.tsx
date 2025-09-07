@@ -1,10 +1,15 @@
 import CountUp from '../components/ui/CountUp';
+import HorizontalInfiniteStrip from '../components/ui/HorizontalInfiniteStrip';
+import Gallery from '../components/Gallery';
+import { galleryItems } from '../data/galleryItems';
 
 interface CulturePageProps {
   onPageChange?: (page: string) => void;
 }
 
 const CulturePage: React.FC<CulturePageProps> = ({ onPageChange }) => {
+  // Dynamically generated galleryItems array for all images and videos in /gallery/media
+  // galleryItems is now imported from an auto-generated file
   return (
     <div className="page-container hbcu-style">
       {/* Hero Section - HBCU Style */}
@@ -46,6 +51,20 @@ const CulturePage: React.FC<CulturePageProps> = ({ onPageChange }) => {
                 <div className="stat-label-hbcu">Artists & Performers</div>
               </div>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Horizontal Gallery Strip + View All */}
+      <section className="hbcu-heritage-section" style={{ paddingTop: '2.2rem', paddingBottom: '2.2rem' }}>
+        <div className="container" style={{ maxWidth: 1140 }}>
+          <h2 className="hbcu-section-title">Cultural Moments</h2>
+          <p className="hbcu-heritage-description" style={{ marginBottom: '0.85rem' }}>
+            A glimpse into our performances, festivals and community life. Swipe left or right.
+          </p>
+          <HorizontalInfiniteStrip items={galleryItems} height={130} gap={10} />
+          <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.9rem' }}>
+            <Gallery items={galleryItems} triggerLabel="View All (Grid)" hideList triggerStyle={{ color: '#000' }} />
           </div>
         </div>
       </section>

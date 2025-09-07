@@ -1,3 +1,21 @@
+/* Force event page buttons to dark text for contrast on white backgrounds */
+.events-grid .btn-hbcu-primary,
+.events-grid .btn-hbcu-secondary,
+.event-cta .btn-hbcu-primary,
+.event-cta .btn-hbcu-secondary {
+  color: #222 !important;
+  border-color: #7a1b1b !important;
+  background: #fff !important;
+}
+
+.events-grid .btn-hbcu-primary:hover,
+.events-grid .btn-hbcu-secondary:hover,
+.event-cta .btn-hbcu-primary:hover,
+.event-cta .btn-hbcu-secondary:hover {
+  background: #7a1b1b !important;
+  color: #fff !important;
+  border-color: #7a1b1b !important;
+}
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 /* ABHA - Association of Bengalis in Harrisburg Area Styles */
@@ -3206,3 +3224,8 @@ body {
     margin: 0;
   }
 }
+
+/* Simple gallery styles */
+.abha-gallery img { display: block; max-width: 100%; height: auto; }
+.gallery-modal { backdrop-filter: blur(2px); -webkit-backdrop-filter: blur(2px); }
+.gallery-close:hover { transform: scale(1.05); }
