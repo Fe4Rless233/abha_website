@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import { buildGoogleCalendarUrl } from '../utils/calendar';
+import ShareButton from '../components/ui/ShareButton';
 import CountUp from '../components/ui/CountUp';
 
 interface Event {
@@ -400,6 +402,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
                       
                       <p className="event-details">{event.details}</p>
                       
+
                       <div className="event-highlights">
                         <h4>Event Highlights:</h4>
                         <ul>
@@ -411,6 +414,36 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
                           ))}
                         </ul>
                       </div>
+
+                      {/* Detailed Puja Schedule for Durga Puja 2025 */}
+                      {event.title === 'Durga Puja 2025' && (
+                        <div className="event-schedule" style={{ marginTop: '2rem' }}>
+                          <h4 style={{ color: '#7a1b1b', marginBottom: '0.7rem' }}>Detailed Puja Schedule</h4>
+                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2.5rem', fontSize: '1rem', color: '#222' }}>
+                            <div>
+                              <h5 style={{ margin: '0 0 0.5rem 0', color: '#222' }}>Saturday, September 27, 2025</h5>
+                              <ul style={{ paddingLeft: '1.1em', margin: 0, listStyle: 'disc' }}>
+                                <li style={{ color: '#222' }}><b>Bodhan, Nabapatrika Puja & Kalparambha, Maha Saptami</b> – 9:30–11:00 AM</li>
+                                <li style={{ color: '#222' }}><b>Maha Astami Puja & Pushpanjali</b> – 11:00 AM–12:00 PM</li>
+                                <li style={{ color: '#222' }}><b>Sandhipuja</b> – 12:00–12:40 PM</li>
+                                <li style={{ color: '#222' }}><b>Arati</b> – 12:40–1:00 PM</li>
+                                <li style={{ color: '#222' }}><b>Pushpanjali, Bhog</b> – 1:00–1:15 PM</li>
+                                <li style={{ color: '#222' }}><b>Personal Pujo</b> – 1:15–1:30 PM</li>
+                              </ul>
+                            </div>
+                            <div>
+                              <h5 style={{ margin: '0 0 0.5rem 0', color: '#222' }}>Sunday, September 28, 2025</h5>
+                              <ul style={{ paddingLeft: '1.1em', margin: 0, listStyle: 'disc' }}>
+                                <li style={{ color: '#222' }}><b>Maha Nabami, Pushpanjali</b> – 10:30 AM–12:00 PM</li>
+                                <li style={{ color: '#222' }}><b>Chandipath</b> – 12:00–12:30 PM</li>
+                                <li style={{ color: '#222' }}><b>Arati</b> – 12:30–1:00 PM</li>
+                                <li style={{ color: '#222' }}><b>Bijaya Dasami, Aparajita Puja, Dadhikarma</b> – 1:00–1:30 PM</li>
+                                <li style={{ color: '#222' }}><b>Pratima Niranjan</b> – 1:30 PM</li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      )}
 
 
                       <div className="event-cta" style={{ display: 'flex', gap: '.75rem', flexWrap: 'wrap' }}>
@@ -431,6 +464,28 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
                         >
                           View Full Flyer
                         </button>
+                        <ShareButton
+                          className="btn-hbcu-secondary"
+                          title={event.title}
+                          text={event.description}
+                          // Share the events page URL with a hash to hint at which card
+                          url={(typeof window !== 'undefined' ? `${window.location.origin}/#events` : undefined)}
+                        />
+                        <a
+                          href={buildGoogleCalendarUrl({
+                            title: event.title,
+                            date: event.date,
+                            time: event.time,
+                            location: event.venue,
+                            details: event.description,
+                          }) || '#'}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="btn-hbcu-secondary"
+                          onClick={(e) => e.stopPropagation()}
+                        >
+                          Add to Calendar
+                        </a>
                         {event.category === 'Upcoming' && (
                           <button
                             type="button"

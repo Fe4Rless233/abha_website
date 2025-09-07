@@ -3,6 +3,9 @@ import CountUp from '../components/ui/CountUp';
 import LoadingSpinner from '../components/ui/LoadingSpinner';
 import Countdown from '../components/ui/Countdown';
 import VideoTestimonials from '../components/VideoTestimonials';
+import { buildGoogleCalendarUrl } from '../utils/calendar';
+import ShareButton from '../components/ui/ShareButton';
+// Gallery moved to Culture page per request
 
 interface HomePageProps {
   onPageChange?: (page: string, eventToExpand?: string) => void;
@@ -164,6 +167,45 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
 
   return (
     <div className="page-container hbcu-style">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify([
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Event',
+            name: durgaPuja.title,
+            description: durgaPuja.description,
+            startDate: '2025-09-27T10:00:00-04:00',
+            endDate: '2025-09-28T22:00:00-04:00',
+            eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+            eventStatus: 'https://schema.org/EventScheduled',
+            location: {
+              '@type': 'Place',
+              name: durgaPuja.venue,
+              address: durgaPuja.venue,
+            },
+            image: ['/assets/images/events/durga-puja.jpg'],
+            organizer: { '@type': 'Organization', name: 'ABHA' },
+          },
+          {
+            '@context': 'https://schema.org',
+            '@type': 'Event',
+            name: musicalExtravaganza.title,
+            description: musicalExtravaganza.description,
+            startDate: '2025-09-26T17:30:00-04:00',
+            endDate: '2025-09-26T23:00:00-04:00',
+            eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
+            eventStatus: 'https://schema.org/EventScheduled',
+            location: {
+              '@type': 'Place',
+              name: musicalExtravaganza.venue,
+              address: musicalExtravaganza.venue,
+            },
+            image: ['/assets/images/events/a-musical-extravaganza-with-rathijit-and-shreya.jpg'],
+            organizer: { '@type': 'Organization', name: 'ABHA' },
+          },
+        ]) }}
+      />
       {/* Featured Durga Puja Section (Top of Home) */}
       <section id="durga-puja" className="hbcu-mission-section" style={{ paddingTop: '3.75rem', paddingBottom: '2.75rem', background: 'linear-gradient(135deg,#330000 0%,#5b0a0a 55%,#7a1b1b 100%)', color: '#fff' }}>
   <div className="container">
@@ -221,6 +263,19 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                   Tickets / Registration
                 </button>
                 <button onClick={() => onPageChange?.('events', 'durga-puja-2025')} className="btn-hbcu-secondary">Full Details</button>
+                <ShareButton title={durgaPuja.title} text={durgaPuja.description} label="Share" />
+                <a
+                  className="btn-hbcu-secondary"
+                  href={buildGoogleCalendarUrl({
+                    title: durgaPuja.title,
+                    date: durgaPuja.date,
+                    time: durgaPuja.time,
+                    location: durgaPuja.venue,
+                    details: durgaPuja.description,
+                  }) || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >Add to Calendar</a>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: '0.85rem' }}>
                 <div style={{ background: 'rgba(255,255,255,0.08)', padding: '.85rem .9rem', borderRadius: '10px' }}>
@@ -294,6 +349,19 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                   Tickets / Registration
                 </button>
                 <button onClick={() => onPageChange?.('events', 'a-musical-extravaganza-with-rathijit-shreya')} className="btn-hbcu-secondary">Full Details</button>
+                <ShareButton title={musicalExtravaganza.title} text={musicalExtravaganza.description} label="Share" />
+                <a
+                  className="btn-hbcu-secondary"
+                  href={buildGoogleCalendarUrl({
+                    title: musicalExtravaganza.title,
+                    date: musicalExtravaganza.date,
+                    time: musicalExtravaganza.time,
+                    location: musicalExtravaganza.venue,
+                    details: musicalExtravaganza.description,
+                  }) || '#'}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >Add to Calendar</a>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: '0.85rem' }}>
                 <div style={{ background: 'rgba(255,255,255,0.08)', padding: '.85rem .9rem', borderRadius: '10px' }}>
@@ -674,6 +742,8 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
 
       {/* About ABHA Overview Section */}
   <VideoTestimonials />
+
+  {/* Gallery moved to Culture page */}
 
       <section className="hbcu-mission-section" style={{ paddingTop: '3.25rem', paddingBottom: '3.25rem' }}>
         <div className="container" style={{ maxWidth: 1000 }}>
