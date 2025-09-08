@@ -1,6 +1,6 @@
 // AUTO-GENERATED FILE. DO NOT EDIT MANUALLY
-// @ts-nocheck
-export const galleryItems = [
+import type { GalleryItem } from '../components/Gallery';
+export const galleryItems: GalleryItem[] = [
   { type: 'image', src: '/assets/images/gallery/media/10thSaraswatiPuja2025_Nk9eHOlIUw/485619584_975713411411759_2552281303591113561_n_933622915620809.jpg', alt: 'Gallery Image' },
   { type: 'image', src: '/assets/images/gallery/media/10thSaraswatiPuja2025_Nk9eHOlIUw/485630516_975713378078429_8322558583193864860_n_933621908954243.jpg', alt: 'Gallery Image' },
   { type: 'image', src: '/assets/images/gallery/media/10thSaraswatiPuja2025_Nk9eHOlIUw/485652121_975713598078407_5379417675048677106_n_933622042287563.jpg', alt: 'Gallery Image' },
