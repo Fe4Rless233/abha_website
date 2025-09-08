@@ -1,3 +1,4 @@
+import React, { useEffect } from 'react';
 import CountUp from '../components/ui/CountUp';
 import HorizontalInfiniteStrip from '../components/ui/HorizontalInfiniteStrip';
 import Gallery from '../components/Gallery';
@@ -8,6 +9,25 @@ interface CulturePageProps {
 }
 
 const CulturePage: React.FC<CulturePageProps> = ({ onPageChange }) => {
+  // Test with a few sample items first to debug
+  const testGalleryItems = [
+    { type: 'image', src: '/assets/images/abha-logo.png', alt: 'Test Image 1' },
+    { type: 'image', src: '/assets/images/community-hero.jpg', alt: 'Test Image 2' },
+  ];
+  
+  // Log to see if items are loading
+  console.log('Gallery items count:', galleryItems.length);
+  console.log('Test items:', testGalleryItems);
+  console.log('Sample gallery item:', galleryItems[0]);
+  
+  // Test if images load at all
+  useEffect(() => {
+    const testImg = new Image();
+    testImg.onload = () => console.log('✅ Basic image loads successfully');
+    testImg.onerror = () => console.error('❌ Basic image failed to load');
+    testImg.src = '/assets/images/abha-logo.png';
+  }, []);
+  
   // Dynamically generated galleryItems array for all images and videos in /gallery/media
   // galleryItems is now imported from an auto-generated file
   return (
@@ -62,9 +82,24 @@ const CulturePage: React.FC<CulturePageProps> = ({ onPageChange }) => {
           <p className="hbcu-heritage-description" style={{ marginBottom: '0.85rem' }}>
             A glimpse into our performances, festivals and community life. Swipe left or right.
           </p>
-          <HorizontalInfiniteStrip items={galleryItems as any} height={130} gap={10} />
+          
+          {/* Debug: Direct image test */}
+          <div style={{ marginBottom: '1rem', padding: '1rem', background: '#f0f0f0', borderRadius: '8px' }}>
+            <h3>Debug: Direct Image Test</h3>
+            <img 
+              src="/assets/images/abha-logo.png" 
+              alt="Direct test" 
+              style={{ width: '100px', height: '100px', objectFit: 'cover' }}
+              onLoad={() => console.log('✅ Direct JSX image loaded')}
+              onError={() => console.error('❌ Direct JSX image failed')}
+            />
+            <p>Gallery items count: {galleryItems.length}</p>
+            <p>Test items count: {testGalleryItems.length}</p>
+          </div>
+          
+          <HorizontalInfiniteStrip items={testGalleryItems as any} height={130} gap={10} />
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.9rem' }}>
-            <Gallery items={galleryItems as any} triggerLabel="View All (Grid)" hideList triggerStyle={{ color: '#000' }} />
+            <Gallery items={testGalleryItems as any} triggerLabel="View All (Grid)" hideList triggerStyle={{ color: '#000' }} />
           </div>
         </div>
       </section>

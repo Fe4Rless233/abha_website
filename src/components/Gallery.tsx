@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react';
-import { galleryThumbnails } from '../data/galleryThumbnails';
+// import { galleryThumbnails } from '../data/galleryThumbnails';
 
 type GalleryItem =
   | { type: 'image'; src: string; alt?: string }
@@ -80,14 +80,13 @@ const Gallery: React.FC<GalleryProps> = ({ items, pageSize = 12, triggerLabel = 
               <figure key={i} style={{ margin: 0, borderRadius: 8, overflow: 'hidden', border: '1px solid rgba(0,0,0,0.05)' }}>
                 {it.type === 'image' ? (
                   <img
-                    src={galleryThumbnails[it.src] || it.src}
-                    data-fullsrc={it.src}
+                    src={it.src}
                     alt={it.alt || `Gallery item ${i + 1}`}
                     loading="lazy"
-                    style={{ width: '100%', height: 140, objectFit: 'cover', display: 'block', filter: galleryThumbnails[it.src] ? 'blur(2px)' : 'none', transition: 'filter 0.3s' }}
-                    onLoad={e => {
-                      // Remove blur if not a thumbnail
-                      if (!galleryThumbnails[it.src]) e.currentTarget.style.filter = 'none';
+                    style={{ width: '100%', height: 140, objectFit: 'cover', display: 'block' }}
+                    onError={e => {
+                      console.error('Failed to load image:', it.src);
+                      e.currentTarget.style.display = 'none';
                     }}
                   />
                 ) : (

@@ -1,6 +1,7 @@
 import React, { useEffect, useMemo, useRef } from 'react';
 
 export interface StripItem {
+  type?: 'image' | 'video';
   src: string;
   alt?: string;
 }
@@ -49,13 +50,31 @@ const HorizontalInfiniteStrip: React.FC<HorizontalInfiniteStripProps> = ({ items
       aria-label="Cultural gallery strip"
     >
       {tripled.map((it, i) => (
-        <img
-          key={`${it.src}-${i}`}
-          src={it.src}
-          alt={it.alt || 'Gallery image'}
-          loading="lazy"
-          style={{ height, width: Math.round(height * 1.5), objectFit: 'cover', borderRadius: 10, display: 'block', flex: '0 0 auto' }}
-        />
+        <div key={`${it.src}-${i}`} style={{ height, width: Math.round(height * 1.5), borderRadius: 10, overflow: 'hidden', flex: '0 0 auto' }}>
+          {!it.type || it.type === 'image' ? (
+            <img
+              src={it.src}
+              alt={it.alt || 'Gallery image'}
+              loading="lazy"
+              style={{ height: '100%', width: '100%', objectFit: 'cover', display: 'block' }}
+              onError={e => {
+                console.error('Failed to load image in strip:', it.src);
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+          ) : (
+            <video
+              src={it.src}
+              style={{ height: '100%', width: '100%', objectFit: 'cover', display: 'block', background: '#000' }}
+              muted
+              loop
+              onError={e => {
+                console.error('Failed to load video in strip:', it.src);
+                e.currentTarget.style.display = 'none';
+              }}
+            />
+          )}
+        </div>
       ))}
     </div>
   );
