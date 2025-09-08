@@ -62,9 +62,9 @@ const CulturePage: React.FC<CulturePageProps> = ({ onPageChange }) => {
           <p className="hbcu-heritage-description" style={{ marginBottom: '0.85rem' }}>
             A glimpse into our performances, festivals and community life. Swipe left or right.
           </p>
-          <HorizontalInfiniteStrip items={galleryItems} height={130} gap={10} />
+          <HorizontalInfiniteStrip items={galleryItems as any} height={130} gap={10} />
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: '0.9rem' }}>
-            <Gallery items={galleryItems} triggerLabel="View All (Grid)" hideList triggerStyle={{ color: '#000' }} />
+            <Gallery items={galleryItems as any} triggerLabel="View All (Grid)" hideList triggerStyle={{ color: '#000' }} />
           </div>
         </div>
       </section>
