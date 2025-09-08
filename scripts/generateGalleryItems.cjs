@@ -32,14 +32,14 @@ const galleryItems = files
     .filter(f => Object.values(exts).flat().includes(path.extname(f).toLowerCase()))
     .map(f => {
       const ext = path.extname(f).toLowerCase();
-      // Use exact string literal types for 'type'
-      const type = exts.image.includes(ext) ? 'image' : 'video';
+      // Hardcode the type property as a string literal for TS
+      const type = exts.image.includes(ext) ? "'image'" : "'video'";
       // Convert to web path
       const webPath = f.replace(/.*public/, '').replace(/\\/g, '/');
-      return `{ type: '${type}', src: '${webPath}', alt: 'Gallery ${type.charAt(0).toUpperCase() + type.slice(1)}' }`;
+      return `{ type: ${type}, src: '${webPath}', alt: 'Gallery ${type === "'image'" ? 'Image' : 'Video'}' }`;
     });
 
-const output = `// AUTO-GENERATED FILE. DO NOT EDIT MANUALLY\nimport type { GalleryItem } from '../components/Gallery';\nexport const galleryItems: GalleryItem[] = [\n  ${galleryItems.join(',\n  ')}\n];\n`;
+const output = `// AUTO-GENERATED FILE. DO NOT EDIT MANUALLY\n// import type { GalleryItem } from '../components/Gallery';\nexport const galleryItems = [\n  ${galleryItems.join(',\n  ')}\n];\n`;
 
 fs.writeFileSync(path.join(__dirname, '../src/data/galleryItems.ts'), output);
 console.log('galleryItems.ts generated with', galleryItems.length, 'items.');
