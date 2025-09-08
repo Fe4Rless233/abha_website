@@ -29,17 +29,15 @@ function walk(dir) {
 const files = walk(mediaDir);
 
 const galleryItems = files
-  .filter(f => Object.values(exts).flat().includes(path.extname(f).toLowerCase()))
-  .map(f => {
-    const ext = path.extname(f).toLowerCase();
-    // Use exact string literal types for 'type'
-    const type = exts.image.includes(ext) ? 'image' : 'video';
-    /** @type {'image' | 'video'} */
-    const typeLiteral = type;
-    // Convert to web path
-    const webPath = f.replace(/.*public/, '').replace(/\\/g, '/');
-    return `{ type: '${typeLiteral}', src: '${webPath}', alt: 'Gallery ${type.charAt(0).toUpperCase() + type.slice(1)}' }`;
-  });
+    .filter(f => Object.values(exts).flat().includes(path.extname(f).toLowerCase()))
+    .map(f => {
+      const ext = path.extname(f).toLowerCase();
+      // Use exact string literal types for 'type'
+      const type = exts.image.includes(ext) ? 'image' : 'video';
+      // Convert to web path
+      const webPath = f.replace(/.*public/, '').replace(/\\/g, '/');
+      return `{ type: '${type}', src: '${webPath}', alt: 'Gallery ${type.charAt(0).toUpperCase() + type.slice(1)}' }`;
+    });
 
 const output = `// AUTO-GENERATED FILE. DO NOT EDIT MANUALLY\nimport type { GalleryItem } from '../components/Gallery';\nexport const galleryItems: GalleryItem[] = [\n  ${galleryItems.join(',\n  ')}\n];\n`;
 
