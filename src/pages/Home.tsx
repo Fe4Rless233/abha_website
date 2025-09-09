@@ -596,8 +596,6 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                 }}
               >
                 <source src="/assets/videos/bengali-culture-hero.mp4" type="video/mp4" />
-                {/* Optional WebM fallback when available */}
-                <source src="/assets/videos/bengali-culture-hero.webm" type="video/webm" />
                 Your browser does not support the video tag.
               </video>
               <div className="hero-video-overlay"></div>
