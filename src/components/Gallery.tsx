@@ -14,7 +14,7 @@ interface GalleryProps {
   triggerStyle?: React.CSSProperties;
 }
 
-const Gallery: React.FC<GalleryProps> = ({ items, pageSize = 12, triggerLabel = 'Open Gallery', hideList = false, triggerClassName, triggerStyle }) => {
+const Gallery: React.FC<GalleryProps> = ({ items, pageSize = 24, triggerLabel = 'Open Gallery', hideList = false, triggerClassName, triggerStyle }) => {
   const [visibleCount, setVisibleCount] = useState(pageSize);
   const [isOpen, setIsOpen] = useState(false);
   const sentinelRef = useRef<HTMLDivElement | null>(null);
@@ -128,23 +128,23 @@ const Gallery: React.FC<GalleryProps> = ({ items, pageSize = 12, triggerLabel = 
           >×</button>
           <div
             onClick={(e) => e.stopPropagation()}
-            style={{ width: '100%', maxWidth: 1200, maxHeight: '90vh', overflowY: 'auto', background: 'none' }}
+            style={{ width: '100%', maxWidth: 1400, maxHeight: '90vh', overflowY: 'auto', background: 'none' }}
           >
-            <div style={{ display: 'grid', gap: '0.75rem', gridTemplateColumns: 'repeat(auto-fill,minmax(220px,1fr))' }}>
+            <div style={{ display: 'grid', gap: '1rem', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))' }}>
               {items.map((it, i) => (
-                <figure key={i} style={{ margin: 0, borderRadius: 8, overflow: 'hidden', background: '#111' }}>
+                <figure key={i} style={{ margin: 0, borderRadius: 12, overflow: 'hidden', background: '#111', boxShadow: '0 4px 12px rgba(0,0,0,0.3)' }}>
                   {it.type === 'image' ? (
                     <img
                       src={it.src}
                       alt={it.alt || `Gallery item ${i + 1}`}
                       loading="lazy"
-                      style={{ width: '100%', height: 220, objectFit: 'cover', display: 'block' }}
+                      style={{ width: '100%', height: 280, objectFit: 'cover', display: 'block' }}
                     />
                   ) : (
                     <video
                       src={it.src}
                       controls
-                      style={{ width: '100%', height: 220, objectFit: 'cover', display: 'block', background: '#000' }}
+                      style={{ width: '100%', height: 280, objectFit: 'cover', display: 'block', background: '#000' }}
                     >
                       Sorry, your browser does not support embedded videos.
                     </video>
