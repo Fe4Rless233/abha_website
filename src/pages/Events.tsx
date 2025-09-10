@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { buildGoogleCalendarUrl } from '../utils/calendar';
 import ShareButton from '../components/ui/ShareButton';
 import CountUp from '../components/ui/CountUp';
+import AdminEventsDisplay from '../components/AdminEventsDisplay';
 
 interface Event {
   title: string;
@@ -295,6 +296,11 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
       {/* Events Section - HBCU Style */}
       <section className="hbcu-investment-section all-events-section">
         <div className="container">
+          {/* Admin Events Display */}
+          <div style={{ marginBottom: '4rem' }}>
+            <AdminEventsDisplay />
+          </div>
+          
           <h2 className="hbcu-section-title-dark">Annual Events</h2>
           <p className="hbcu-heritage-description">
             Explore our year-round celebrations and community gatherings

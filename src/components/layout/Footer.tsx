@@ -1,4 +1,4 @@
-// React import removed - using new JSX transform
+import React from 'react';
 
 interface FooterProps {
   onPageChange: (page: string) => void;
@@ -73,6 +73,7 @@ const Footer: React.FC<FooterProps> = ({ onPageChange }) => {
           <a href="#" onClick={(e) => { e.preventDefault(); /* Implement policy page or modal */ }}>Privacy Policy</a>
           <a href="#" onClick={(e) => { e.preventDefault(); /* Implement terms page or modal */ }}>Terms of Service</a>
           <a href="#" onClick={(e) => { e.preventDefault(); /* Implement guidelines page or modal */ }}>Community Guidelines</a>
+          <a href="#admin" onClick={(e) => handleLinkClick(e, 'admin')} style={{ fontSize: '0.8rem', opacity: 0.7 }}>Admin</a>
         </div>
       </div>
     </footer>
