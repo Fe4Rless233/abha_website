@@ -12,6 +12,7 @@ import CulturePage from './pages/Culture';
 import EventsPage from './pages/Events';
 import CommunityPage from './pages/Community';
 import ContactPage from './pages/Contact';
+import AdminPage from './pages/Admin';
 
 function App() {
   const [currentPage, setCurrentPage] = useState('home');
@@ -93,6 +94,8 @@ function App() {
         return <CommunityPage key={`community-${pageVisitToken}`} onPageChange={handlePageChange} />;
       case 'contact':
         return <ContactPage key={`contact-${pageVisitToken}`} onPageChange={handlePageChange} scrollToId={eventToExpand} />;
+      case 'admin':
+        return <AdminPage key={`admin-${pageVisitToken}`} />;
       default:
         return <HomePage onPageChange={handlePageChange} />;
     }
