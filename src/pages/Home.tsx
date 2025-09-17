@@ -85,13 +85,22 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
       'Community Bhog & Food Experience'
     ],
     highlights: [
-      '27 Sep 2025',
-      'Bodhon, Sashti, Saptami, Ashtami',
-      'Cultural & Musical Extravaganza & Dinner',
-      '28 Sep 2025',
-      'Sandhi Pujo, Nabomi & Dashami',
-      'Pushpanjali & Aarati',
-      'Sindoor Khela & Lunch'
+      'Bodhan',
+      'Nabapatrika Puja',
+      'Kalparambha',
+      'Maha Saptami',
+      'Maha Astami',
+      'Pushpanjali',
+      'Sandhipuja',
+      'Arati',
+      'Bhog',
+      'Personal Pujo',
+      'Maha Nabami',
+      'Chandipath',
+      'Bijaya Dasami',
+      'Aparajita Puja',
+      'Dadhikarma',
+      'Pratima Niranjan'
     ],
     extraPosters: [
       '/assets/images/events/durgaPuja_alt.jpg'
@@ -302,9 +311,41 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                   </div>
                 </div>
               </div>
-              
-
-              {/* Segments/Highlights moved below Ticket Prices */}
+              {/* Durga Puja - Segments and Highlights (kept near card to avoid mixing on mobile) */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.15rem', width: '100%', maxWidth: 460, justifySelf: 'center' }}>
+                <div>
+                  <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Featured Segments</h3>
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.4rem 1rem', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', alignItems: 'start', textAlign: 'left' }}>
+                    {durgaPuja.artistSegments.map((s, i) => (
+                      <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '.5rem', fontSize: '.9rem' }}>
+                        <span style={{ color: '#FFD700', flex: '0 0 auto', lineHeight: 1.2, marginTop: '2px' }}>✦</span>
+                        <span style={{ flex: '1 1 auto', minWidth: 0 }}>{s}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Highlights</h3>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.55rem' }}>
+                    {durgaPuja.highlights.map((h, i) => (
+                      <span
+                        key={i}
+                        style={{
+                          background: 'rgba(255,215,0,0.2)',
+                          color: '#fff',
+                          padding: '.45rem .7rem',
+                          borderRadius: '24px',
+                          fontSize: '.7rem',
+                          letterSpacing: '.08em',
+                          border: '1px solid rgba(255,215,0,0.45)'
+                        }}
+                      >
+                        {h}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Musical Extravaganza Card */}
@@ -340,7 +381,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                   className="btn-hbcu-primary"
                   onClick={() => {
                     try {
-                      localStorage.setItem('abha_ticketing_prefill', JSON.stringify({ subject: 'Ticketing', source: 'musical-extravaganza', people: 1, eventName: 'Musical Extravaganza 2025' }));
+                      localStorage.setItem('abha_ticketing_prefill', JSON.stringify({ subject: 'Ticketing', source: 'musical-extravaganza', people: 1, eventName: 'Musical Extravaganza 2025', pkg: 'fri' }));
                     } catch {}
                     onPageChange?.('contact');
                   }}
@@ -388,7 +429,40 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                   </div>
                 </div>
               </div>
-              {/* Segments/Highlights moved below Ticket Prices */}
+              {/* Musical Extravaganza - Segments and Highlights (kept near card to avoid mixing on mobile) */}
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.15rem', width: '100%', maxWidth: 460, justifySelf: 'center' }}>
+                <div>
+                  <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Featured Segments</h3>
+                  <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.4rem 1rem', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', alignItems: 'start', textAlign: 'left' }}>
+                    {musicalExtravaganza.artistSegments.map((s, i) => (
+                      <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '.5rem', fontSize: '.9rem' }}>
+                        <span style={{ color: '#FFD700', flex: '0 0 auto', lineHeight: 1.2, marginTop: '2px' }}>✦</span>
+                        <span style={{ flex: '1 1 auto', minWidth: 0 }}>{s}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+                <div>
+                  <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Highlights</h3>
+                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.55rem' }}>
+                    {musicalExtravaganza.highlights.map((h, i) => (
+                      <span
+                        key={i}
+                        style={{
+                          background: 'rgba(255,255,255,0.08)',
+                          color: '#fff',
+                          padding: '.45rem .7rem',
+                          borderRadius: '24px',
+                          fontSize: '.7rem',
+                          letterSpacing: '.08em'
+                        }}
+                      >
+                        {h}
+                      </span>
+                    ))}
+                  </div>
+                </div>
+              </div>
             </div>
 
             {/* Ticket Prices spanning across both columns, placed below both cards */}
@@ -455,72 +529,6 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
               </div>
             </section>
 
-            {/* Durga Puja - Segments and Highlights (now below Ticket Prices) */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.15rem', width: '100%', maxWidth: 460, justifySelf: 'center' }}>
-              <div>
-                <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Featured Segments</h3>
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.4rem 1rem', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', alignItems: 'start', textAlign: 'left' }}>
-                  {durgaPuja.artistSegments.map((s, i) => (
-                    <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '.5rem', fontSize: '.9rem' }}>
-                      <span style={{ color: '#FFD700', flex: '0 0 auto', lineHeight: 1.2, marginTop: '2px' }}>✦</span>
-                      <span style={{ flex: '1 1 auto', minWidth: 0 }}>{s}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Highlights</h3>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.55rem' }}>
-                  {durgaPuja.highlights.map((h, i) => {
-                    const isDate = /^\d{1,2} \w{3} \d{4}$/.test(h);
-                    const startsNewLine = h === '28 Sep 2025';
-                    return (
-                      <React.Fragment key={i}>
-                        {startsNewLine && (
-                          <span style={{ flexBasis: '100%', width: '100%', height: 0 }} aria-hidden="true" />
-                        )}
-                        <span
-                          style={{
-                            background: isDate ? 'rgba(255,215,0,0.2)' : 'rgba(255,255,255,0.08)',
-                            color: isDate ? '#fff' : undefined,
-                            padding: '.45rem .7rem',
-                            borderRadius: '24px',
-                            fontSize: '.7rem',
-                            letterSpacing: '.08em',
-                            border: isDate ? '1px solid rgba(255,215,0,0.45)' : undefined
-                          }}
-                        >
-                          {h}
-                        </span>
-                      </React.Fragment>
-                    );
-                  })}
-                </div>
-              </div>
-            </div>
-
-            {/* Musical Extravaganza - Segments and Highlights (now below Ticket Prices) */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.15rem', width: '100%', maxWidth: 460, justifySelf: 'center' }}>
-              <div>
-                <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Featured Segments</h3>
-                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.4rem 1rem', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', alignItems: 'start', textAlign: 'left' }}>
-                  {musicalExtravaganza.artistSegments.map((s, i) => (
-                    <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '.5rem', fontSize: '.9rem' }}>
-                      <span style={{ color: '#FFD700', flex: '0 0 auto', lineHeight: 1.2, marginTop: '2px' }}>✦</span>
-                      <span style={{ flex: '1 1 auto', minWidth: 0 }}>{s}</span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
-              <div>
-                <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Highlights</h3>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.55rem' }}>
-                  {musicalExtravaganza.highlights.map((h, i) => (
-                    <span key={i} style={{ background: 'rgba(255,255,255,0.08)', padding: '.45rem .7rem', borderRadius: '24px', fontSize: '.7rem', letterSpacing: '.08em' }}>{h}</span>
-                  ))}
-                </div>
-              </div>
-            </div>
           </div>
         </div>
       </section>

@@ -25,7 +25,6 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
   const [expandedEvent, setExpandedEvent] = useState<number | null>(null);
   const [selectedYear, setSelectedYear] = useState<string | number>(2025);
   const [hasProcessedInitialEvent, setHasProcessedInitialEvent] = useState(false);
-  const [sortByDate, setSortByDate] = useState<boolean>(true);
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
 
   useEffect(() => {
@@ -155,41 +154,41 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
 
   const slugify = (title: string) => title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
 
-  // Handle initial event expansion and scrolling
+  // Handle initial event expansion and scrolling (aligned with rendered sorted order)
   useEffect(() => {
     if (initialExpandedEvent && !hasProcessedInitialEvent) {
+      const current = eventsByYear[selectedYear] || [];
+      const getStartDateLocal = (e: Event): number => {
+        const parsed = parseEventDateRange(e.date);
+        if (!parsed) return 0;
+        return new Date(`${parsed.month} ${parsed.startDay}, ${parsed.year} 00:00:00`).getTime();
+      };
+      // Sorted newest first (same as render)
+      const sorted = [...current].sort((a, b) => {
+        const da = getStartDateLocal(a);
+        const db = getStartDateLocal(b);
+        return db - da;
+      });
+
+      let targetIndex = -1;
       if (initialExpandedEvent === 'upcoming') {
-        // Find the first event with the "Upcoming" category
-        const upcomingEventIndex = eventsByYear[2025]?.findIndex(event => event.category === 'Upcoming');
-        if (upcomingEventIndex !== undefined && upcomingEventIndex !== -1) {
-          setExpandedEvent(upcomingEventIndex);
-          // We need to find the element in the DOM to scroll to it
-          setTimeout(() => {
-            const cards = document.querySelectorAll('.events-grid .event-card');
-            const target = cards[upcomingEventIndex] as HTMLElement | undefined;
-            if (target) {
-              const rect = target.getBoundingClientRect();
-              const top = window.pageYOffset + rect.top - 120; // offset for header
-              window.scrollTo({ top, behavior: 'smooth' });
-            }
-          }, 260); // Slight delay to allow expanded content height
-        }
+        targetIndex = sorted.findIndex(event => event.category === 'Upcoming');
       } else {
-        // Handle specific event expansion by title identifier
-        const eventIndex = eventsByYear[selectedYear]?.findIndex(event => slugify(event.title) === initialExpandedEvent.toLowerCase());
-        
-        if (eventIndex !== undefined && eventIndex !== -1) {
-          setExpandedEvent(eventIndex);
-          setTimeout(() => {
-            const cards = document.querySelectorAll('.events-grid .event-card');
-            const target = cards[eventIndex] as HTMLElement | undefined;
-            if (target) {
-              const rect = target.getBoundingClientRect();
-              const top = window.pageYOffset + rect.top - 120;
-              window.scrollTo({ top, behavior: 'smooth' });
-            }
-          }, 260);
-        }
+        const slugTarget = initialExpandedEvent.toLowerCase();
+        targetIndex = sorted.findIndex(event => slugify(event.title) === slugTarget);
+      }
+
+      if (targetIndex !== -1) {
+        setExpandedEvent(targetIndex);
+        setTimeout(() => {
+          const cards = document.querySelectorAll('.events-grid .event-card');
+          const target = cards[targetIndex] as HTMLElement | undefined;
+          if (target) {
+            const rect = target.getBoundingClientRect();
+            const top = window.pageYOffset + rect.top - 120; // offset for header
+            window.scrollTo({ top, behavior: 'smooth' });
+          }
+        }, 260);
       }
       setHasProcessedInitialEvent(true);
     }
@@ -208,13 +207,11 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
     if (!parsed) return null;
     return new Date(`${parsed.month} ${parsed.startDay}, ${parsed.year} 00:00:00`);
   };
-  const sortedEvents = sortByDate
-    ? [...currentEvents].sort((a, b) => {
-        const da = getStartDate(a)?.getTime() ?? 0;
-        const db = getStartDate(b)?.getTime() ?? 0;
-        return da - db; // oldest first; toggle UI explains
-      })
-    : currentEvents;
+  const sortedEvents = [...currentEvents].sort((a, b) => {
+    const da = getStartDate(a)?.getTime() ?? 0;
+    const db = getStartDate(b)?.getTime() ?? 0;
+    return db - da; // newest first
+  });
   
   const availableYears = Object.keys(eventsByYear).sort((a, b) => {
     // All keys are numeric years now; sort descending
@@ -333,15 +330,6 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
                   </button>
                 ))}
               </div>
-              <div className="year-sort-container" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                <label htmlFor="sortByDate" style={{ fontSize: '.9rem', color: '#333' }}>Sort by date</label>
-                <input
-                  id="sortByDate"
-                  type="checkbox"
-                  checked={sortByDate}
-                  onChange={(e) => { setSortByDate(e.target.checked); setExpandedEvent(null); }}
-                />
-              </div>
             </div>
           )}
 
@@ -456,24 +444,24 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
                           <h4 style={{ color: '#7a1b1b', marginBottom: '0.7rem' }}>Detailed Puja Schedule</h4>
                           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '2.5rem', fontSize: '1rem', color: '#222' }}>
                             <div>
-                              <h5 style={{ margin: '0 0 0.5rem 0', color: '#222' }}>Saturday, September 27, 2025</h5>
+                              <h5 style={{ margin: '0 0 0.5rem 0', color: '#222' }}>Durga Puja September 27, 2025</h5>
                               <ul style={{ paddingLeft: '1.1em', margin: 0, listStyle: 'disc' }}>
-                                <li style={{ color: '#222' }}><b>Bodhan, Nabapatrika Puja & Kalparambha, Maha Saptami</b> – 9:30–11:00 AM</li>
-                                <li style={{ color: '#222' }}><b>Maha Astami Puja & Pushpanjali</b> – 11:00 AM–12:00 PM</li>
-                                <li style={{ color: '#222' }}><b>Sandhipuja</b> – 12:00–12:40 PM</li>
-                                <li style={{ color: '#222' }}><b>Arati</b> – 12:40–1:00 PM</li>
-                                <li style={{ color: '#222' }}><b>Pushpanjali, Bhog</b> – 1:00–1:15 PM</li>
-                                <li style={{ color: '#222' }}><b>Personal Pujo</b> – 1:15–1:30 PM</li>
+                                <li style={{ color: '#222' }}><b>Bodhan, Nabapatrika puja and Kalparambha, Maha Saptami</b> – 9:30 - 11:00 AM</li>
+                                <li style={{ color: '#222' }}><b>Maha Astami Puja and Pushpanjali</b> – 11:00 AM – 12:00 PM</li>
+                                <li style={{ color: '#222' }}><b>Sandhipuja</b> – 12:00 PM - 12:40 PM</li>
+                                <li style={{ color: '#222' }}><b>Arati</b> – 12:40 - 1:00 PM</li>
+                                <li style={{ color: '#222' }}><b>Pushpanjali, Bhog</b> – 1:00 - 1:15 PM</li>
+                                <li style={{ color: '#222' }}><b>Personal Pujo</b> – 1:15 - 1:30 PM</li>
                               </ul>
                             </div>
                             <div>
-                              <h5 style={{ margin: '0 0 0.5rem 0', color: '#222' }}>Sunday, September 28, 2025</h5>
+                              <h5 style={{ margin: '0 0 0.5rem 0', color: '#222' }}>Durga Puja September 28, 2025</h5>
                               <ul style={{ paddingLeft: '1.1em', margin: 0, listStyle: 'disc' }}>
-                                <li style={{ color: '#222' }}><b>Maha Nabami, Pushpanjali</b> – 10:30 AM–12:00 PM</li>
-                                <li style={{ color: '#222' }}><b>Chandipath</b> – 12:00–12:30 PM</li>
-                                <li style={{ color: '#222' }}><b>Arati</b> – 12:30–1:00 PM</li>
-                                <li style={{ color: '#222' }}><b>Bijaya Dasami, Aparajita Puja, Dadhikarma</b> – 1:00–1:30 PM</li>
-                                <li style={{ color: '#222' }}><b>Pratima Niranjan</b> – 1:30 PM</li>
+                                <li style={{ color: '#222' }}><b>MahaNabami , Pushpanjali</b> – 10:30 AM – 12:00 PM</li>
+                                <li style={{ color: '#222' }}><b>Chandiphat</b> – 12:00 PM - 12:30 PM</li>
+                                <li style={{ color: '#222' }}><b>Arati</b> – 12:30 PM - 1:00 PM</li>
+                                <li style={{ color: '#222' }}><b>BijayaDasami, Aparajita Puja, Dadhikoramva</b> – 1:00 PM - 1:30 PM</li>
+                                <li style={{ color: '#222' }}><b>PratimaNiranjan</b> – 1:30 PM</li>
                               </ul>
                             </div>
                           </div>
@@ -529,7 +517,9 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
                               e.stopPropagation();
                               try {
                                 const slug = event.title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'');
-                                localStorage.setItem('abha_ticketing_prefill', JSON.stringify({ subject: 'Ticketing', source: slug, people: 1, eventName: event.title }));
+                                const isFridayMusical = /musical|rathijit|shreya/i.test(event.title) || /musical/.test(slug);
+                                const pkg = isFridayMusical ? 'fri' : undefined;
+                                localStorage.setItem('abha_ticketing_prefill', JSON.stringify({ subject: 'Ticketing', source: slug, people: 1, eventName: event.title, pkg }));
                               } catch {}
                               onPageChange?.('contact');
                             }}

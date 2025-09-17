@@ -12,6 +12,7 @@ interface TicketPrefill {
   source?: string;
   people?: number;
   eventName?: string;
+  pkg?: 'fri' | 'sat' | 'sun' | 'satSun' | 'friSatSun';
 }
 
 const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange, scrollToId }) => {
@@ -55,6 +56,13 @@ const ContactPage: React.FC<ContactPageProps> = ({ onPageChange: _onPageChange, 
           setAttendeeCount(n);
           setAttendeeCountField(String(n));
           setAttendees(Array.from({ length: data.people && data.people > 0 ? data.people : 1 }, () => ''));
+          // Apply package prefill if provided (e.g., default Friday for musical)
+          if (data.pkg) {
+            setAttendeeDetails(prev => {
+              const base = Array.from({ length: n }, (_, i) => prev[i] || { name: '', category: 'adult' as AttendeeCategory, member: false, wantsMembership: false, pkg: 'friSatSun' as DayPackage });
+              return base.map((d) => ({ ...d, pkg: data.pkg! }));
+            });
+          }
           // Scroll after slight delay
           setTimeout(() => {
             if (formRef.current) {
