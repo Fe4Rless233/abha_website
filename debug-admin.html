@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug Admin Data</title>
+</head>
+<body>
+    <h1>ABHA Admin Data Debug</h1>
+    <div id="output"></div>
+    
+    <script>
+        function debugLocalStorage() {
+            const output = document.getElementById('output');
+            
+            // Check old keys
+            const oldEvents = localStorage.getItem('abha_events');
+            const oldPhotos = localStorage.getItem('abha_photos');
+            
+            // Check new keys
+            const newEvents = localStorage.getItem('abha_admin_events');
+            const newPhotos = localStorage.getItem('abha_admin_photos');
+            
+            output.innerHTML = `
+                <h2>Old Keys (from original admin panel):</h2>
+                <p><strong>abha_events:</strong> ${oldEvents ? 'Found ' + JSON.parse(oldEvents).length + ' events' : 'None'}</p>
+                <p><strong>abha_photos:</strong> ${oldPhotos ? 'Found ' + JSON.parse(oldPhotos).length + ' photos' : 'None'}</p>
+                
+                <h2>New Keys (expected by AdminEventsDisplay):</h2>
+                <p><strong>abha_admin_events:</strong> ${newEvents ? 'Found ' + JSON.parse(newEvents).length + ' events' : 'None'}</p>
+                <p><strong>abha_admin_photos:</strong> ${newPhotos ? 'Found ' + JSON.parse(newPhotos).length + ' photos' : 'None'}</p>
+                
+                <h2>Migration:</h2>
+                <button onclick="migrateData()">Migrate old data to new keys</button>
+                <button onclick="addTestEvent()">Add test event</button>
+                <button onclick="clearAll()">Clear all data</button>
+                
+                <h2>Raw Data:</h2>
+                <pre>${JSON.stringify({
+                    oldEvents: oldEvents ? JSON.parse(oldEvents) : null,
+                    oldPhotos: oldPhotos ? JSON.parse(oldPhotos) : null,
+                    newEvents: newEvents ? JSON.parse(newEvents) : null,
+                    newPhotos: newPhotos ? JSON.parse(newPhotos) : null
+                }, null, 2)}</pre>
+            `;
+        }
+        
+        function migrateData() {
+            const oldEvents = localStorage.getItem('abha_events');
+            const oldPhotos = localStorage.getItem('abha_photos');
+            
+            if (oldEvents) {
+                localStorage.setItem('abha_admin_events', oldEvents);
+                console.log('Migrated events to new key');
+            }
+            
+            if (oldPhotos) {
+                localStorage.setItem('abha_admin_photos', oldPhotos);
+                console.log('Migrated photos to new key');
+            }
+            
+            debugLocalStorage();
+            alert('Migration complete! Refresh the main site.');
+        }
+        
+        function addTestEvent() {
+            const testEvent = {
+                id: Date.now().toString(),
+                title: 'Test Community Event',
+                date: '2025-09-15',
+                description: 'This is a test event added from the debug script.',
+                location: 'ABHA Community Center',
+                category: 'community',
+                image: '',
+                createdAt: new Date().toISOString()
+            };
+            
+            const existingEvents = JSON.parse(localStorage.getItem('abha_admin_events') || '[]');
+            existingEvents.push(testEvent);
+            localStorage.setItem('abha_admin_events', JSON.stringify(existingEvents));
+            
+            debugLocalStorage();
+            alert('Test event added! Refresh the main site.');
+        }
+        
+        function clearAll() {
+            if (confirm('Clear all admin data?')) {
+                localStorage.removeItem('abha_events');
+                localStorage.removeItem('abha_photos');
+                localStorage.removeItem('abha_admin_events');
+                localStorage.removeItem('abha_admin_photos');
+                debugLocalStorage();
+                alert('All data cleared!');
+            }
+        }
+        
+        debugLocalStorage();
+    </script>
+</body>
+</html>

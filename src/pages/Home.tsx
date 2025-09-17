@@ -662,7 +662,8 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
         </div>
       </section>
 
-  {/* Upcoming Events Section removed here after moving above Hero */}
+      {/* Community Events Section - Disabled for now */}
+      {/* Future: Will show upcoming community events here */}
 
       {/* Community Investment Section - HBCU Style */}
       <section className="hbcu-investment-section">

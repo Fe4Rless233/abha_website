@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { buildGoogleCalendarUrl } from '../utils/calendar';
+import { buildGoogleCalendarUrl, parseEventDateRange } from '../utils/calendar';
 import ShareButton from '../components/ui/ShareButton';
 import CountUp from '../components/ui/CountUp';
-import AdminEventsDisplay from '../components/AdminEventsDisplay';
 
 interface Event {
   title: string;
@@ -24,8 +23,9 @@ interface EventsPageProps {
 
 const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageChange }) => {
   const [expandedEvent, setExpandedEvent] = useState<number | null>(null);
-  const [selectedYear, setSelectedYear] = useState<number>(2025);
+  const [selectedYear, setSelectedYear] = useState<string | number>(2025);
   const [hasProcessedInitialEvent, setHasProcessedInitialEvent] = useState(false);
+  const [sortByDate, setSortByDate] = useState<boolean>(true);
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
 
   useEffect(() => {
@@ -38,18 +38,18 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
     }
   }, [lightboxSrc]);
 
-  const eventsByYear: { [year: number]: Event[] } = {
+  const eventsByYear: { [key: string | number]: Event[] } = {
     2025: [
     {
       title: "A Musical Extravaganza with Rathijit & Shreya",
       description: "ABHA's 10th Year celebration featuring renowned artists Rathijit & Shreya with musical performances.",
       category: "Upcoming",
       date: "September 26, 2025",
-  time: "5:30 PM - 11:00 PM",
+      time: "5:30 PM - 11:00 PM",
       venue: "Enola Fire Company, 118 Chester Rd, Enola, PA 17025",
       details: "Join us for a spectacular musical evening celebrating ABHA's 10th anniversary! Experience soul-stirring performances by renowned Bengali artists Rathijit & Shreya, featuring classic Rabindra Sangeet, modern Bengali songs, and fusion music. These artists from the popular TV show 'Sa Re Ga Ma Pa' promise an unforgettable night of melody and nostalgia. Featuring special performances by Soumyojyoti on Tabla and other talented musicians.",
       highlights: ["Rathijit & Shreya Live Performance", "Rabindra Sangeet & Modern Songs", "Sa Re Ga Ma Pa House Production", "Soumyojyoti on Tabla", "ABHA 10th Anniversary Celebration", "Professional Sound & Lighting"],
-  image: "/assets/images/events/a-musical-extravaganza-with-rathijit-and-shreya.jpg",
+      image: "/assets/images/events/a-musical-extravaganza-with-rathijit-and-shreya.jpg",
       fallbackImage: "🎵"
     },
     {
@@ -61,41 +61,41 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
       venue: "Community Center, Harrisburg PA",
       details: "Join us for the most significant Bengali festival! Experience traditional puja rituals, mesmerizing cultural performances including classical dance and music, authentic Bengali delicacies, kids' activities, and community bonding. Free for all families.",
       highlights: ["Traditional Puja Rituals", "Cultural Dance & Music", "Authentic Bengali Food", "Kids Activities", "Community Fellowship"],
-  image: "/assets/images/events/durga-puja.jpg",
+      image: "/assets/images/events/durga-puja.jpg",
       fallbackImage: "🏛️"
-    },
-    {
-      title: "Annual Summer Picnic",
+  },
+  {
+      title: "Annual Summer Picnic 2025",
       description: "A fun-filled day for families with games, food, and social activities.",
       category: "Social",
       date: "July 20, 2025",
       time: "11:00 AM - 6:00 PM",
       venue: "Riverside Park, Harrisburg",
-      details: "Bring your family for a day of outdoor fun! Enjoy traditional games, potluck feast, volleyball, cricket, and activities for all ages. A perfect opportunity to connect with fellow Bengali families in a relaxed outdoor setting.",
+      details: "We had an amazing day of outdoor fun! Families enjoyed traditional games, potluck feast, volleyball, cricket, and activities for all ages. A perfect opportunity to connect with fellow Bengali families in a relaxed outdoor setting.",
       highlights: ["Outdoor Games", "Potluck Feast", "Cricket & Volleyball", "Face Painting for Kids", "Photography Contest"],
       image: "/assets/images/events/summer-picnic.jpg",
       fallbackImage: "🌳"
     },
     {
-      title: "Boishakhi (Bengali New Year)",
-      description: "Celebrate the Bengali New Year with traditional music, dance, and food.",
+      title: "Boishakhi 2025 (Bengali New Year 1432)",
+      description: "Celebrated the Bengali New Year with traditional music, dance, and food.",
       category: "Festival",
       date: "April 15, 2025",
       time: "6:00 PM - 10:00 PM",
       venue: "ABHA Community Hall",
-      details: "Welcome the Bengali New Year 1432 with joy and tradition! Enjoy cultural programs featuring traditional Rabindra Sangeet, folk dances, poetry recitation, and a special New Year feast with traditional Bengali sweets.",
+      details: "We welcomed the Bengali New Year 1432 with joy and tradition! Featured cultural programs with traditional Rabindra Sangeet, folk dances, poetry recitation, and a special New Year feast with traditional Bengali sweets.",
       highlights: ["Rabindra Sangeet Performance", "Traditional Folk Dance", "Poetry Recitation", "Bengali New Year Feast", "Cultural Quiz Competition"],
       image: "/assets/images/events/Boishakhi.jpg",
       fallbackImage: "🎊"
     },
     {
-      title: "Saraswati Puja",
+      title: "Saraswati Puja 2025",
       description: "A celebration of knowledge, music, and the arts.",
       category: "Festival",
       date: "February 2, 2025",
       time: "4:00 PM - 9:00 PM",
       venue: "Community Center, Harrisburg PA",
-      details: "Honor Goddess Saraswati, the deity of knowledge and arts. The celebration includes puja ceremonies, classical music performances, art exhibitions by community members, and Natok (drama) performances for children.",
+      details: "We honored Goddess Saraswati, the deity of knowledge and arts. The celebration included puja ceremonies, classical music performances, art exhibitions by community members, and Natok (drama) performances for children.",
       highlights: ["Saraswati Puja Ceremony", "Classical Music Concert", "Art Exhibition", "Children's Drawing Competition", "Traditional Prasad Distribution"],
       image: "/assets/images/events/saraswati-puja.jpg",
       fallbackImage: "📚"
@@ -203,7 +203,23 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
   }, [initialExpandedEvent]);
 
   const currentEvents = eventsByYear[selectedYear] || [];
-  const availableYears = Object.keys(eventsByYear).map(Number).sort((a, b) => b - a);
+  const getStartDate = (e: Event): Date | null => {
+    const parsed = parseEventDateRange(e.date);
+    if (!parsed) return null;
+    return new Date(`${parsed.month} ${parsed.startDay}, ${parsed.year} 00:00:00`);
+  };
+  const sortedEvents = sortByDate
+    ? [...currentEvents].sort((a, b) => {
+        const da = getStartDate(a)?.getTime() ?? 0;
+        const db = getStartDate(b)?.getTime() ?? 0;
+        return da - db; // oldest first; toggle UI explains
+      })
+    : currentEvents;
+  
+  const availableYears = Object.keys(eventsByYear).sort((a, b) => {
+    // All keys are numeric years now; sort descending
+    return Number(b) - Number(a);
+  });
 
   const toggleExpand = (clickedIndex: number) => {
     setExpandedEvent(prev => prev === clickedIndex ? null : clickedIndex);
@@ -296,11 +312,6 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
       {/* Events Section - HBCU Style */}
       <section className="hbcu-investment-section all-events-section">
         <div className="container">
-          {/* Admin Events Display */}
-          <div style={{ marginBottom: '4rem' }}>
-            <AdminEventsDisplay />
-          </div>
-          
           <h2 className="hbcu-section-title-dark">Annual Events</h2>
           <p className="hbcu-heritage-description">
             Explore our year-round celebrations and community gatherings
@@ -322,17 +333,29 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
                   </button>
                 ))}
               </div>
+              <div className="year-sort-container" style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                <label htmlFor="sortByDate" style={{ fontSize: '.9rem', color: '#333' }}>Sort by date</label>
+                <input
+                  id="sortByDate"
+                  type="checkbox"
+                  checked={sortByDate}
+                  onChange={(e) => { setSortByDate(e.target.checked); setExpandedEvent(null); }}
+                />
+              </div>
             </div>
           )}
 
           {/* Year Indicator */}
           <div className="year-indicator-card">
             <h3 className="year-indicator-title">
-              {selectedYear === 2025 ? '🌟 Upcoming Events ' + selectedYear : '📸 Past Events ' + selectedYear}
+              {selectedYear === 2025 
+                ? 'Annual Events ' + selectedYear 
+                : '📸 Past Events ' + selectedYear
+              }
             </h3>
             <p className="year-indicator-description">
               {selectedYear === 2025 
-                ? 'Join us for these exciting upcoming celebrations and community gatherings!'
+                ? 'Explore upcoming and recent events for 2025.'
                 : `Relive the wonderful memories from our ${selectedYear} celebrations and community events.`
               }
             </p>
@@ -340,7 +363,13 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
 
           {/* Events Grid */}
           <div className="events-grid">
-            {currentEvents.map((event, index) => (
+            {sortedEvents.length === 0 ? (
+              <div style={{ textAlign: 'center', padding: '2rem', color: '#666' }}>
+                <h3>No events found for {selectedYear}</h3>
+                <p>Please select a different year to view past events.</p>
+              </div>
+            ) : (
+              sortedEvents.map((event, index) => (
               <div 
                 key={`${event.title}-${selectedYear}-${index}`}
                 className={`event-card ${expandedEvent === index ? 'expanded' : ''}`}
@@ -517,7 +546,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
                   </div>
                 </div>
               </div>
-            ))}
+            )))}
           </div>
         </div>
       </section>

@@ -47,7 +47,7 @@ const VideoTestimonials: React.FC<VideoTestimonialsProps> = ({ videos = defaultV
     <section className="hbcu-investment-section" style={{ paddingTop: '3.25rem', paddingBottom: '3.25rem' }}>
       <div className="container">
         <h2 className="hbcu-section-title-dark" style={{ marginBottom: '.6rem' }}>Video Testimonials</h2>
-  <p className="hbcu-heritage-description" style={{ maxWidth: 840, color: '#ffffff' }}>
+        <p className="hbcu-heritage-description" style={{ maxWidth: 840 }}>
           Voices from our community sharing real experiences with ABHA.
         </p>
         <div style={{ display: 'grid', gap: '1.75rem', marginTop: '2.2rem', gridTemplateColumns: 'repeat(auto-fit,minmax(300px,1fr))' }}>

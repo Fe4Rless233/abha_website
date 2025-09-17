@@ -22,6 +22,49 @@ export interface AdminPhoto {
 // Local storage keys
 const EVENTS_KEY = 'abha_admin_events';
 const PHOTOS_KEY = 'abha_admin_photos';
+const OLD_EVENTS_KEY = 'abha_events';
+const OLD_PHOTOS_KEY = 'abha_photos';
+
+// Migration function
+export const migrateOldData = (): { eventsMigrated: number; photosMigrated: number } => {
+  let eventsMigrated = 0;
+  let photosMigrated = 0;
+  
+  try {
+    // Check if new storage is empty and old storage has data
+    const currentEvents = getEvents();
+    const currentPhotos = getPhotos();
+    
+    if (currentEvents.length === 0) {
+      const oldEventsStr = localStorage.getItem(OLD_EVENTS_KEY);
+      if (oldEventsStr) {
+        const oldEvents = JSON.parse(oldEventsStr);
+        const migratedEvents = oldEvents.map((event: any) => ({
+          ...event,
+          createdAt: event.createdAt || new Date().toISOString()
+        }));
+        saveEvents(migratedEvents);
+        eventsMigrated = migratedEvents.length;
+        console.log(`Migrated ${eventsMigrated} events from old storage`);
+      }
+    }
+    
+    if (currentPhotos.length === 0) {
+      const oldPhotosStr = localStorage.getItem(OLD_PHOTOS_KEY);
+      if (oldPhotosStr) {
+        const oldPhotos = JSON.parse(oldPhotosStr);
+        savePhotos(oldPhotos);
+        photosMigrated = oldPhotos.length;
+        console.log(`Migrated ${photosMigrated} photos from old storage`);
+      }
+    }
+    
+  } catch (error) {
+    console.error('Migration failed:', error);
+  }
+  
+  return { eventsMigrated, photosMigrated };
+};
 
 // Events management
 export const getEvents = (): AdminEvent[] => {
