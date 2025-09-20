@@ -276,6 +276,19 @@ REACT_APP_MOCK_API=false
 REACT_APP_DEBUG_MODE=false
 ```
 
+#### Announcement Video
+For the home page Announcement section, you can configure a vertical video via environment variables (preferred) or quick local overrides:
+
+- Preferred (build-time):
+  - `VITE_ANNOUNCEMENT_EMBED_URL` – An embeddable URL (e.g., Google Drive `.../preview`, YouTube embed). Takes precedence when set.
+  - `VITE_ANNOUNCEMENT_VIDEO_URL` – A direct MP4 URL (CDN/local). Used when no embed URL is provided.
+
+- Optional (runtime quick test):
+  - `localStorage['abha_announcement_embed_url']`
+  - `localStorage['abha_announcement_video_url']`
+
+Note: If both are present, the embed URL wins. A local fallback at `/assets/videos/announcement-vertical.mp4` is used when neither env nor localStorage is set.
+
 ### Build Optimization
 ```typescript
 // Vite configuration highlights

@@ -16,8 +16,17 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ onPageChange }) => {
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundBlendMode: 'multiply',
+          position: 'relative'
         }}
       >
+        {/* Fallback image layer in case CSS background fails to load */}
+        <img
+          src="/assets/images/community-hero.jpg"
+          alt="Community hero background"
+          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0, pointerEvents: 'none' }}
+          onLoad={(e) => { e.currentTarget.style.display = 'none'; }}
+          onError={(e) => { e.currentTarget.style.opacity = '0.2'; }}
+        />
         <div className="container hero-content-hbcu">
           <div className="hero-logo-container-hbcu">
             <img 

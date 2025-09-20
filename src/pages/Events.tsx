@@ -246,8 +246,10 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
             muted 
             loop 
             playsInline
+            preload="metadata"
+            poster="/assets/images/hero-poster.jpg"
           >
-            <source src="/assets/videos/community-events.mp4" type="video/mp4" />
+            <source src="/assets/videos/bengali-culture-hero.mp4" type="video/mp4" />
           </video>
           <div className="hero-video-overlay"></div>
         </div>

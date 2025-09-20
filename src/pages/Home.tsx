@@ -5,6 +5,7 @@ import Countdown from '../components/ui/Countdown';
 import VideoTestimonials from '../components/VideoTestimonials';
 import { buildGoogleCalendarUrl } from '../utils/calendar';
 import ShareButton from '../components/ui/ShareButton';
+import AnnouncementVideo from '../components/AnnouncementVideo';
 // Gallery moved to Culture page per request
 
 interface HomePageProps {
@@ -229,6 +230,12 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
             <h1 className="hbcu-section-title" style={{ color: '#FFD700', margin: 0 }}>Featured Celebrations 2025</h1>
           </div>
           <p className="hbcu-mission-text" style={{ maxWidth: 920, color: '#ffffff' }}>{durgaPuja.description}</p>
+
+          {/* Announcement Video (vertical 9:16) */}
+          <div style={{ margin: '1rem 0 2rem' }}>
+            <h3 style={{ color: '#ffe38f', margin: '0 0 .5rem', fontSize: '1rem', letterSpacing: '.05em' }}>Announcement</h3>
+            <AnnouncementVideo embedUrl="https://drive.google.com/file/d/1P8MtS0ZNepTPIgJs4Lz27ZW4O2YP1gCs/preview" />
+          </div>
 
           <div className="featured-grid">
             {/* Durga Puja Card */}
