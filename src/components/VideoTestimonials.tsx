@@ -4,41 +4,41 @@ interface VideoTestimonial {
   id: string;            // unique key
   title: string;         // short heading
   person: string;        // name / role
-  src: string;           // video source (mp4 path or YouTube ID)
+  src: string;           // video source (mp4 path or YouTube ID) or unused when embedUrl is set
   poster?: string;       // optional poster image
   description?: string;  // short context
   youtube?: boolean;     // flag if src is a YouTube video id
+  embedUrl?: string;     // if provided, use this URL in an iframe (e.g., Google Drive preview)
 }
 
 interface VideoTestimonialsProps {
   videos?: VideoTestimonial[];
 }
 
-// Default to YouTube embeds to avoid shipping large local MP4s.
-// Replace the src values with real YouTube video IDs when ready.
+// Default to Google Drive preview embeds (iframes) provided by the user.
 const defaultVideos: VideoTestimonial[] = [
   {
     id: 'vt1',
     title: 'Community Impact',
     person: 'Thank you Tanmoy and Sushmita',
-    src: 'dQw4w9WgXcQ',
-    youtube: true,
+    src: '',
+    embedUrl: 'https://drive.google.com/file/d/1HboWXMFu2PF7rhKnI4eFINp3PoB5aYzY/preview',
     description: 'How ABHA helped them connect with culture.'
   },
   {
     id: 'vt2',
     title: 'Family Experience',
     person: 'Thank you Susmit and Saswati',
-    src: 'oHg5SJYRHA0',
-    youtube: true,
+    src: '',
+    embedUrl: 'https://drive.google.com/file/d/1XHySD-zMa_GFO_GKpLlxFVbEuJ0DwEAg/preview',
     description: 'A family sharing their festival experience.'
   },
   {
     id: 'vt3',
     title: 'Youth Perspective',
     person: 'Thank you Dipankar and Barnali',
-    src: '9bZkp7q19f0',
-    youtube: true,
+    src: '',
+    embedUrl: 'https://drive.google.com/file/d/17CZgNIL7MG5ZjJjhDsYou2ywin0ZHF1V/preview',
     description: 'Youth involvement and cultural learning.'
   }
 ];
@@ -64,7 +64,16 @@ const VideoTestimonials: React.FC<VideoTestimonialsProps> = ({ videos = defaultV
               <div key={v.id} className="event-card" style={{ padding: '1.1rem 1.1rem 1.4rem', display: 'flex', flexDirection: 'column', gap: '.75rem' }}>
                 <h3 style={{ margin: 0, fontSize: '1rem', letterSpacing: '.03em', color: 'var(--primary-red,#7a1b1b)' }}>{v.person}</h3>
                 <div style={{ position: 'relative', width: '100%', aspectRatio: '16 / 9', background: '#111', borderRadius: 12, overflow: 'hidden', boxShadow: '0 4px 12px -4px rgba(0,0,0,.4)' }}>
-                  {v.youtube ? (
+                  {v.embedUrl ? (
+                    <iframe
+                      title={v.title}
+                      src={v.embedUrl}
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      style={{ width: '100%', height: '100%', border: '0' }}
+                      loading="lazy"
+                    />
+                  ) : v.youtube ? (
                     <iframe
                       title={v.title}
                       src={isExpanded ? `https://www.youtube.com/embed/${v.src}?autoplay=1&rel=0` : `https://www.youtube.com/embed/${v.src}?rel=0`}
