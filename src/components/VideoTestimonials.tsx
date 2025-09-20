@@ -14,34 +14,41 @@ interface VideoTestimonialsProps {
   videos?: VideoTestimonial[];
 }
 
-// Using local MP4 assets placed under public/videos/ as per user naming.
-// If later switching to YouTube, set youtube:true and src to the video ID.
+// Default to YouTube embeds to avoid shipping large local MP4s.
+// Replace the src values with real YouTube video IDs when ready.
 const defaultVideos: VideoTestimonial[] = [
   {
     id: 'vt1',
     title: 'Community Impact',
-  person: 'Thank you Tanmoy and Sushmita',
-  src: '/assets/videos/videoTestimonial1.mp4',
+    person: 'Thank you Tanmoy and Sushmita',
+    src: 'dQw4w9WgXcQ',
+    youtube: true,
     description: 'How ABHA helped them connect with culture.'
   },
   {
     id: 'vt2',
     title: 'Family Experience',
-  person: 'Thank you Susmit and Saswati',
-  src: '/assets/videos/videoTestimonial2.mp4',
+    person: 'Thank you Susmit and Saswati',
+    src: 'oHg5SJYRHA0',
+    youtube: true,
     description: 'A family sharing their festival experience.'
   },
   {
     id: 'vt3',
     title: 'Youth Perspective',
-  person: 'Thank you Dipankar and Barnali',
-  src: '/assets/videos/videoTestimonial3.mp4',
+    person: 'Thank you Dipankar and Barnali',
+    src: '9bZkp7q19f0',
+    youtube: true,
     description: 'Youth involvement and cultural learning.'
   }
 ];
 
 const VideoTestimonials: React.FC<VideoTestimonialsProps> = ({ videos = defaultVideos }) => {
   const [active, setActive] = useState<string | null>(null);
+
+  if (!videos || videos.length === 0) {
+    return null;
+  }
 
   return (
     <section className="hbcu-investment-section" style={{ paddingTop: '3.25rem', paddingBottom: '3.25rem' }}>
