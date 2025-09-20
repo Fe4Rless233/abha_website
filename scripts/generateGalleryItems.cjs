@@ -6,10 +6,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const exts = {
-  image: ['.jpg', '.jpeg', '.png', '.webp'],
-  video: ['.mp4']
-};
+// Images only; videos are intentionally excluded from the gallery
+const imageExts = ['.webp', '.jpg', '.jpeg', '.png'];
 
 const mediaDir = path.join(__dirname, '../public/assets/images/gallery/media');
 
@@ -38,19 +36,15 @@ function parseArgs() {
 const { includeVideos } = parseArgs();
 const files = walk(mediaDir);
 
-const allowedExts = includeVideos ? Object.values(exts).flat() : exts.image;
 const galleryItems = files
-    .filter(f => allowedExts.includes(path.extname(f).toLowerCase()))
-    .map(f => {
-      const ext = path.extname(f).toLowerCase();
-      // Hardcode the type property as a string literal for TS
-      const type = exts.image.includes(ext) ? "'image'" : "'video'";
-      // Convert to web path
-      const webPath = f.replace(/.*public/, '').replace(/\\/g, '/');
-      return `{ type: ${type}, src: '${webPath}', alt: 'Gallery ${type === "'image'" ? 'Image' : 'Video'}' }`;
-    });
+  .filter(f => imageExts.includes(path.extname(f).toLowerCase()))
+  .map(f => {
+    // Convert to web path
+    const webPath = f.replace(/.*public/, '').replace(/\\/g, '/');
+    return `{ type: 'image', src: '${webPath}', alt: 'Gallery Image' }`;
+  });
 
 const output = `// AUTO-GENERATED FILE. DO NOT EDIT MANUALLY\n// import type { GalleryItem } from '../components/Gallery';\nexport const galleryItems = [\n  ${galleryItems.join(',\n  ')}\n];\n`;
 
 fs.writeFileSync(path.join(__dirname, '../src/data/galleryItems.ts'), output);
-console.log('galleryItems.ts generated with', galleryItems.length, 'items.', includeVideos ? '(including videos)' : '(images only)');
+console.log('galleryItems.ts generated with', galleryItems.length, 'image items.');
