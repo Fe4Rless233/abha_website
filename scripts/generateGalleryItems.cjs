@@ -1,11 +1,13 @@
 // scripts/generateGalleryItems.cjs
-// Node.js script to generate a galleryItems array from all images and videos in public/assets/images/gallery/media
+// Node.js script to generate a galleryItems array from all images (and optionally videos)
+// in public/assets/images/gallery/media
+// Usage: node scripts/generateGalleryItems.cjs [--includeVideos]
 
 const fs = require('fs');
 const path = require('path');
 
 const exts = {
-  image: ['.jpg', '.jpeg', '.png'],
+  image: ['.jpg', '.jpeg', '.png', '.webp'],
   video: ['.mp4']
 };
 
@@ -26,10 +28,19 @@ function walk(dir) {
   return results;
 }
 
+function parseArgs() {
+  const args = process.argv.slice(2);
+  return {
+    includeVideos: args.includes('--includeVideos')
+  };
+}
+
+const { includeVideos } = parseArgs();
 const files = walk(mediaDir);
 
+const allowedExts = includeVideos ? Object.values(exts).flat() : exts.image;
 const galleryItems = files
-    .filter(f => Object.values(exts).flat().includes(path.extname(f).toLowerCase()))
+    .filter(f => allowedExts.includes(path.extname(f).toLowerCase()))
     .map(f => {
       const ext = path.extname(f).toLowerCase();
       // Hardcode the type property as a string literal for TS
@@ -42,4 +53,4 @@ const galleryItems = files
 const output = `// AUTO-GENERATED FILE. DO NOT EDIT MANUALLY\n// import type { GalleryItem } from '../components/Gallery';\nexport const galleryItems = [\n  ${galleryItems.join(',\n  ')}\n];\n`;
 
 fs.writeFileSync(path.join(__dirname, '../src/data/galleryItems.ts'), output);
-console.log('galleryItems.ts generated with', galleryItems.length, 'items.');
+console.log('galleryItems.ts generated with', galleryItems.length, 'items.', includeVideos ? '(including videos)' : '(images only)');

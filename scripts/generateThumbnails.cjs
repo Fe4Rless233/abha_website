@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
 
-const exts = ['.jpg', '.jpeg', '.png'];
+const exts = ['.jpg', '.jpeg', '.png', '.webp'];
 const mediaDir = path.join(__dirname, '../public/assets/images/gallery/media');
 const thumbDir = path.join(__dirname, '../public/assets/images/gallery/thumbnails');
 

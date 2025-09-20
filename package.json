@@ -22,7 +22,9 @@
     "build-storybook": "storybook build",
     "analyze": "npm run build && npx vite-bundle-analyzer",
     "e2e": "playwright test",
-    "e2e:ui": "playwright test --ui"
+    "e2e:ui": "playwright test --ui",
+    "gallery:optimize": "node scripts/optimizeGallery.cjs --maxWidth=1600 --quality=72",
+    "gallery:generate": "node scripts/generateGalleryItems.cjs"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.3.2",
