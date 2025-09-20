@@ -177,6 +177,44 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
 
   return (
     <div className="page-container hbcu-style">
+      {/* Bengali Culture Hero - Drive embed, autoplay, controls visually hidden */}
+      <section className="hbcu-hero-section" id="home-hero">
+        <div className="hero-video-container" style={{ position: 'relative', overflow: 'hidden' }}>
+          <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
+            <iframe
+              title="Bengali Culture Hero"
+              src="https://drive.google.com/file/d/1ROMACbFg0xywlWek07ooKuV8-3ek1ZjC/preview"
+              allow="autoplay; fullscreen; picture-in-picture"
+              loading="eager"
+              style={{
+                position: 'absolute',
+                top: '-9%',
+                left: 0,
+                width: '100%',
+                height: '118%',
+                border: 0,
+                pointerEvents: 'none' // disable interactions so play/pause/progress cannot be clicked
+              }}
+              allowFullScreen
+            />
+          </div>
+          {/* Darken overlay for readability and to mask any residual controls */}
+          <div className="hero-video-overlay" />
+          {/* Extra bottom mask to hide Drive progress bar if present */}
+          <div
+            aria-hidden
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              bottom: 0,
+              height: 120,
+              background: 'linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0))',
+              pointerEvents: 'none'
+            }}
+          />
+        </div>
+      </section>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify([
