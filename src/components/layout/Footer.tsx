@@ -66,6 +66,57 @@ const Footer: React.FC<FooterProps> = ({ onPageChange }) => {
           </p>
         </div>
       </div>
+
+      {/* Sponsors (site-wide) */}
+      <div
+        className="footer-sponsors"
+        style={{
+          marginTop: '2rem',
+          padding: '1.5rem 0',
+          background: 'var(--footer-sponsor-bg, rgba(0,0,0,0.04))',
+          borderTop: '1px solid rgba(0,0,0,0.06)'
+        }}
+      >
+        <div
+          className="container"
+          style={{ maxWidth: 1100, margin: '0 auto', padding: '0 1rem' }}
+        >
+          <h3 style={{ margin: '0 0 .75rem', fontSize: '1.15rem' }}>Our Sponsors</h3>
+          <p style={{ margin: '0 0 1rem', color: 'var(--text-light, #666)', fontSize: '.95rem' }}>
+            We’re grateful to our sponsors for supporting ABHA’s community programs. View the latest sponsor list below.
+          </p>
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: 'min(75vh, 700px)',
+              borderRadius: 12,
+              overflow: 'hidden',
+              boxShadow: '0 6px 20px -8px rgba(0,0,0,.25)',
+              background: '#fff'
+            }}
+          >
+            <iframe
+              title="ABHA Sponsors PDF"
+              aria-label="ABHA Sponsors PDF"
+              src="https://drive.google.com/file/d/1htnhEk_MwCclaE9ldire4-4o2Dyz4dYC/preview"
+              allow="autoplay"
+              style={{ width: '100%', height: '100%', border: 0 }}
+              loading="lazy"
+            />
+          </div>
+          <div style={{ marginTop: '.75rem' }}>
+            <a
+              href="https://drive.google.com/file/d/1htnhEk_MwCclaE9ldire4-4o2Dyz4dYC/view"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ fontSize: '.9rem' }}
+            >
+              Open full PDF in new tab ↗
+            </a>
+          </div>
+        </div>
+      </div>
       
       <div className="footer-bottom">
         <p>&copy; {new Date().getFullYear()} Association of Bengalis in Harrisburg Area (ABHA). All rights reserved.</p>
