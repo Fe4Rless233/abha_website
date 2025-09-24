@@ -200,6 +200,40 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
           </div>
           {/* Darken overlay for readability and to mask any residual controls */}
           <div className="hero-video-overlay" />
+          {/* Hero content overlay (restored) */}
+          <div
+            className="container hero-content-hbcu"
+            style={{
+              position: 'absolute',
+              inset: 0,
+              zIndex: 2,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              textAlign: 'center',
+              padding: '1.25rem'
+            }}
+          >
+            <div style={{ maxWidth: 980 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '.6rem' }}>
+                <img
+                  src="/assets/images/abha-logo.png"
+                  alt="ABHA Logo"
+                  style={{ width: 120, height: 120, objectFit: 'contain', filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.55))' }}
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                />
+                <h1 className="hero-title-hbcu" style={{ margin: 0, color: '#fff' }}>Bengali Culture & Community in Harrisburg</h1>
+                <p className="hero-subtitle-hbcu" style={{ maxWidth: 820, margin: '.35rem 0 0', color: 'rgba(255,255,255,0.9)' }}>
+                  Celebrating our heritage through festivals, music, arts, and community service — all year round.
+                </p>
+                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.65rem', marginTop: '1rem', justifyContent: 'center' }}>
+                  <button className="btn-hbcu-primary" onClick={() => onPageChange?.('events')} type="button">Explore Events</button>
+                  <button className="btn-hbcu-secondary" onClick={() => onPageChange?.('about')} type="button">About ABHA</button>
+                  <button className="btn-hbcu-secondary" onClick={() => onPageChange?.('contact')} type="button">Get Involved</button>
+                </div>
+              </div>
+            </div>
+          </div>
           {/* Extra bottom mask to hide Drive progress bar if present */}
           <div
             aria-hidden
