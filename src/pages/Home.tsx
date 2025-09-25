@@ -1,6 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import CountUp from '../components/ui/CountUp';
-import LoadingSpinner from '../components/ui/LoadingSpinner';
 import Countdown from '../components/ui/Countdown';
 import VideoTestimonials from '../components/VideoTestimonials';
 import { buildGoogleCalendarUrl } from '../utils/calendar';
@@ -13,10 +11,18 @@ interface HomePageProps {
 }
 
 const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
-  const [videoLoaded, setVideoLoaded] = useState(false);
-  const [videoError, setVideoError] = useState(false);
-  const videoRef = useRef<HTMLVideoElement | null>(null);
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
+  const heroVideoRef = useRef<HTMLVideoElement | null>(null);
+  const [heroStage, setHeroStage] = useState<0 | 1 | 2>(0); // 0=HTML5,1=YouTube,2=Drive preview
+  const mediaWrapperRef = useRef<HTMLDivElement | null>(null);
+  const youTubeId = (() => {
+    try {
+      const explicit = 'TeCOSAF5Hss'; // provided ID
+      const envId = (import.meta as any)?.env?.VITE_HERO_YT_ID;
+      const ls = typeof window !== 'undefined' ? localStorage.getItem('hero_youtube_id') : null;
+      return (ls || envId || explicit || '').trim();
+    } catch { return 'TeCOSAF5Hss'; }
+  })();
 
   // Lock body scroll when lightbox is open
   useEffect(() => {
@@ -29,45 +35,82 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
     }
   }, [lightboxSrc]);
 
-  // Fallback timeout in case video load stalls
+  // Removed old local-video autoplay logic; Drive iframe handles playback now
+  // Stage 0 playback attempt with stall detection
   useEffect(() => {
-    const timeout = setTimeout(() => {
-      setVideoLoaded(true); // allow content even if video not fully loaded
-    }, 4000);
+    if (heroStage !== 0) return;
+    const vid = heroVideoRef.current;
+    if (!vid) return;
+    vid.muted = true;
+    vid.play().catch(() => {/* user gesture may be required */});
+    const section = document.getElementById('home-hero');
+    const io = section ? new IntersectionObserver((entries) => {
+      const entry = entries[0];
+      if (entry?.isIntersecting) {
+        vid.play().catch(() => {});
+      }
+    }, { threshold: [0, 0.25] }) : null;
+    if (io && section) io.observe(section);
 
-    // Respect reduced motion and detect autoplay support
-    const setupPlayback = () => {
-      try {
-        const prefersReducedMotion = typeof window !== 'undefined' && window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (prefersReducedMotion) {
-          setVideoLoaded(true);
-          return; // let poster show instead of forcing playback
-        }
-        const el = videoRef.current;
-        if (el) {
-          // Ensure muted for autoplay policies
-          el.muted = true;
-          const playPromise = el.play();
-          if (playPromise && typeof playPromise.then === 'function') {
-            playPromise.then(() => setVideoLoaded(true)).catch(() => {
-              // Autoplay blocked or codec issue – use logo fallback
-              setVideoError(true);
-              setVideoLoaded(true);
-            });
-          }
-        }
-      } catch {
-        // Non-critical
+    let progressed = false;
+    const onTime = () => {
+      if (vid.currentTime > 0.2) {
+  progressed = true;
+        vid.removeEventListener('timeupdate', onTime);
       }
     };
-
-    // Defer a tick so ref is attached
-    const r = requestAnimationFrame(setupPlayback);
-    return () => {
-      clearTimeout(timeout);
-      cancelAnimationFrame(r);
+    vid.addEventListener('timeupdate', onTime);
+    const stall = setTimeout(() => {
+      if (!progressed) setHeroStage(youTubeId ? 1 : 2);
+    }, 3000);
+    const onError = () => {
+      setHeroStage(youTubeId ? 1 : 2);
     };
-  }, []);
+    vid.addEventListener('error', onError);
+    return () => {
+      vid.removeEventListener('timeupdate', onTime);
+      vid.removeEventListener('error', onError);
+      clearTimeout(stall);
+      if (io && section) io.disconnect();
+    };
+  }, [heroStage, youTubeId]);
+
+  // Dynamic scale for vertical video/iframe to ensure cover fit
+  useEffect(() => {
+    const wrap = mediaWrapperRef.current;
+    if (!wrap) return;
+    function resize() {
+      const parent = wrap.parentElement as HTMLElement | null;
+      if (!parent) return;
+      const pw = parent.clientWidth;
+      const ph = parent.clientHeight || window.innerHeight * 0.72;
+      // Assume source aspect ratios: HTML5 maybe ~16:9, YouTube fallback 16:9, but vertical short ~9:16 inside 16:9 frame.
+      // We'll scale using a target aspect of 9:16 if stage >0 (YouTube/Drive vertical), else 16:9.
+      const targetAspect = heroStage === 0 ? 16 / 9 : 9 / 16; // width/height
+      // We want element to cover parent: scale based on whichever dimension is limiting.
+      const needWidth = ph * targetAspect; // width needed to cover height
+      const needHeight = pw / targetAspect; // height needed to cover width
+      let finalWidth: number; let finalHeight: number;
+      if (needWidth < pw) {
+        // height-based width smaller than parent width -> expand width to parent width
+        finalWidth = pw; finalHeight = needHeight; // enlarge height to maintain aspect
+      } else {
+        finalWidth = needWidth; finalHeight = ph;
+      }
+      wrap.style.width = `${finalWidth}px`;
+      wrap.style.height = `${finalHeight}px`;
+      wrap.style.position = 'absolute';
+      wrap.style.top = '50%';
+      wrap.style.left = '50%';
+      wrap.style.transform = 'translate(-50%, -50%)';
+      wrap.style.pointerEvents = 'none';
+      // Allow video clicks only for HTML5 stage if needed
+      if (heroStage === 0 && wrap.firstElementChild) wrap.firstElementChild.setAttribute('style', (wrap.firstElementChild.getAttribute('style')||'') + ';pointer-events:auto;');
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    return () => window.removeEventListener('resize', resize);
+  }, [heroStage]);
 
   // Featured Durga Puja details (sync with Events page if updated)
   const durgaPuja = {
@@ -177,78 +220,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
 
   return (
     <div className="page-container hbcu-style">
-      {/* Bengali Culture Hero - Drive embed, autoplay, controls visually hidden */}
-      <section className="hbcu-hero-section" id="home-hero">
-        <div className="hero-video-container" style={{ position: 'relative', overflow: 'hidden' }}>
-          <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
-            <iframe
-              title="Bengali Culture Hero"
-              src="https://drive.google.com/file/d/1ROMACbFg0xywlWek07ooKuV8-3ek1ZjC/preview"
-              allow="autoplay; fullscreen; picture-in-picture"
-              loading="eager"
-              style={{
-                position: 'absolute',
-                top: '-9%',
-                left: 0,
-                width: '100%',
-                height: '118%',
-                border: 0,
-                pointerEvents: 'none' // disable interactions so play/pause/progress cannot be clicked
-              }}
-              allowFullScreen
-            />
-          </div>
-          {/* Darken overlay for readability and to mask any residual controls */}
-          <div className="hero-video-overlay" />
-          {/* Hero content overlay (restored) */}
-          <div
-            className="container hero-content-hbcu"
-            style={{
-              position: 'absolute',
-              inset: 0,
-              zIndex: 2,
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-              textAlign: 'center',
-              padding: '1.25rem'
-            }}
-          >
-            <div style={{ maxWidth: 980 }}>
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '.6rem' }}>
-                <img
-                  src="/assets/images/abha-logo.png"
-                  alt="ABHA Logo"
-                  style={{ width: 120, height: 120, objectFit: 'contain', filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.55))' }}
-                  onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-                />
-                <h1 className="hero-title-hbcu" style={{ margin: 0, color: '#fff' }}>Bengali Culture & Community in Harrisburg</h1>
-                <p className="hero-subtitle-hbcu" style={{ maxWidth: 820, margin: '.35rem 0 0', color: 'rgba(255,255,255,0.9)' }}>
-                  Celebrating our heritage through festivals, music, arts, and community service — all year round.
-                </p>
-                <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.65rem', marginTop: '1rem', justifyContent: 'center' }}>
-                  <button className="btn-hbcu-primary" onClick={() => onPageChange?.('events')} type="button">Explore Events</button>
-                  <button className="btn-hbcu-secondary" onClick={() => onPageChange?.('about')} type="button">About ABHA</button>
-                  <button className="btn-hbcu-secondary" onClick={() => onPageChange?.('contact')} type="button">Get Involved</button>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Extra bottom mask to hide Drive progress bar if present */}
-          <div
-            aria-hidden
-            style={{
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              bottom: 0,
-              height: 120,
-              background: 'linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0))',
-              pointerEvents: 'none'
-            }}
-          />
-        </div>
-      </section>
+      {/* Bengali Culture Hero - moved below Featured Celebrations per request */}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify([
@@ -612,6 +584,107 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
         </div>
       </section>
 
+  {/* Bengali Culture Hero - Staged autoplay (HTML5 -> YouTube -> Drive) */}
+      <section
+        className="hbcu-hero-section"
+        id="home-hero"
+        style={{ minHeight: '72vh' }}
+        onClick={() => {
+          try { heroVideoRef.current?.play(); } catch {}
+        }}
+      >
+        {/* Background video layer */}
+        <div className="hero-video-container" style={{ position: 'absolute', inset: 0, overflow: 'hidden' }} aria-label="Cultural hero background video">
+          <div ref={mediaWrapperRef} style={{ position: 'absolute' }}>
+            {heroStage === 0 && (
+              <video
+                className="hero-video"
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="auto"
+                poster="/assets/images/hero-poster.jpg"
+                style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'opacity .5s', opacity: heroStage === 0 ? 1 : 0 }}
+                ref={heroVideoRef}
+              >
+                <source src="https://drive.google.com/uc?export=download&id=1ROMACbFg0xywlWek07ooKuV8-3ek1ZjC" type="video/mp4" />
+                <source src="/assets/videos/bengali-culture-hero.mp4" type="video/mp4" />
+              </video>
+            )}
+            {heroStage === 1 && (
+              <iframe
+                key="yt"
+                title="Cultural hero background YouTube"
+                src={`https://www.youtube.com/embed/${youTubeId}?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=${youTubeId}&modestbranding=1&rel=0`}
+                style={{ width: '100%', height: '100%', border: 0, transition: 'opacity .5s', opacity: heroStage === 1 ? 1 : 0 }}
+                allow="autoplay; fullscreen; picture-in-picture"
+                loading="lazy"
+                referrerPolicy="strict-origin-when-cross-origin"
+              />
+            )}
+            {heroStage === 2 && (
+              <iframe
+                key="drive-preview"
+                title="Cultural hero background (Drive preview)"
+                src="https://drive.google.com/file/d/1ROMACbFg0xywlWek07ooKuV8-3ek1ZjC/preview"
+                style={{ width: '100%', height: '100%', border: 0, transition: 'opacity .5s', opacity: heroStage === 2 ? 1 : 0 }}
+                allow="autoplay; fullscreen; picture-in-picture"
+                loading="lazy"
+              />
+            )}
+          </div>
+          {/* Darken overlay for readability */}
+          <div className="hero-video-overlay" style={{ pointerEvents: 'none' }} />
+          {/* Bottom mask */}
+          <div
+            aria-hidden
+            style={{
+              position: 'absolute',
+              left: 0,
+              right: 0,
+              bottom: 0,
+              height: 60,
+              background: 'linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0))',
+              pointerEvents: 'none'
+            }}
+          />
+        </div>
+        {/* Hero content overlay (sits above ::before and overlays) */}
+        <div
+          className="container hero-content-hbcu"
+          style={{
+            position: 'relative',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            textAlign: 'center',
+            minHeight: '72vh',
+            padding: '1.25rem'
+          }}
+        >
+          <div style={{ maxWidth: 980 }}>
+            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '.6rem' }}>
+              <img
+                src="/assets/images/abha-logo.png"
+                alt="ABHA Logo"
+                style={{ width: 120, height: 120, objectFit: 'contain', filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.55))' }}
+                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+              />
+              <h1 className="hero-title-hbcu" style={{ margin: 0, color: '#fff' }}>Bengali Culture & Community in Harrisburg</h1>
+              <p className="hero-subtitle-hbcu" style={{ maxWidth: 820, margin: '.35rem 0 0', color: 'rgba(255,255,255,0.9)' }}>
+                Celebrating our heritage through festivals, music, arts, and community service — all year round.
+              </p>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.65rem', marginTop: '1rem', justifyContent: 'center' }}>
+                <button className="btn-hbcu-primary" onClick={() => onPageChange?.('events')} type="button">Explore Events</button>
+                <button className="btn-hbcu-secondary" onClick={() => onPageChange?.('about')} type="button">About ABHA</button>
+                <button className="btn-hbcu-secondary" onClick={() => onPageChange?.('contact')} type="button">Get Involved</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Simple Lightbox for Posters */}
       {lightboxSrc && (
         <div
@@ -646,98 +719,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
 
       
 
-      {/* Hero Section - HBCU Style with Video Background */}
-      <section className="hbcu-hero-section">
-        {videoError ? (
-          <div className="container hero-content-hbcu slide-up">
-            <div className="hero-logo-container-hbcu" style={{ padding: '3rem 0' }}>
-              <img
-                src="/assets/images/abha-logo.png"
-                alt="ABHA Logo"
-                className="hero-logo-hbcu"
-              />
-            </div>
-          </div>
-        ) : (
-          <>
-            <div className="hero-video-container fade-in">
-              {!videoLoaded && (
-                <div className="hero-video-loading">
-                  <LoadingSpinner color="white" size="lg" />
-                  <span className="loading-text">Loading cultural experience…</span>
-                </div>
-              )}
-              <video
-                ref={videoRef}
-                className={`hero-video ${videoLoaded ? 'visible' : 'hidden'}`}
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                poster="/assets/images/hero-poster.jpg"
-                onLoadedData={() => setVideoLoaded(true)}
-                onError={() => {
-                  setVideoError(true);
-                  setVideoLoaded(true);
-                }}
-              >
-                <source src="/assets/videos/bengali-culture-hero.mp4" type="video/mp4" />
-                Your browser does not support the video tag.
-              </video>
-              <div className="hero-video-overlay"></div>
-            </div>
-            <div className="container hero-content-hbcu slide-up">
-              <div className="hero-logo-container-hbcu">
-                <img 
-                  src="/assets/images/abha-logo.png" 
-                  alt="ABHA Logo" 
-                  className="hero-logo-hbcu"
-                  onError={(e) => {
-                    e.currentTarget.style.display = 'none';
-                  }}
-                />
-              </div>
-              <h1 className="hero-title-hbcu">
-                Association of Bengalis in Harrisburg Area
-              </h1>
-              <p className="hero-subtitle-hbcu">
-                Bringing the Spirit of Bengal to Central Pennsylvania. We believe that culture is the thread that binds us—not only to our roots but to each other.
-              </p>
-              <div className="hero-bengali-text">
-                সংস্কৃতিতে ঐক্য। সম্প্রদায়ে শক্তি। উদযাপনে আনন্দ
-              </div>
-              <div className="hero-cta-container">
-                <button onClick={() => onPageChange?.('contact')} className="btn-hbcu-primary">
-                  Contact Us
-                </button>
-                <button onClick={() => onPageChange?.('events')} className="btn-hbcu-secondary">
-                  View Events
-                </button>
-              </div>
-            </div>
-            {/* Hero Stats - HBCU Style */}
-            <div className="hero-stats-hbcu fade-in">
-              <div className="container">
-                <div className="stats-grid-hbcu">
-                  <div className="stat-item-hbcu">
-                    <div className="stat-number-hbcu"><CountUp end={200} suffix="+" duration={900} /></div>
-                    <div className="stat-label-hbcu">Active Members</div>
-                  </div>
-                  <div className="stat-item-hbcu">
-                    <div className="stat-number-hbcu"><CountUp end={10} suffix="+" duration={900} /></div>
-                    <div className="stat-label-hbcu">Years Strong</div>
-                  </div>
-                  <div className="stat-item-hbcu">
-                    <div className="stat-number-hbcu"><CountUp end={4} duration={700} /></div>
-                    <div className="stat-label-hbcu">Annual Events</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </>
-        )}
-      </section>
+      {/* Removed duplicate legacy hero section that used local video; Drive-based hero above is now the single source of truth */}
 
       {/* Mission Statement Section */}
       <section className="hbcu-mission-section">
