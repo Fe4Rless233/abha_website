@@ -77,36 +77,37 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
 
   // Dynamic scale for vertical video/iframe to ensure cover fit
   useEffect(() => {
-    const wrap = mediaWrapperRef.current;
-    if (!wrap) return;
-    function resize() {
-      const parent = wrap.parentElement as HTMLElement | null;
+    const el = mediaWrapperRef.current;
+    if (!el) return;
+    const resize = () => {
+      const parent = el.parentElement as HTMLElement | null;
       if (!parent) return;
       const pw = parent.clientWidth;
       const ph = parent.clientHeight || window.innerHeight * 0.72;
-      // Assume source aspect ratios: HTML5 maybe ~16:9, YouTube fallback 16:9, but vertical short ~9:16 inside 16:9 frame.
-      // We'll scale using a target aspect of 9:16 if stage >0 (YouTube/Drive vertical), else 16:9.
-      const targetAspect = heroStage === 0 ? 16 / 9 : 9 / 16; // width/height
-      // We want element to cover parent: scale based on whichever dimension is limiting.
-      const needWidth = ph * targetAspect; // width needed to cover height
-      const needHeight = pw / targetAspect; // height needed to cover width
+      const targetAspect = heroStage === 0 ? 16 / 9 : 9 / 16;
+      const needWidth = ph * targetAspect;
+      const needHeight = pw / targetAspect;
       let finalWidth: number; let finalHeight: number;
       if (needWidth < pw) {
-        // height-based width smaller than parent width -> expand width to parent width
-        finalWidth = pw; finalHeight = needHeight; // enlarge height to maintain aspect
+        finalWidth = pw; finalHeight = needHeight;
       } else {
         finalWidth = needWidth; finalHeight = ph;
       }
-      wrap.style.width = `${finalWidth}px`;
-      wrap.style.height = `${finalHeight}px`;
-      wrap.style.position = 'absolute';
-      wrap.style.top = '50%';
-      wrap.style.left = '50%';
-      wrap.style.transform = 'translate(-50%, -50%)';
-      wrap.style.pointerEvents = 'none';
-      // Allow video clicks only for HTML5 stage if needed
-      if (heroStage === 0 && wrap.firstElementChild) wrap.firstElementChild.setAttribute('style', (wrap.firstElementChild.getAttribute('style')||'') + ';pointer-events:auto;');
-    }
+      // Apply styles in a grouped manner
+      el.style.cssText = [
+        `width:${finalWidth}px`,
+        `height:${finalHeight}px`,
+        'position:absolute',
+        'top:50%',
+        'left:50%',
+        'transform:translate(-50%, -50%)',
+        'pointer-events:none'
+      ].join(';');
+      if (heroStage === 0 && el.firstElementChild) {
+        const child = el.firstElementChild as HTMLElement;
+        child.style.pointerEvents = 'auto';
+      }
+    };
     resize();
     window.addEventListener('resize', resize);
     return () => window.removeEventListener('resize', resize);
