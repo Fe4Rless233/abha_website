@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Navbar from './Navbar';
 
 interface HeaderProps {
@@ -9,11 +9,11 @@ interface HeaderProps {
 }
 
 const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange, onMobileMenuToggle, isMobileMenuOpen }) => {
-  const [showBanner, setShowBanner] = useState(true);
+  // const [showBanner, setShowBanner] = useState(true);
 
-  const handleViewEventsClick = () => {
-    onPageChange('events', 'upcoming');
-  };
+  // const handleViewEventsClick = () => {
+  //   onPageChange('events', 'upcoming');
+  // };
 
   return (
     <header className="site-header">
@@ -23,34 +23,7 @@ const Header: React.FC<HeaderProps> = ({ currentPage, onPageChange, onMobileMenu
         onMobileMenuToggle={onMobileMenuToggle}
         isMobileMenuOpen={isMobileMenuOpen}
       />
-      {showBanner && (
-        <section className="upcoming-events-banner">
-          <div className="container">
-            <div className="banner-content">
-              <div className="banner-icon">🎵</div>
-              <div className="banner-text">
-                <h3>New Upcoming Events!</h3>
-                <p>Musical Extravaganza with Rathijit & Shreya + Durga Puja 2025</p>
-              </div>
-              <div className="banner-actions">
-                <button 
-                  onClick={handleViewEventsClick}
-                  className="banner-cta-btn"
-                >
-                  View Events
-                </button>
-                <button 
-                  onClick={() => setShowBanner(false)}
-                  className="banner-close-btn"
-                  aria-label="Close banner"
-                >
-                  ✕
-                </button>
-              </div>
-            </div>
-          </div>
-        </section>
-      )}
+      {/* Banner removed as per request */}
     </header>
   );
 };

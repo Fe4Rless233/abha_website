@@ -23,7 +23,7 @@ interface EventsPageProps {
 
 const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageChange }) => {
   const [expandedEvent, setExpandedEvent] = useState<number | null>(null);
-  const [selectedYear, setSelectedYear] = useState<string | number>(2025);
+  const [selectedYear, setSelectedYear] = useState<string | number>(2026);
   const [hasProcessedInitialEvent, setHasProcessedInitialEvent] = useState(false);
   const [lightboxSrc, setLightboxSrc] = useState<string | null>(null);
 
@@ -38,11 +38,25 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
   }, [lightboxSrc]);
 
   const eventsByYear: { [key: string | number]: Event[] } = {
+    2026: [
+      {
+        title: "Saraswati Puja 2026",
+        description: "ABHA is geared up to celebrate the First Event of the year - Saraswati Puja on Feb 8th.",
+        category: "Upcoming",
+        date: "February 8, 2026",
+        time: "11:00 AM Onwards",
+        venue: "Community Center, Harrisburg PA (TBC)",
+        details: "ABHA is geared up to celebrate the First Event of the year - Saraswati Puja on Feb 8th, a gathering that has warmth of Love and Friendship amid the cold weather outside. Along with Puja, khichuri, and adda we also have a Cultural program post lunch and we truly feel its a fun and creative time to bring something to make a celebration of the Formal Onset of spring. We invite everyone (Kids, Teens or grownups) to be part of this celebration.",
+        highlights: ["Saraswati Puja", "Khichuri & Adda", "Cultural Program", "Open Mic for Creativity"],
+        image: "https://res.cloudinary.com/dbudtzzfe/image/upload/v1768884838/WhatsApp_Image_2026-01-19_at_11.48.04_PM_p6xjfk.jpg",
+        fallbackImage: "📚"
+      }
+    ],
     2025: [
     {
       title: "A Musical Extravaganza with Rathijit & Shreya",
       description: "ABHA's 10th Year celebration featuring renowned artists Rathijit & Shreya with musical performances.",
-      category: "Upcoming",
+      category: "Past",
       date: "September 26, 2025",
       time: "5:30 PM - 11:00 PM",
       venue: "Enola Fire Company, 118 Chester Rd, Enola, PA 17025",
@@ -54,7 +68,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
     {
       title: "Durga Puja 2025",
       description: "Our grandest annual celebration with cultural programs and community feasts.",
-      category: "Upcoming",
+      category: "Past",
       date: "September 27-28, 2025",
       time: "10:00 AM - 10:00 PM",
       venue: "Community Center, Harrisburg PA",

@@ -120,7 +120,7 @@ const AboutPage: React.FC<AboutPageProps> = ({ onPageChange }) => {
               </p>
             </div>
             <div className="hbcu-heritage-card">
-              <div className="hbcu-heritage-icon">�</div>
+              <div className="hbcu-heritage-icon">🌟</div>
               <h3 className="hbcu-heritage-title">Cultural Focus</h3>
               <p className="hbcu-heritage-text">
                 Our cultural programs including Natok (drama) and drawing competitions ensure that Bengali traditions are passed down to future generations.
@@ -133,6 +133,60 @@ const AboutPage: React.FC<AboutPageProps> = ({ onPageChange }) => {
                 We continuously evolve to meet the changing needs of our community while preserving our core values.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* 2026 Operational Committee Section */}
+      <section className="announcement-section" style={{ background: '#fafafa' }}>
+        <div className="container">
+          <h2 className="hbcu-section-title">2026 ABHA Operational Committee</h2>
+          <div className="announcement-card" style={{ textAlign: 'left' }}>
+             <div className="announcement-body">
+                <p className="announcement-greeting">Dear Friends,</p>
+                <p className="announcement-text">
+                  As we step into 2026, we are delighted to welcome our 2026 Operational Committee members.
+                </p>
+                
+                <h3 className="committee-title" style={{ marginTop: '2rem', borderBottom: '2px solid #f0f0f0', paddingBottom: '0.5rem' }}>Committee Members</h3>
+                <ul className="committee-list">
+                  {[
+                    'Shatarupa Podder',
+                    'Mahua Bhattacharya',
+                    'Sriya Chattopadhyay',
+                    'Somosree Dutta Gupta',
+                    'Ishana Bandyopadhyay',
+                    'Rahul Roy',
+                    'Soumya (Kanti) Das',
+                    'Kausik Bandyopadhyay'
+                  ].map(name => (
+                    <li key={name} className="committee-member" style={{ fontSize: '1.1rem' }}>
+                      <span className="committee-bullet">✦</span> {name}
+                    </li>
+                  ))}
+                </ul>
+
+                <div className="webmaster-note">
+                   <strong>Web Master:</strong> Aklavya Kumar
+                </div>
+
+                <p className="announcement-text" style={{ marginTop: '2rem' }}>
+                  Collective experience, dedication, and insights of the Operational Committee members will be invaluable as we work together to drive our initiatives forward and achieve our goals this year. This committee is not just about planning and execution—it’s about collaboration, innovation, and making a positive impact on our community.
+                </p>
+                
+                <div className="announcement-event-alert" style={{ background: 'transparent', padding: '1.5rem 0 0 0' }}>
+                  <p style={{ fontStyle: 'italic', fontWeight: 'normal', color: '#666' }}>We will soon publish our event list for the year.</p>
+                </div>
+
+                <div className="announcement-footer">
+                  <p className="announcement-signature">Sincerely,</p>
+                  <p className="announcement-sign-name">ABHA Operational Committee</p>
+                </div>
+                
+                <div className="announcement-links" style={{ background: 'transparent', marginTop: '2rem', border: 'none' }}>
+                  Please visit <a href="http://abhaweb.org" className="link-abha">abhaweb.org</a> and ABHA on Facebook for all community events
+                </div>
+             </div>
           </div>
         </div>
       </section>

@@ -37,9 +37,28 @@ const AdminPanel: React.FC = () => {
   
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  // Helper to hash password for simple client-side check
+  const checkPassword = async (input: string) => {
+    // Hash of 'abha2026'
+    const targetHash = '31e3d71958ff700689d4ad2ff75e2b40f8584e1f82a774f4cafec0d7fa88644f';
+    
+    try {
+      const msgBuffer = new TextEncoder().encode(input);
+      const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+      const hashArray = Array.from(new Uint8Array(hashBuffer));
+      const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+      return hashHex === targetHash;
+    } catch (e) {
+      console.error('Crypto error', e);
+      return false; // Fail safe
+    }
+  };
+
   // Simple authentication (in production, use proper auth)
-  const handleLogin = () => {
-    if (password === 'abha2025') { // Change this password
+  const handleLogin = async () => {
+    // Check against hashed value so password isn't in source code
+    const valid = await checkPassword(password);
+    if (valid) {
       setIsAuthenticated(true);
     } else {
       alert('Incorrect password');

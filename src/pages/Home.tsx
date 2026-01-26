@@ -3,7 +3,6 @@ import Countdown from '../components/ui/Countdown';
 import VideoTestimonials from '../components/VideoTestimonials';
 import { buildGoogleCalendarUrl } from '../utils/calendar';
 import ShareButton from '../components/ui/ShareButton';
-import AnnouncementVideo from '../components/AnnouncementVideo';
 // Gallery moved to Culture page per request
 
 interface HomePageProps {
@@ -113,66 +112,30 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
     return () => window.removeEventListener('resize', resize);
   }, [heroStage]);
 
-  // Featured Durga Puja details (sync with Events page if updated)
-  const durgaPuja = {
-    title: 'Durga Puja 2025',
-    date: 'September 27-28, 2025',
-    time: '10:00 AM - 10:00 PM',
-    venue: 'Enola Fire Company, Enola PA',
-    description: 'Our grand annual celebration of tradition, devotion, culture, food and unforgettable community spirit.',
-    flyerImage: '/assets/images/events/durga-puja.jpg', // Replace with dedicated flyer when available
-    ticketLink: 'https://example.com/tickets/durga-puja-2025', // TODO: replace with real link
+  // Featured Event (Saraswati Puja 2026)
+  const featuredEvent = {
+    title: 'Saraswati Puja 2026',
+    date: 'February 8, 2026',
+    time: '11:00 AM Onwards',
+    venue: 'Community Center, Harrisburg PA (TBC)',
+    description: 'ABHA is geared up to celebrate the First Event of the year - Saraswati Puja, a gathering that has warmth of Love and Friendship amid the cold weather outside.',
+    flyerImage: 'https://res.cloudinary.com/dbudtzzfe/image/upload/v1768884838/WhatsApp_Image_2026-01-19_at_11.48.04_PM_p6xjfk.jpg',
+    ticketLink: 'mailto:associationbengalisharrisburg@hotmail.com?cc=bhaskar_ganguli@yahoo.com,somosree.duttagupta@gmail.com,srijita2012@gmail.com&subject=Saraswati%20Puja%202026%20Participation&body=Name%20of%20the%20performer%3A%0D%0AAge%20(if%20minor)%3A%0D%0AProgram%20type%20(Song%2FDance%2FInstrumental%2Fetc)%3A%0D%0ASolo%20or%20Group%3A%0D%0ALogistics%20required%3A%0D%0AContact%20Phone%3A',
     artistSegments: [
-      'Traditional Puja & Aarti',
-      'Cultural Dance Ensembles',
-      'Local & Guest Vocal Performances',
-      'Kids Talent & Drama',
-      'Community Bhog & Food Experience'
+      'Puja & Anjali',
+      'Khichuri & Adda',
+      'Cultural Program',
+      'Kids & Teens Performances',
+      'Open Mic'
     ],
     highlights: [
-      'Bodhan',
-      'Nabapatrika Puja',
-      'Kalparambha',
-      'Maha Saptami',
-      'Maha Astami',
-      'Pushpanjali',
-      'Sandhipuja',
-      'Arati',
-      'Bhog',
-      'Personal Pujo',
-      'Maha Nabami',
-      'Chandipath',
-      'Bijaya Dasami',
-      'Aparajita Puja',
-      'Dadhikarma',
-      'Pratima Niranjan'
+      'Register by Feb 1',
+      'Saraswati Puja',
+      'Community Lunch',
+      'Cultural Evening',
+      'Spring Celebration'
     ],
-    extraPosters: [
-      '/assets/images/events/durgaPuja_alt.jpg'
-    ] as string[]
-  };
-
-  const musicalExtravaganza = {
-    title: 'Musical Extravaganza',
-    subtitle: 'with Rathijit & Shreya',
-    date: 'September 26, 2025',
-  time: '5:30 PM - 11:00 PM',
-    venue: 'Enola Fire Company, Enola PA',
-    description: "ABHA's 10th anniversary celebration featuring renowned Bengali artists in an unforgettable musical evening.",
-    flyerImage: '/assets/images/events/a-musical-extravaganza-with-rathijit-and-shreya.jpg',
-    artistSegments: [
-      'Live Performances',
-      'Anniversary Special',
-      'Community Get-Together'
-    ],
-    highlights: [
-      'Renowned Artists',
-      'Immersive Music',
-      'Community Celebration'
-    ],
-    extraPosters: [
-      '/assets/images/events/muscialExtravaganza_alt.jpg'
-    ] as string[]
+    extraPosters: [] as string[]
   };
 
   const testimonials = [
@@ -228,134 +191,99 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
           {
             '@context': 'https://schema.org',
             '@type': 'Event',
-            name: durgaPuja.title,
-            description: durgaPuja.description,
-            startDate: '2025-09-27T10:00:00-04:00',
-            endDate: '2025-09-28T22:00:00-04:00',
+            name: featuredEvent.title,
+            description: featuredEvent.description,
+            startDate: '2026-02-08T11:00:00-05:00',
+            endDate: '2026-02-08T17:00:00-05:00',
             eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
             eventStatus: 'https://schema.org/EventScheduled',
             location: {
               '@type': 'Place',
-              name: durgaPuja.venue,
-              address: durgaPuja.venue,
+              name: featuredEvent.venue,
+              address: featuredEvent.venue,
             },
-            image: ['/assets/images/events/durga-puja.jpg'],
+            image: [featuredEvent.flyerImage],
             organizer: { '@type': 'Organization', name: 'ABHA' },
-          },
-          {
-            '@context': 'https://schema.org',
-            '@type': 'Event',
-            name: musicalExtravaganza.title,
-            description: musicalExtravaganza.description,
-            startDate: '2025-09-26T17:30:00-04:00',
-            endDate: '2025-09-26T23:00:00-04:00',
-            eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
-            eventStatus: 'https://schema.org/EventScheduled',
-            location: {
-              '@type': 'Place',
-              name: musicalExtravaganza.venue,
-              address: musicalExtravaganza.venue,
-            },
-            image: ['/assets/images/events/a-musical-extravaganza-with-rathijit-and-shreya.jpg'],
-            organizer: { '@type': 'Organization', name: 'ABHA' },
-          },
+          }
         ]) }}
       />
       {/* Featured Durga Puja Section (Top of Home) */}
-      <section id="durga-puja" className="hbcu-mission-section" style={{ paddingTop: '3.75rem', paddingBottom: '2.75rem', background: 'linear-gradient(135deg,#330000 0%,#5b0a0a 55%,#7a1b1b 100%)', color: '#fff' }}>
-  <div className="container">
+      <section id="featured-events" className="featured-section-2026">
+        <div className="container" style={{ position: 'relative', zIndex: 1 }}>
 
-          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', textAlign: 'center', gap: '.75rem', marginBottom: '.75rem' }}>
+          <div className="featured-header">
             <img
               src="/assets/images/abha-logo.png"
               alt="ABHA Logo"
-              style={{ width: '200px', height: '200px', objectFit: 'contain', filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.55))' }}
+              className="featured-logo"
               onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
             />
-            <h1 className="hbcu-section-title" style={{ color: '#FFD700', margin: 0 }}>Featured Celebrations 2025</h1>
+            <h1 className="hbcu-section-title featured-title">Featured Celebration 2026</h1>
           </div>
-          <p className="hbcu-mission-text" style={{ maxWidth: 920, color: '#ffffff' }}>{durgaPuja.description}</p>
+          <p className="featured-description">{featuredEvent.description}</p>
 
-          {/* Announcement Video (vertical 9:16) */}
-          <div style={{ margin: '1rem 0 2rem' }}>
-            <h3 style={{ color: '#ffe38f', margin: '0 0 .5rem', fontSize: '1rem', letterSpacing: '.05em' }}>Announcement</h3>
-            <AnnouncementVideo embedUrl="https://drive.google.com/file/d/1P8MtS0ZNepTPIgJs4Lz27ZW4O2YP1gCs/preview" />
-          </div>
+          {/* Saraswati Puja Card */}
+          <div className="event-card-container">
+            <div style={{ textAlign: 'center' }}>
+              <h2 className="event-card-title">{featuredEvent.title}</h2>
+            </div>
+              
+            <div
+              className="event-card-image-wrapper"
+              role="button"
+              aria-label="View full Flyer"
+              onClick={() => setLightboxSrc(featuredEvent.flyerImage)}
+            >
+                <img src={featuredEvent.flyerImage} alt="Event Flyer" />
+                <div className="event-card-zoom-indicator">
+                  <span aria-hidden>🔎</span>
+                  <span>Zoom</span>
+                </div>
+            </div>
 
-          <div className="featured-grid">
-            {/* Durga Puja Card */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.15rem', width: '100%', maxWidth: 460, justifySelf: 'center' }}>
-              <div>
-                <h2 style={{ margin: 0, color: '#FFD700', letterSpacing: '.03em', fontSize: '1.25rem' }}>{durgaPuja.title}</h2>
-                {/* Hidden subtitle to match height of the Musical card subtitle and align content */}
-                <div aria-hidden="true" style={{ color: '#ffe38f', fontSize: '.95rem', marginTop: '.15rem', visibility: 'hidden' }}>placeholder</div>
-              </div>
-              {/* Main (non-alt) poster removed per request; extra posters (alt) shown below */}
-              {durgaPuja.extraPosters && durgaPuja.extraPosters.length > 0 && (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: '.6rem' }}>
-                  {durgaPuja.extraPosters.map((p, i) => (
-                    <div
-                      key={i}
-                      role="button"
-                      aria-label="View full Durga Puja flyer"
-                      style={{ position: 'relative', borderRadius: 10, overflow: 'hidden', border: '1px solid rgba(255,215,0,0.25)', cursor: 'zoom-in' }}
-                      onClick={() => setLightboxSrc(p)}
-                    >
-                      <img src={p} alt={`Durga Puja Poster ${i + 2}`} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                      <div style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,0.55)', color: '#fff', borderRadius: 16, padding: '2px 8px', fontSize: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
-                        <span aria-hidden>🔎</span>
-                        <span>Zoom</span>
-                      </div>
-                    </div>
-                  ))}
+            <div className="event-actions">
+              <a
+                className="btn-hbcu-primary"
+                href={featuredEvent.ticketLink}
+                style={{ textDecoration: 'none', display: 'inline-block', lineHeight: '1.5', padding: '0.75rem 1.5rem', fontSize: '1rem' }}
+              >
+                Contact / Register
+              </a>
+      
+              <ShareButton title={featuredEvent.title} text={featuredEvent.description} label="Share" />
+              <a
+                className="btn-hbcu-secondary"
+                href={buildGoogleCalendarUrl({
+                  title: featuredEvent.title,
+                  date: featuredEvent.date,
+                  time: featuredEvent.time,
+                  location: featuredEvent.venue,
+                  details: featuredEvent.description,
+                }) || '#'}
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{ textDecoration: 'none', display: 'inline-block', lineHeight: '1.5', padding: '0.75rem 1.5rem', fontSize: '1rem' }}
+              >Add to Calendar</a>
+            </div>
+              
+              <div className="event-info-grid">
+                <div className="event-info-item">
+                  <strong className="event-info-label">DATE</strong>
+                  <span>{featuredEvent.date}</span>
                 </div>
-              )}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.75rem' }}>
-                <button
-                  className="btn-hbcu-primary"
-                  onClick={() => {
-                    try {
-                      localStorage.setItem('abha_ticketing_prefill', JSON.stringify({ subject: 'Ticketing', source: 'durga-puja-2025', people: 1 }));
-                    } catch {}
-                    onPageChange?.('contact');
-                  }}
-                  type="button"
-                >
-                  Tickets / Registration
-                </button>
-                <button onClick={() => onPageChange?.('events', 'durga-puja-2025')} className="btn-hbcu-secondary">Full Details</button>
-                <ShareButton title={durgaPuja.title} text={durgaPuja.description} label="Share" />
-                <a
-                  className="btn-hbcu-secondary"
-                  href={buildGoogleCalendarUrl({
-                    title: durgaPuja.title,
-                    date: durgaPuja.date,
-                    time: durgaPuja.time,
-                    location: durgaPuja.venue,
-                    details: durgaPuja.description,
-                  }) || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >Add to Calendar</a>
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: '0.85rem' }}>
-                <div style={{ background: 'rgba(255,255,255,0.08)', padding: '.85rem .9rem', borderRadius: '10px' }}>
-                  <strong style={{ color: '#FFD700', display: 'block', fontSize: '.75rem', letterSpacing: '.1em' }}>DATE</strong>
-                  <span>{durgaPuja.date}</span>
+                <div className="event-info-item">
+                  <strong className="event-info-label">TIME</strong>
+                  <span>{featuredEvent.time}</span>
                 </div>
-                <div style={{ background: 'rgba(255,255,255,0.08)', padding: '.85rem .9rem', borderRadius: '10px' }}>
-                  <strong style={{ color: '#FFD700', display: 'block', fontSize: '.75rem', letterSpacing: '.1em' }}>TIME</strong>
-                  <span>{durgaPuja.time}</span>
+                <div className="event-info-item">
+                  <strong className="event-info-label">VENUE</strong>
+                  <span>{featuredEvent.venue}</span>
                 </div>
-                <div style={{ background: 'rgba(255,255,255,0.08)', padding: '.85rem .9rem', borderRadius: '10px' }}>
-                  <strong style={{ color: '#FFD700', display: 'block', fontSize: '.75rem', letterSpacing: '.1em' }}>VENUE</strong>
-                  <span>{durgaPuja.venue}</span>
-                </div>
-                <div style={{ background: 'rgba(255,255,255,0.08)', padding: '.85rem .9rem', borderRadius: '10px' }}>
-                  <strong style={{ color: '#FFD700', display: 'block', fontSize: '.75rem', letterSpacing: '.1em' }}>COUNTDOWN</strong>
+                <div className="event-info-item">
+                  <strong className="event-info-label">COUNTDOWN</strong>
                   <div style={{ marginTop: '.35rem', display: 'flex', justifyContent: 'center' }}>
                     <Countdown
-                      target="2025-09-27T10:00:00-04:00"
+                      target="2026-02-08T11:00:00-05:00"
                       label=""
                       compact
                       style={{ background: 'transparent', border: 'none', padding: 0, borderRadius: 0 }}
@@ -363,34 +291,27 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                   </div>
                 </div>
               </div>
-              {/* Durga Puja - Segments and Highlights (kept near card to avoid mixing on mobile) */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.15rem', width: '100%', maxWidth: 460, justifySelf: 'center' }}>
+              
+              {/* Segments and Highlights */}
+              <div className="event-segments-grid">
                 <div>
-                  <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Featured Segments</h3>
-                  <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.4rem 1rem', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', alignItems: 'start', textAlign: 'left' }}>
-                    {durgaPuja.artistSegments.map((s, i) => (
-                      <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '.5rem', fontSize: '.9rem' }}>
-                        <span style={{ color: '#FFD700', flex: '0 0 auto', lineHeight: 1.2, marginTop: '2px' }}>✦</span>
+                  <h3 className="segment-header">Featured Segments</h3>
+                  <ul className="event-segment-list">
+                    {featuredEvent.artistSegments.map((s, i) => (
+                      <li key={i} className="event-segment-item">
+                        <span className="segment-bullet">✦</span>
                         <span style={{ flex: '1 1 auto', minWidth: 0 }}>{s}</span>
                       </li>
                     ))}
                   </ul>
                 </div>
                 <div>
-                  <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Highlights</h3>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.55rem' }}>
-                    {durgaPuja.highlights.map((h, i) => (
+                  <h3 className="segment-header">Highlights</h3>
+                  <div className="highlight-container">
+                    {featuredEvent.highlights.map((h, i) => (
                       <span
                         key={i}
-                        style={{
-                          background: 'rgba(255,215,0,0.2)',
-                          color: '#fff',
-                          padding: '.45rem .7rem',
-                          borderRadius: '24px',
-                          fontSize: '.7rem',
-                          letterSpacing: '.08em',
-                          border: '1px solid rgba(255,215,0,0.45)'
-                        }}
+                        className="event-highlight-tag"
                       >
                         {h}
                       </span>
@@ -399,288 +320,65 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                 </div>
               </div>
             </div>
-
-            {/* Musical Extravaganza Card */}
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.15rem', width: '100%', maxWidth: 460, justifySelf: 'center' }}>
-              <div>
-                <h2 style={{ margin: 0, color: '#FFD700', letterSpacing: '.03em', fontSize: '1.25rem' }}>{musicalExtravaganza.title}</h2>
-                {musicalExtravaganza.subtitle && (
-                  <div style={{ color: '#ffe38f', fontSize: '.95rem', marginTop: '.15rem' }}>{musicalExtravaganza.subtitle}</div>
-                )}
-              </div>
-              {/* Main (non-alt) poster removed per request; extra posters (alt) shown below */}
-              {musicalExtravaganza.extraPosters && musicalExtravaganza.extraPosters.length > 0 && (
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(140px,1fr))', gap: '.6rem' }}>
-                  {musicalExtravaganza.extraPosters.map((p, i) => (
-                    <div
-                      key={i}
-                      role="button"
-                      aria-label="View full Musical Extravaganza flyer"
-                      style={{ position: 'relative', borderRadius: 10, overflow: 'hidden', border: '1px solid rgba(255,215,0,0.25)', cursor: 'zoom-in' }}
-                      onClick={() => setLightboxSrc(p)}
-                    >
-                      <img src={p} alt={`Musical Extravaganza Poster ${i + 2}`} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                      <div style={{ position: 'absolute', top: 8, right: 8, background: 'rgba(0,0,0,0.55)', color: '#fff', borderRadius: 16, padding: '2px 8px', fontSize: 12, display: 'flex', alignItems: 'center', gap: 6 }}>
-                        <span aria-hidden>🔎</span>
-                        <span>Zoom</span>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.75rem' }}>
-                <button
-                  className="btn-hbcu-primary"
-                  onClick={() => {
-                    try {
-                      localStorage.setItem('abha_ticketing_prefill', JSON.stringify({ subject: 'Ticketing', source: 'musical-extravaganza', people: 1, eventName: 'Musical Extravaganza 2025', pkg: 'fri' }));
-                    } catch {}
-                    onPageChange?.('contact');
-                  }}
-                  type="button"
-                >
-                  Tickets / Registration
-                </button>
-                <button onClick={() => onPageChange?.('events', 'a-musical-extravaganza-with-rathijit-shreya')} className="btn-hbcu-secondary">Full Details</button>
-                <ShareButton title={musicalExtravaganza.title} text={musicalExtravaganza.description} label="Share" />
-                <a
-                  className="btn-hbcu-secondary"
-                  href={buildGoogleCalendarUrl({
-                    title: musicalExtravaganza.title,
-                    date: musicalExtravaganza.date,
-                    time: musicalExtravaganza.time,
-                    location: musicalExtravaganza.venue,
-                    details: musicalExtravaganza.description,
-                  }) || '#'}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >Add to Calendar</a>
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', gap: '0.85rem' }}>
-                <div style={{ background: 'rgba(255,255,255,0.08)', padding: '.85rem .9rem', borderRadius: '10px' }}>
-                  <strong style={{ color: '#FFD700', display: 'block', fontSize: '.75rem', letterSpacing: '.1em' }}>DATE</strong>
-                  <span>{musicalExtravaganza.date}</span>
-                </div>
-                <div style={{ background: 'rgba(255,255,255,0.08)', padding: '.85rem .9rem', borderRadius: '10px' }}>
-                  <strong style={{ color: '#FFD700', display: 'block', fontSize: '.75rem', letterSpacing: '.1em' }}>TIME</strong>
-                  <span>{musicalExtravaganza.time}</span>
-                </div>
-                <div style={{ background: 'rgba(255,255,255,0.08)', padding: '.85rem .9rem', borderRadius: '10px' }}>
-                  <strong style={{ color: '#FFD700', display: 'block', fontSize: '.75rem', letterSpacing: '.1em' }}>VENUE</strong>
-                  <span>{musicalExtravaganza.venue}</span>
-                </div>
-                <div style={{ background: 'rgba(255,255,255,0.08)', padding: '.85rem .9rem', borderRadius: '10px' }}>
-                  <strong style={{ color: '#FFD700', display: 'block', fontSize: '.75rem', letterSpacing: '.1em' }}>COUNTDOWN</strong>
-                  <div style={{ marginTop: '.35rem', display: 'flex', justifyContent: 'center' }}>
-                    <Countdown
-                      target="2025-09-26T17:30:00-04:00"
-                      label=""
-                      compact
-                      style={{ background: 'transparent', border: 'none', padding: 0, borderRadius: 0 }}
-                    />
-                  </div>
-                </div>
-              </div>
-              {/* Musical Extravaganza - Segments and Highlights (kept near card to avoid mixing on mobile) */}
-              <div style={{ display: 'grid', gridTemplateColumns: '1fr', gap: '1.15rem', width: '100%', maxWidth: 460, justifySelf: 'center' }}>
-                <div>
-                  <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Featured Segments</h3>
-                  <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.4rem 1rem', gridTemplateColumns: 'repeat(auto-fit,minmax(180px,1fr))', alignItems: 'start', textAlign: 'left' }}>
-                    {musicalExtravaganza.artistSegments.map((s, i) => (
-                      <li key={i} style={{ display: 'flex', alignItems: 'flex-start', gap: '.5rem', fontSize: '.9rem' }}>
-                        <span style={{ color: '#FFD700', flex: '0 0 auto', lineHeight: 1.2, marginTop: '2px' }}>✦</span>
-                        <span style={{ flex: '1 1 auto', minWidth: 0 }}>{s}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-                <div>
-                  <h3 style={{ color: '#FFD700', fontSize: '1rem', letterSpacing: '.05em', marginBottom: '.5rem' }}>Highlights</h3>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.55rem' }}>
-                    {musicalExtravaganza.highlights.map((h, i) => (
-                      <span
-                        key={i}
-                        style={{
-                          background: 'rgba(255,255,255,0.08)',
-                          color: '#fff',
-                          padding: '.45rem .7rem',
-                          borderRadius: '24px',
-                          fontSize: '.7rem',
-                          letterSpacing: '.08em'
-                        }}
-                      >
-                        {h}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Ticket Prices spanning across both columns, placed below both cards */}
-            <section aria-labelledby="ticket-prices-heading" style={{ gridColumn: '1 / -1', width: '100%', display: 'flex', justifyContent: 'center' }}>
-              <div style={{ width: '100%', maxWidth: 1000 }}>
-                <div style={{
-                  background: 'rgba(255,255,255,0.06)',
-                  border: '1px solid rgba(255,215,0,0.35)',
-                  borderRadius: 16,
-                  padding: '1.1rem 1.1rem 1.2rem',
-                  boxShadow: '0 6px 18px rgba(0,0,0,0.25)'
-                }}>
-                  <h2 id="ticket-prices-heading" style={{ margin: 0, color: '#FFD700', fontSize: '1.2rem', letterSpacing: '.03em', textAlign: 'center' }}>Ticket Prices</h2>
-                  <div style={{ display: 'grid', gap: '.9rem', marginTop: '.9rem', gridTemplateColumns: 'repeat(auto-fit,minmax(220px,1fr))' }}>
-                    {/* Adults */}
-                    <div>
-                      <div style={{ fontWeight: 700, color: '#fff', marginBottom: '.35rem' }}>Adults (18+)</div>
-                      <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.35rem' }}>
-                        <li style={{ color: '#f8f3e0' }}>✦ $160 (Fri–Sat–Sun)</li>
-                        <li style={{ color: '#f8f3e0' }}>✦ $100 (Sat–Sun)</li>
-                        <li style={{ color: '#f8f3e0' }}>✦ $65 (Friday), $65 (Saturday), $40 (Sunday)</li>
-                      </ul>
-                    </div>
-
-                    {/* Students */}
-                    <div>
-                      <div style={{ fontWeight: 700, color: '#fff', marginBottom: '.35rem' }}>Students (18+)</div>
-                      <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.35rem' }}>
-                        <li style={{ color: '#f8f3e0' }}>✦ $140 (Fri–Sat–Sun)</li>
-                        <li style={{ color: '#f8f3e0' }}>✦ $75 (Sat–Sun)</li>
-                        <li style={{ color: '#f8f3e0' }}>✦ $65 (Friday), $50 (Saturday), $30 (Sunday)</li>
-                      </ul>
-                    </div>
-
-                    {/* Young Adults */}
-                    <div>
-                      <div style={{ fontWeight: 700, color: '#fff', marginBottom: '.35rem' }}>Young Adult (7–17)</div>
-                      <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'grid', gap: '.35rem' }}>
-                        <li style={{ color: '#f8f3e0' }}>✦ $70 (Fri–Sat–Sun)</li>
-                        <li style={{ color: '#f8f3e0' }}>✦ $40 (Sat–Sun)</li>
-                        <li style={{ color: '#f8f3e0' }}>✦ $30 (Friday), $30 (Saturday), $20 (Sunday)</li>
-                      </ul>
-                    </div>
-
-                    {/* Children */}
-                    <div>
-                      <div style={{ fontWeight: 700, color: '#fff', marginBottom: '.35rem' }}>Children below 7</div>
-                      <div style={{ color: '#f8f3e0' }}>✦ Free</div>
-                    </div>
-
-                    {/* Membership Discount */}
-                    <div style={{
-                      marginTop: '.25rem',
-                      background: 'rgba(212,175,55,0.08)',
-                      border: '1px dashed rgba(255,215,0,0.45)',
-                      borderRadius: 12,
-                      padding: '.6rem .8rem',
-                      color: '#ffe38f'
-                    }}>
-                      <strong style={{ color: '#FFD700' }}>Membership Discount:</strong> Adults $10, Young Adult (7–17) $5
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-
-          </div>
         </div>
       </section>
 
-  {/* Bengali Culture Hero - Staged autoplay (HTML5 -> YouTube -> Drive) */}
-      <section
-        className="hbcu-hero-section"
-        id="home-hero"
-        style={{ minHeight: '72vh' }}
-        onClick={() => {
-          try { heroVideoRef.current?.play(); } catch {}
-        }}
-      >
-        {/* Background video layer */}
-        <div className="hero-video-container" style={{ position: 'absolute', inset: 0, overflow: 'hidden' }} aria-label="Cultural hero background video">
-          <div ref={mediaWrapperRef} style={{ position: 'absolute' }}>
-            {heroStage === 0 && (
-              <video
-                className="hero-video"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                poster="/assets/images/hero-poster.jpg"
-                style={{ width: '100%', height: '100%', objectFit: 'cover', transition: 'opacity .5s', opacity: heroStage === 0 ? 1 : 0 }}
-                ref={heroVideoRef}
-              >
-                <source src="https://drive.google.com/uc?export=download&id=1ROMACbFg0xywlWek07ooKuV8-3ek1ZjC" type="video/mp4" />
-                <source src="/assets/videos/bengali-culture-hero.mp4" type="video/mp4" />
-              </video>
-            )}
-            {heroStage === 1 && (
-              <iframe
-                key="yt"
-                title="Cultural hero background YouTube"
-                src={`https://www.youtube.com/embed/${youTubeId}?autoplay=1&mute=1&playsinline=1&controls=0&loop=1&playlist=${youTubeId}&modestbranding=1&rel=0`}
-                style={{ width: '100%', height: '100%', border: 0, transition: 'opacity .5s', opacity: heroStage === 1 ? 1 : 0 }}
-                allow="autoplay; fullscreen; picture-in-picture"
-                loading="lazy"
-                referrerPolicy="strict-origin-when-cross-origin"
-              />
-            )}
-            {heroStage === 2 && (
-              <iframe
-                key="drive-preview"
-                title="Cultural hero background (Drive preview)"
-                src="https://drive.google.com/file/d/1ROMACbFg0xywlWek07ooKuV8-3ek1ZjC/preview"
-                style={{ width: '100%', height: '100%', border: 0, transition: 'opacity .5s', opacity: heroStage === 2 ? 1 : 0 }}
-                allow="autoplay; fullscreen; picture-in-picture"
-                loading="lazy"
-              />
-            )}
-          </div>
-          {/* Darken overlay for readability */}
-          <div className="hero-video-overlay" style={{ pointerEvents: 'none' }} />
-          {/* Bottom mask */}
-          <div
-            aria-hidden
-            style={{
-              position: 'absolute',
-              left: 0,
-              right: 0,
-              bottom: 0,
-              height: 60,
-              background: 'linear-gradient(to top, rgba(0,0,0,0.75), rgba(0,0,0,0))',
-              pointerEvents: 'none'
-            }}
+      {/* Bengali Culture Hero - VIDEO BACKGROUND */}
+      <section id="home-hero" className="home-hero-container">
+        <div className="home-hero-background-image" />
+        
+        {/* Restored Video Background with robust cover scaling */}
+        <div className="home-hero-video-wrapper">
+          <iframe
+            className="iframe-cover-landscape"
+            src={`https://www.youtube.com/embed/${youTubeId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${youTubeId}&playsinline=1&enablejsapi=1&origin=${typeof window !== 'undefined' ? window.location.origin : ''}&widgetid=1`}
+            title="Hero Video"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           />
         </div>
-        {/* Hero content overlay (sits above ::before and overlays) */}
-        <div
-          className="container hero-content-hbcu"
-          style={{
-            position: 'relative',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            textAlign: 'center',
-            minHeight: '72vh',
-            padding: '1.25rem'
-          }}
-        >
-          <div style={{ maxWidth: 980 }}>
-            <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '.6rem' }}>
-              <img
-                src="/assets/images/abha-logo.png"
-                alt="ABHA Logo"
-                style={{ width: 120, height: 120, objectFit: 'contain', filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.55))' }}
-                onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
-              />
-              <h1 className="hero-title-hbcu" style={{ margin: 0, color: '#fff' }}>Bengali Culture & Community in Harrisburg</h1>
-              <p className="hero-subtitle-hbcu" style={{ maxWidth: 820, margin: '.35rem 0 0', color: 'rgba(255,255,255,0.9)' }}>
-                Celebrating our heritage through festivals, music, arts, and community service — all year round.
-              </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '.65rem', marginTop: '1rem', justifyContent: 'center' }}>
-                <button className="btn-hbcu-primary" onClick={() => onPageChange?.('events')} type="button">Explore Events</button>
-                <button className="btn-hbcu-secondary" onClick={() => onPageChange?.('about')} type="button">About ABHA</button>
-                <button className="btn-hbcu-secondary" onClick={() => onPageChange?.('contact')} type="button">Get Involved</button>
-              </div>
+
+        <div className="home-hero-overlay" />
+        
+        <div className="home-hero-content">
+          <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '1.5rem' }}>
+            <img
+              src="/assets/images/abha-logo.png"
+              alt="ABHA Logo"
+              className="mobile-logo-adjust"
+              onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+            />
+            <h1 className="home-hero-title">
+              Bengali Culture & Community in Harrisburg
+            </h1>
+            <p className="home-hero-subtitle">
+              Celebrating our heritage through festivals, music, arts, and community service — all year round.
+            </p>
+            
+            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem', justifyContent: 'center' }}>
+              <button 
+                className="btn-hbcu-primary" 
+                onClick={() => onPageChange?.('events')} 
+                type="button"
+                style={{ fontSize: '1.1rem', padding: '1rem 2rem' }}
+              >
+                Explore Events
+              </button>
+              <button 
+                className="btn-hbcu-secondary" 
+                onClick={() => onPageChange?.('about')} 
+                type="button"
+                style={{ fontSize: '1.1rem', padding: '1rem 2rem', borderColor: '#fff', color: '#fff' }}
+              >
+                About ABHA
+              </button>
+              <button 
+                className="btn-hbcu-secondary" 
+                onClick={() => onPageChange?.('contact')} 
+                type="button"
+                style={{ fontSize: '1.1rem', padding: '1rem 2rem', borderColor: '#fff', color: '#fff' }}
+              >
+                Get Involved
+              </button>
             </div>
           </div>
         </div>
@@ -715,6 +413,66 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
           />
         </div>
       )}
+
+      {/* 2026 Committee Announcement Section */}
+      <section className="announcement-section">
+        <div className="container">
+          <div className="announcement-card">
+            <div className="announcement-header">
+              <h2>Welcome 2026 Operational Committee</h2>
+            </div>
+            
+            <div className="announcement-body">
+              <p className="announcement-greeting">Dear Friends,</p>
+              
+              <p className="announcement-text">
+                As we step into 2026, we are delighted to welcome our 2026 Operational Committee members.
+              </p>
+              
+              <div className="committee-container">
+                <h3 className="committee-title">2026 Operational Committee Members</h3>
+                <ul className="committee-list">
+                  {[
+                    'Shatarupa Podder',
+                    'Mahua Bhattacharya',
+                    'Sriya Chattopadhyay',
+                    'Somosree Dutta Gupta',
+                    'Ishana Bandyopadhyay',
+                    'Rahul Roy',
+                    'Soumya (Kanti) Das',
+                    'Kausik Bandyopadhyay'
+                  ].map(name => (
+                    <li key={name} className="committee-member">
+                      <span className="committee-bullet">•</span> {name}
+                    </li>
+                  ))}
+                </ul>
+                <div className="webmaster-note">
+                  <strong>Web Master:</strong> Aklavya Kumar
+                </div>
+              </div>
+
+              <p className="announcement-text" style={{ fontSize: '1.05rem', color: '#555' }}>
+                Collective experience, dedication, and insights of the Operational Committee members will be invaluable as we work together to drive our initiatives forward and achieve our goals this year. This committee is not just about planning and execution - it's about collaboration, innovation, and making a positive impact on our community.
+              </p>
+              
+              <div className="announcement-event-alert">
+                <span style={{ fontSize: '1.5rem' }}>🗓️</span>
+                <p>We will soon publish our event list for the year.</p>
+              </div>
+
+              <div className="announcement-footer">
+                <p className="announcement-signature">Sincerely,</p>
+                <p className="announcement-sign-name">ABHA Operational Committee</p>
+              </div>
+            </div>
+            
+            <div className="announcement-links">
+               Visit <a href="http://abhaweb.org" className="link-abha">abhaweb.org</a> and ABHA on <a href="https://www.facebook.com/ABHAweb" className="link-fb">Facebook</a> for all community events
+            </div>
+          </div>
+        </div>
+      </section>
 
   {/* (Testimonials moved further down to middle area) */}
 

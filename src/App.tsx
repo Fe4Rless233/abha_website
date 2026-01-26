@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react';
 import './styles/index.css';
+import './styles/modern.css';
 
 // Import components
 import Header from './components/layout/Header';
 import Footer from './components/layout/Footer';
+import ScrollToTopButton from './components/ui/ScrollToTopButton';
 
 // Import pages
 import HomePage from './pages/Home';
@@ -26,6 +28,9 @@ function App() {
     setEventToExpand(eventId);
     setPageVisitToken(v => v + 1);
     setIsMobileMenuOpen(false); // Close menu on page change
+    
+    // Always scroll to top on page change
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 
     // Push browser history/hash for proper back/forward behavior
     try {
@@ -112,8 +117,7 @@ function App() {
       <main>
         {renderPage()}
       </main>
-      <Footer onPageChange={handlePageChange} />
-    </div>
+      <Footer onPageChange={handlePageChange} />      <ScrollToTopButton />    </div>
   );
 }
 
