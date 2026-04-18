@@ -112,28 +112,27 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
     return () => window.removeEventListener('resize', resize);
   }, [heroStage]);
 
-  // Featured Event (Saraswati Puja 2026)
+  // Featured Event (Boishakhi 2026)
   const featuredEvent = {
-    title: 'Saraswati Puja 2026',
-    date: 'February 8, 2026',
-    time: '11:00 AM Onwards',
-    venue: 'Community Center, Harrisburg PA (TBC)',
-    description: 'ABHA is geared up to celebrate the First Event of the year - Saraswati Puja, a gathering that has warmth of Love and Friendship amid the cold weather outside.',
-    flyerImage: 'https://res.cloudinary.com/dbudtzzfe/image/upload/v1768884838/WhatsApp_Image_2026-01-19_at_11.48.04_PM_p6xjfk.jpg',
-    ticketLink: 'mailto:associationbengalisharrisburg@hotmail.com?cc=bhaskar_ganguli@yahoo.com,somosree.duttagupta@gmail.com,srijita2012@gmail.com&subject=Saraswati%20Puja%202026%20Participation&body=Name%20of%20the%20performer%3A%0D%0AAge%20(if%20minor)%3A%0D%0AProgram%20type%20(Song%2FDance%2FInstrumental%2Fetc)%3A%0D%0ASolo%20or%20Group%3A%0D%0ALogistics%20required%3A%0D%0AContact%20Phone%3A',
+    title: 'Boishakhi 2026 (Bengali New Year 1433)',
+    date: 'May 9, 2026',
+    time: '4:00 PM - 10:00 PM',
+    venue: 'Lemoyne Community Hall, 510 Herman Avenue, Lemoyne, PA 17043',
+    description: 'Save the date. Let\'s sing, dance, eat, and enjoy as we welcome the Bengali New Year with delicious traditional cuisine, live music and cultural performances, community gathering and festive spirit. Cash only for Kolkata Street Food.',
+    flyerImage: '/assets/images/events/Boishakhi26.jpeg',
+    ticketLink: 'mailto:associationbengalisharrisburg@hotmail.com?subject=Boishakhi%202026%20-%20Save%20the%20Date&body=Hello%20ABHA%20Team%2C%0D%0A%0D%0AI%E2%80%99m%20interested%20in%20Boishakhi%202026%20on%20May%209%2C%202026%20(4%E2%80%9310pm)%20at%20Lemoyne%20Community%20Hall.%20Please%20share%20registration%20and%20event%20details%20when%20available.%0D%0A%0D%0AThanks%2C%0D%0A',
     artistSegments: [
-      'Puja & Anjali',
-      'Khichuri & Adda',
-      'Cultural Program',
-      'Kids & Teens Performances',
-      'Open Mic'
+      'Haasi aar Adda (4:00–4:45pm)',
+      'Kolkata Street Food (4:45–5:45pm) — Cash Only',
+      'Cultural Program (6:00–8:00pm)',
+      'Dinner (8:00–10:00pm)'
     ],
     highlights: [
-      'Register by Feb 1',
-      'Saraswati Puja',
-      'Community Lunch',
-      'Cultural Evening',
-      'Spring Celebration'
+      'Save the Date',
+      'Live Music & Cultural Performances',
+      'Kolkata Street Food (Cash Only)',
+      'Dinner',
+      'Lemoyne Community Hall'
     ],
     extraPosters: [] as string[]
   };
@@ -193,8 +192,8 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
             '@type': 'Event',
             name: featuredEvent.title,
             description: featuredEvent.description,
-            startDate: '2026-02-08T11:00:00-05:00',
-            endDate: '2026-02-08T17:00:00-05:00',
+            startDate: '2026-05-09T16:00:00-04:00',
+            endDate: '2026-05-09T22:00:00-04:00',
             eventAttendanceMode: 'https://schema.org/OfflineEventAttendanceMode',
             eventStatus: 'https://schema.org/EventScheduled',
             location: {
@@ -234,7 +233,11 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
               aria-label="View full Flyer"
               onClick={() => setLightboxSrc(featuredEvent.flyerImage)}
             >
-                <img src={featuredEvent.flyerImage} alt="Event Flyer" />
+                <img
+                  src={featuredEvent.flyerImage}
+                  alt="Event Flyer"
+                  onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/assets/images/events/Boishakhi.jpg'; }}
+                />
                 <div className="event-card-zoom-indicator">
                   <span aria-hidden>🔎</span>
                   <span>Zoom</span>
@@ -283,7 +286,7 @@ const HomePage: React.FC<HomePageProps> = ({ onPageChange }) => {
                   <strong className="event-info-label">COUNTDOWN</strong>
                   <div style={{ marginTop: '.35rem', display: 'flex', justifyContent: 'center' }}>
                     <Countdown
-                      target="2026-02-08T11:00:00-05:00"
+                      target="2026-05-09T16:00:00-04:00"
                       label=""
                       compact
                       style={{ background: 'transparent', border: 'none', padding: 0, borderRadius: 0 }}

@@ -8,6 +8,7 @@ export interface AdminEvent {
   image?: string;
   category: 'festival' | 'cultural' | 'community' | 'other';
   createdAt: string;
+  archived?: boolean;
 }
 
 export interface AdminPhoto {
@@ -46,6 +47,61 @@ export const migrateOldData = (): { eventsMigrated: number; photosMigrated: numb
         saveEvents(migratedEvents);
         eventsMigrated = migratedEvents.length;
         console.log(`Migrated ${eventsMigrated} events from old storage`);
+      }
+    } else {
+      const canonicalBoishakhiTitle = 'Boishakhi 2026 (Bengali New Year 1433)';
+      const isBoishakhiTitle = (title: unknown) =>
+        title === 'Boishaki 2026 (Bengali New Year 1433)' || title === canonicalBoishakhiTitle;
+
+      let changed = false;
+
+      // Archive Saraswati Puja 2026 if it exists
+      const updatedEvents = currentEvents.map((event: any) => {
+        if (event.title === 'Saraswati Puja 2026' && !event.archived) {
+          changed = true;
+          return { ...event, archived: true };
+        }
+
+        // Keep Boishakhi 2026 aligned with the latest flyer info
+        if (isBoishakhiTitle(event.title)) {
+          const next = {
+            ...event,
+            title: canonicalBoishakhiTitle,
+            date: '2026-05-09',
+            description: "Save the date. Let's sing, dance, eat, and enjoy as we welcome the Bengali New Year with delicious traditional cuisine, live music and cultural performances, community gathering and festive spirit. Cash only for Kolkata Street Food.",
+            location: 'Lemoyne Community Hall, 510 Herman Avenue, Lemoyne, PA 17043',
+            category: 'festival' as const,
+            image: '/assets/images/events/Boishakhi.jpg',
+            archived: false
+          };
+          const different = JSON.stringify(next) !== JSON.stringify(event);
+          if (different) changed = true;
+          return next;
+        }
+
+        return event;
+      });
+
+      const boishakhiExists = updatedEvents.some((e: any) => isBoishakhiTitle(e.title));
+      let finalEvents = updatedEvents;
+
+      if (!boishakhiExists) {
+        changed = true;
+        const boishakhiEvent = {
+          id: Date.now().toString(),
+          title: canonicalBoishakhiTitle,
+          date: '2026-05-09',
+          description: "Save the date. Let's sing, dance, eat, and enjoy as we welcome the Bengali New Year with delicious traditional cuisine, live music and cultural performances, community gathering and festive spirit. Cash only for Kolkata Street Food.",
+          location: 'Lemoyne Community Hall, 510 Herman Avenue, Lemoyne, PA 17043',
+          category: 'festival' as const,
+          image: '/assets/images/events/Boishakhi.jpg',
+          createdAt: new Date().toISOString()
+        };
+        finalEvents = [boishakhiEvent, ...updatedEvents];
+      }
+
+      if (changed) {
+        saveEvents(finalEvents);
       }
     }
     

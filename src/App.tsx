@@ -13,6 +13,7 @@ import AboutPage from './pages/About';
 import CulturePage from './pages/Culture';
 import EventsPage from './pages/Events';
 import CommunityPage from './pages/Community';
+import { migrateOldData } from './utils/adminData';
 import ContactPage from './pages/Contact';
 import AdminPage from './pages/Admin';
 
@@ -47,6 +48,15 @@ function App() {
       // ignore history errors
     }
   };
+
+  // Ensure admin events storage stays up-to-date (runs once on app load)
+  useEffect(() => {
+    try {
+      migrateOldData();
+    } catch {
+      // ignore
+    }
+  }, []);
 
   // Initialize from hash and support back/forward via popstate/hashchange
   useEffect(() => {

@@ -15,11 +15,11 @@ const AdminEventsDisplay: React.FC<AdminEventsDisplayProps> = ({ onEventSelect, 
       try {
         const adminEvents = getEvents();
         
-        let filteredEvents = adminEvents;
+        let filteredEvents = adminEvents.filter(event => !event.archived);
         if (showUpcomingOnly) {
           const today = new Date();
           today.setHours(0, 0, 0, 0);
-          filteredEvents = adminEvents.filter(event => new Date(event.date) >= today);
+          filteredEvents = filteredEvents.filter(event => new Date(event.date) >= today);
         }
         
         // Sort by date (upcoming first, then by date)

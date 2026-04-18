@@ -5,12 +5,21 @@ import type { AdminEvent } from '../utils/adminData';
 export const getAdminSeedEvents = (): Array<Omit<AdminEvent, 'id' | 'createdAt'>> => [
   // 2026
   {
+    title: 'Boishakhi 2026 (Bengali New Year 1433)',
+    date: '2026-05-09',
+    description: 'Save the date. Let\'s sing, dance, eat, and enjoy as we welcome the Bengali New Year with delicious traditional cuisine, live music and cultural performances, community gathering and festive spirit. Cash only for Kolkata Street Food.',
+    location: 'Lemoyne Community Hall, 510 Herman Avenue, Lemoyne, PA 17043',
+    category: 'festival',
+    image: '/assets/images/events/Boishakhi.jpg'
+  },
+  {
     title: 'Saraswati Puja 2026',
     date: '2026-02-08',
     description: 'ABHA is geared up to celebrate the First Event of the year - Saraswati Puja on Feb 8th.',
     location: 'Community Center, Harrisburg PA (TBC)',
     category: 'festival',
-    image: 'https://res.cloudinary.com/dbudtzzfe/image/upload/v1768884838/WhatsApp_Image_2026-01-19_at_11.48.04_PM_p6xjfk.jpg'
+    image: 'https://res.cloudinary.com/dbudtzzfe/image/upload/v1768884838/WhatsApp_Image_2026-01-19_at_11.48.04_PM_p6xjfk.jpg',
+    archived: true
   },
   // 2025
   {

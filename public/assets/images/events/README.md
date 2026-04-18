@@ -16,6 +16,9 @@ This directory contains images for ABHA events organized by year.
 - `Boishakhi-2024.jpg` - Bengali New Year 2024 memories/photos
 - `saraswati-puja-2024.jpg` - Saraswati Puja 2024 memories/photos
 
+### 2026 Events:
+- `Boishakhi26.jpeg` - Boishakhi 2026 flyer/poster (Home featured + Events hero)
+
 ### Other:
 - `upcoming-event-poster.jpg` - Main upcoming event poster for homepage
 - `placeholder-poster.jpg` - Fallback image when specific posters are not available

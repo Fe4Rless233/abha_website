@@ -40,14 +40,26 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
   const eventsByYear: { [key: string | number]: Event[] } = {
     2026: [
       {
+        title: "Boishakhi 2026 (Bengali New Year 1433)",
+        description: "Save the date. Let’s sing, dance, eat, and enjoy as we welcome the Bengali New Year with delicious traditional cuisine, live music and cultural performances, community gathering and festive spirit.",
+        category: "Upcoming",
+        date: "May 9, 2026",
+        time: "4:00 PM - 10:00 PM",
+        venue: "Lemoyne Community Hall, 510 Herman Avenue, Lemoyne, PA 17043",
+        details: "Schedule: 4:00–4:45pm Haasi aar Adda (Socialization) • 4:45–5:45pm Kolkata Street Food (Snacks, Food Stalls — CASH ONLY) • 6:00–8:00pm Jomjomat Sanskritik Unushthan (Cultural Program) • 8:00–10:00pm Raater Khaoa Daoa (Dinner). Contact: associationbengalisharrisburg@hotmail.com • abhaweb.org • facebook.com/ABHAweb",
+        highlights: ["Haasi aar Adda (4:00–4:45)", "Kolkata Street Food (4:45–5:45) — Cash Only", "Cultural Program (6:00–8:00)", "Dinner (8:00–10:00)", "Lemoyne Community Hall"],
+        image: "/assets/images/events/Boishakhi26.jpeg",
+        fallbackImage: "🎊"
+      },
+      {
         title: "Saraswati Puja 2026",
         description: "ABHA is geared up to celebrate the First Event of the year - Saraswati Puja on Feb 8th.",
-        category: "Upcoming",
+        category: "Past",
         date: "February 8, 2026",
         time: "11:00 AM Onwards",
         venue: "Community Center, Harrisburg PA (TBC)",
-        details: "ABHA is geared up to celebrate the First Event of the year - Saraswati Puja on Feb 8th, a gathering that has warmth of Love and Friendship amid the cold weather outside. Along with Puja, khichuri, and adda we also have a Cultural program post lunch and we truly feel its a fun and creative time to bring something to make a celebration of the Formal Onset of spring. We invite everyone (Kids, Teens or grownups) to be part of this celebration.",
-        highlights: ["Saraswati Puja", "Khichuri & Adda", "Cultural Program", "Open Mic for Creativity"],
+        details: "ABHA celebrated Saraswati Puja with puja, anjali, khichuri, adda, and a cultural program. Thank you to all volunteers and families for making it memorable.",
+        highlights: ["Saraswati Puja", "Khichuri & Adda", "Cultural Program", "Community Gathering"],
         image: "https://res.cloudinary.com/dbudtzzfe/image/upload/v1768884838/WhatsApp_Image_2026-01-19_at_11.48.04_PM_p6xjfk.jpg",
         fallbackImage: "📚"
       }
@@ -254,17 +266,14 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
       {/* Hero Section - HBCU Style */}
       <section className="hbcu-hero-section" id="events">
         <div className="hero-video-container">
-          <video 
-            className="hero-video" 
-            autoPlay 
-            muted 
-            loop 
-            playsInline
-            preload="metadata"
-            poster="/assets/images/hero-poster.jpg"
-          >
-            <source src="/assets/videos/bengali-culture-hero.mp4" type="video/mp4" />
-          </video>
+          <img
+            className="hero-video"
+            src="/assets/images/events/Boishakhi26.jpeg"
+            alt=""
+            aria-hidden="true"
+            onError={(e) => { (e.currentTarget as HTMLImageElement).src = '/assets/images/hero-poster.jpg'; }}
+            style={{ objectFit: 'cover' }}
+          />
           <div className="hero-video-overlay"></div>
         </div>
         <div className="container hero-content-hbcu">
@@ -279,7 +288,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
             </div>
           </div>
           <h1 className="hero-title-hbcu">
-            Community Events
+            Events
           </h1>
           <p className="hero-subtitle-hbcu">
             Join us for a variety of cultural, social, and artistic events throughout the year.
@@ -351,18 +360,22 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
 
           {/* Year Indicator */}
           <div className="year-indicator-card">
-            <h3 className="year-indicator-title">
-              {selectedYear === 2025 
-                ? 'Annual Events ' + selectedYear 
-                : '📸 Past Events ' + selectedYear
-              }
-            </h3>
-            <p className="year-indicator-description">
-              {selectedYear === 2025 
-                ? 'Explore upcoming and recent events for 2025.'
-                : `Relive the wonderful memories from our ${selectedYear} celebrations and community events.`
-              }
-            </p>
+            {(() => {
+              const yearEvents = eventsByYear[selectedYear] || [];
+              const hasUpcoming = yearEvents.some(e => (e.category || '').toLowerCase() === 'upcoming');
+              return (
+                <>
+                  <h3 className="year-indicator-title">
+                    {hasUpcoming ? `Annual Events ${selectedYear}` : `📸 Past Events ${selectedYear}`}
+                  </h3>
+                  <p className="year-indicator-description">
+                    {hasUpcoming
+                      ? `Explore upcoming and recent events for ${selectedYear}.`
+                      : `Relive the wonderful memories from our ${selectedYear} celebrations and community events.`}
+                  </p>
+                </>
+              );
+            })()}
           </div>
 
           {/* Events Grid */}
@@ -525,7 +538,7 @@ const EventsPage: React.FC<EventsPageProps> = ({ initialExpandedEvent, onPageCha
                         >
                           Add to Calendar
                         </a>
-                        {event.category === 'Upcoming' && (
+                        {event.category === 'Upcoming' && !/boishakhi\s*2026/i.test(event.title) && (
                           <button
                             type="button"
                             className="btn-hbcu-primary"
